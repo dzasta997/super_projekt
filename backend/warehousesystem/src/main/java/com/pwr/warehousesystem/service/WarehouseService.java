@@ -1,10 +1,13 @@
 package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Warehouse;
+import com.pwr.warehousesystem.exception.ElementNotFoundException;
+import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,15 +20,25 @@ public class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public Optional<Warehouse> findWarehouse(String warehouseId){
-        return warehouseRepository.findByWarehouseId(warehouseId);
+    public Warehouse findWarehouse(String warehouseId) {
+        return warehouseRepository.findByWarehouseId(warehouseId).orElseThrow(ElementNotFoundException::new);
     }
 
-    public long deleteWarehouse(String warehouseId){
+    public List<Warehouse> findAll() {
+        return warehouseRepository.findAll();
+    }
+
+    public long deleteWarehouse(String warehouseId) {
         return warehouseRepository.deleteByWarehouseId(warehouseId);
     }
 
-    public Warehouse saveWarehouse(Warehouse warehouse){
+    public Warehouse saveWarehouse(Warehouse warehouse) {
+        if (warehouse.getId() != null && (
+                warehouseRepository.existsById(warehouse.getId())
+                        || warehouseRepository.existsByWarehouseId(warehouse.getWarehouseId())
+        )) {
+            throw new OperationFailedException();
+        }
         return warehouseRepository.save(warehouse);
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/warehouse")
 public class WarehouseController {
@@ -23,8 +25,14 @@ public class WarehouseController {
 
     @GetMapping("/{warehouseId}")
     public ResponseEntity<Warehouse> getWarehouse(@PathVariable String warehouseId) {
-        Warehouse warehouse = warehouseService.findWarehouse(warehouseId).orElseThrow(ElementNotFoundException::new);
+        Warehouse warehouse = warehouseService.findWarehouse(warehouseId);
         return new ResponseEntity<>(warehouse, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Warehouse>> getAllWarehouses() {
+        List<Warehouse> warehouses = warehouseService.findAll();
+        return new ResponseEntity<>(warehouses, HttpStatus.OK);
     }
 
     @PostMapping
