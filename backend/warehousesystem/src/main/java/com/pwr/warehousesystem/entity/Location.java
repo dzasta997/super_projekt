@@ -4,6 +4,8 @@ import com.pwr.warehousesystem.exception.OperationFailedException;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Location {
@@ -17,10 +19,16 @@ public class Location {
     private int capacity;
     private int availability;
     private String description;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
-
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "item_location",
+            joinColumns = {@JoinColumn(name = "location_id")},
+            inverseJoinColumns = {@JoinColumn(name = "item_id")}
+    )
+    List<Item> items;
 
 
     @PrePersist

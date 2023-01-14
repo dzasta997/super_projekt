@@ -1,14 +1,13 @@
 package com.pwr.warehousesystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Warehouse {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -19,8 +18,6 @@ public class Warehouse {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
-    @ManyToMany(mappedBy = "warehouses")
-    private List<Client> clients;
 
     @PrePersist
     private void constraintCheck(){

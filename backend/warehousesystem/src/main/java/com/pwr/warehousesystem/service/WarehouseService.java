@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WarehouseService {
@@ -33,10 +32,9 @@ public class WarehouseService {
     }
 
     public Warehouse saveWarehouse(Warehouse warehouse) {
-        if (warehouse.getId() != null && (
-                warehouseRepository.existsById(warehouse.getId())
-                        || warehouseRepository.existsByWarehouseId(warehouse.getWarehouseId())
-        )) {
+        if ((warehouse.getId() != null && warehouseRepository.existsById(warehouse.getId()))
+                || warehouseRepository.existsByWarehouseId(warehouse.getWarehouseId())
+        ) {
             throw new OperationFailedException();
         }
         return warehouseRepository.save(warehouse);

@@ -1,7 +1,6 @@
 package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Location;
-import com.pwr.warehousesystem.entity.Warehouse;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +19,26 @@ public class LocationService {
         this.locationRepository = locationRepository;
     }
 
-    public List<Location> findAll(){
+    public List<Location> findAll() {
         return locationRepository.findAll();
     }
 
-    public Optional<Location> findByLocationId(String locationId){
-       return locationRepository.findByLocationId(locationId);
+    public Optional<Location> findByLocationId(String locationId) {
+        return locationRepository.findByLocationId(locationId);
     }
 
     public Location saveLocation(Location location) {
-        if (location.getId() != null && (
-                locationRepository.existsById(location.getId())
-                        || locationRepository.existsByLocationId(location.getLocationId())
-        )) {
+        if ((location.getId() != null && locationRepository.existsById(location.getId()))
+                || locationRepository.existsByLocationId(location.getLocationId())
+        ) {
             throw new OperationFailedException();
         }
         return locationRepository.save(location);
     }
 
-    public long deleteLocation(String locationId){
+    public long deleteLocation(String locationId) {
         return locationRepository.deleteByLocationId(locationId);
     }
-
 
 
 }

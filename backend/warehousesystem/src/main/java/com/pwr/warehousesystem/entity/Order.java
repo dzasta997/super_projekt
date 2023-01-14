@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,4 +18,11 @@ public class Order {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Client client;
+    @ManyToMany
+    @JoinTable(
+            name = "order_item",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name="item_id")}
+    )
+    private List<Item> items;
 }

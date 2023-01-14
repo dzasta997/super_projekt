@@ -1,7 +1,8 @@
 package com.pwr.warehousesystem.controller;
 
+import com.pwr.warehousesystem.dto.WarehouseDTO;
 import com.pwr.warehousesystem.entity.Warehouse;
-import com.pwr.warehousesystem.exception.ElementNotFoundException;
+import com.pwr.warehousesystem.mapper.WarehouseMapper;
 import com.pwr.warehousesystem.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,29 +17,31 @@ import java.util.List;
 public class WarehouseController {
 
     private final WarehouseService warehouseService;
+    private final WarehouseMapper warehouseMapper;
 
     @Autowired
-    public WarehouseController(WarehouseService warehouseService) {
+    public WarehouseController(WarehouseService warehouseService, WarehouseMapper warehouseMapper) {
         this.warehouseService = warehouseService;
+        this.warehouseMapper = warehouseMapper;
     }
 
 
     @GetMapping("/{warehouseId}")
-    public ResponseEntity<Warehouse> getWarehouse(@PathVariable String warehouseId) {
+    public ResponseEntity<WarehouseDTO> getWarehouse(@PathVariable String warehouseId) {
         Warehouse warehouse = warehouseService.findWarehouse(warehouseId);
-        return new ResponseEntity<>(warehouse, HttpStatus.OK);
+        return new ResponseEntity<>(warehouseMapper.toDto(warehouse), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Warehouse>> getAllWarehouses() {
+    public ResponseEntity<List<WarehouseDTO>> getAllWarehouses() {
         List<Warehouse> warehouses = warehouseService.findAll();
-        return new ResponseEntity<>(warehouses, HttpStatus.OK);
+        return new ResponseEntity<>(warehouseMapper.toDto(warehouses), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Warehouse> postWarehouse(@RequestBody Warehouse warehouse){
-        Warehouse saved = warehouseService.saveWarehouse(warehouse);
-        return new ResponseEntity<>(saved, HttpStatus.OK);
+    public ResponseEntity<WarehouseDTO> postWarehouse(@RequestBody WarehouseDTO warehouse){
+        Warehouse saved = warehouseService.saveWarehouse(warehouseMapper.toEntity(warehouse));
+        return new ResponseEntity<>(warehouseMapper.toDto(saved), HttpStatus.OK);
     }
 
     @DeleteMapping("/{warehouseId}")
