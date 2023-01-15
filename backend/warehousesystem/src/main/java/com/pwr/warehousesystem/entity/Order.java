@@ -13,7 +13,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    private int orderId;
+    private String orderId;
     private Date orderDate;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")

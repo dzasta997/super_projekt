@@ -1,7 +1,8 @@
 package com.pwr.warehousesystem.controller;
 
+import com.pwr.warehousesystem.dto.LocationDTO;
 import com.pwr.warehousesystem.entity.Location;
-import com.pwr.warehousesystem.exception.ElementNotFoundException;
+import com.pwr.warehousesystem.mapper.LocationMapper;
 import com.pwr.warehousesystem.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,36 +13,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("location")
+@RequestMapping("/locations")
 public class LocationController {
 
     private final LocationService locationService;
+    private final LocationMapper locationMapper;
 
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, LocationMapper locationMapper) {
         this.locationService = locationService;
+        this.locationMapper = locationMapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<Location>> getAllLocations(){
+    public ResponseEntity<List<LocationDTO>> getAllLocations(){
         List<Location> locations = locationService.findAll();
-        return new ResponseEntity<>(locations, HttpStatus.OK);
+        return new ResponseEntity<>(locationMapper.toDto(locations), HttpStatus.OK);
     }
 
     @GetMapping("/{locationId}")
-    public ResponseEntity<Location> getLocation(@PathVariable String locationId){
-        Location location = locationService.findByLocationId(locationId).orElseThrow(ElementNotFoundException::new);
-        return new ResponseEntity<>(location, HttpStatus.OK);
+    public ResponseEntity<LocationDTO> getLocation(@PathVariable String locationId){
+        Location location = locationService.findByLocationId(locationId);
+        return new ResponseEntity<>(locationMapper.toDto(location), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Location> postLocation(@RequestBody Location location){
-        Location savedLocation = locationService.saveLocation(location);
-        return new ResponseEntity<>(savedLocation, HttpStatus.OK);
+    public ResponseEntity<LocationDTO> postLocation(@RequestBody LocationDTO locationDTO){
+        Location savedLocation = locationService.saveLocation(locationMapper.toEntity(locationDTO));
+        return new ResponseEntity<>(locationMapper.toDto(savedLocation), HttpStatus.OK);
     }
 
     @DeleteMapping("/{locationId}")
-    public ResponseEntity<Long> deleteLocation(String locationId){
+    public ResponseEntity<Long> deleteLocation(@PathVariable String locationId){
         long deleted = locationService.deleteLocation(locationId);
         return new ResponseEntity<>(deleted, HttpStatus.OK);
     }

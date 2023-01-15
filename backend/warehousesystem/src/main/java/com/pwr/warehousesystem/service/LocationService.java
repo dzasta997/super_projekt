@@ -1,13 +1,13 @@
 package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Location;
+import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -23,8 +23,8 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Optional<Location> findByLocationId(String locationId) {
-        return locationRepository.findByLocationId(locationId);
+    public Location findByLocationId(String locationId) {
+        return locationRepository.findByLocationId(locationId).orElseThrow(ElementNotFoundException::new);
     }
 
     public Location saveLocation(Location location) {

@@ -12,7 +12,7 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    private int deliveryId;
+    private String deliveryId;
     private Date deliveryDate;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "supplier_id")

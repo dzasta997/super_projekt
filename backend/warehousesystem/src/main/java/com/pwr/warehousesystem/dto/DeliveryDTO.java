@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class DeliveryDTO {
     private Long id;
-    private int deliveryId;
+    private String deliveryId;
     private Date deliveryDate;
     private SupplierDTO supplier;
     private List<ItemDTO> items;

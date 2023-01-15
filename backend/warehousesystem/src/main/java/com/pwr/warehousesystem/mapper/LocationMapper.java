@@ -50,6 +50,6 @@ public class LocationMapper extends ApplicationMapper<Location, LocationDTO> {
         locationDTO.setDescription(location.getDescription());
         locationDTO.setWarehouse(warehouseMapper.toDto(location.getWarehouse()));
         locationDTO.setItems(itemMapper.toDto(location.getItems()));
-        return null;
+        return locationDTO;
     }
 }

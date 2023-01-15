@@ -19,7 +19,7 @@ public class Location {
     private int capacity;
     private int availability;
     private String description;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
     @ManyToMany(cascade = {CascadeType.ALL})

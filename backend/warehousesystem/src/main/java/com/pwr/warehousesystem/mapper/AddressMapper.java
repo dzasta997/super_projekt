@@ -15,8 +15,8 @@ public class AddressMapper extends ApplicationMapper<Address, AddressDTO> {
         address.setId(addressDTO.getId());
         address.setCity(addressDTO.getCity());
         address.setStreet(addressDTO.getStreet());
-        address.setNumber(address.getNumber());
-        address.setZipcode(address.getZipcode());
+        address.setNumber(addressDTO.getNumber());
+        address.setZipcode(addressDTO.getZipcode());
         return address;
     }
 
@@ -29,7 +29,7 @@ public class AddressMapper extends ApplicationMapper<Address, AddressDTO> {
         addressDTO.setId(address.getId());
         addressDTO.setCity(address.getCity());
         addressDTO.setCity(address.getCity());
-        addressDTO.setStreet(addressDTO.getStreet());
+        addressDTO.setStreet(address.getStreet());
         addressDTO.setNumber(address.getNumber());
         addressDTO.setZipcode(address.getZipcode());
         return addressDTO;
