@@ -24,6 +24,7 @@ function App() {
   const isAuth = (userList.includes(user) ? true : false)
 
   return (
+    <div className='p-0 m-0 px-0'>
     <Router>
     <Routes>
        {/* Routes that require the user to be logged in */}
@@ -41,6 +42,7 @@ function App() {
         <Route path='/sign-in' element={isAuth ? <Navigate to="/" /> : <SignIn />} />
     </Routes>
     </Router>
+    </div>
   );
 }
 

@@ -5,7 +5,7 @@ import {
 } from "@material-tailwind/react";
 
 const navList = (
-    <ul className="py-5 flex justify-between items-start w-full h-full lg:flex-col text-white">
+    <ul className="py-5 justify-between items-start w-full h-full text-white grid grid-cols-1 place-items-start">
       <Typography
         as="li"
         variant="small"
@@ -80,7 +80,7 @@ const UserNavbar = () => {
                     <span>Warehouse  <br/> Management <br/> System </span>
                 </Typography>
 
-                <div className="lg:block">{navList}</div>
+                <div>{navList}</div>
                 
                 <Typography
                     as="href"
