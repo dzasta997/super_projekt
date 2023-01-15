@@ -9,3 +9,9 @@
         @apply pt-2
     }
 }
+
+@layer components {
+    .delivery-text-field-column {
+        @apply mr-8
+    }
+}
