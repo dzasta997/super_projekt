@@ -4,6 +4,8 @@ import com.pwr.warehousesystem.enumeration.ItemSize;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Item {
@@ -15,4 +17,6 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSize size;
     private String description;
+
+
 }
