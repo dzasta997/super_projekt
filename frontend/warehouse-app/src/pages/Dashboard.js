@@ -12,12 +12,13 @@ const calculatorIcon = () => <CalculatorIcon className="h-6"/>
 
   return (
     <PageContainer title="Dashboard" location="Świdnicka 25">
-      <div className='flex justify-center items-center bg-primaryBlue'>
-      <Button label="button1" color="gray" onClick={setInput}/>
-      <Button label="button2"></Button>
+      <div className='flex justify-center items-center bg-primaryBlue p-2'>
+      <Button label="button1" color="white" onClick={setInput}/>
+      <Button label="button2" color="gray" onClick={setInput}/>
+      <Button label="button3"></Button>
       <IconButton label="Calculate " Icon={calculatorIcon} />
-      <TextInputField id="id" label="but" setState={setInput} />
-      <Button label="+ tr" color="transparent" />
+      <Button label="button4" color="transparent" />
+      <Button label="hello +" color="transparent" />
       </div>
     </PageContainer>
   );
