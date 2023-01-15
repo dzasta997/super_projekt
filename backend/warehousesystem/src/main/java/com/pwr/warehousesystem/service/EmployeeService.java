@@ -36,10 +36,10 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Long deleteEmployee(String employeeId){
+    public void deleteEmployee(String employeeId){
         if(!employeeRepository.existsByEmployeeId(employeeId)){
             throw new OperationFailedException();
         }
-        return  employeeRepository.deleteBYEmployeeId(employeeId);
+        employeeRepository.deleteByEmployeeId(employeeId);
     }
 }

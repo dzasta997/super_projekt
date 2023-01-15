@@ -36,10 +36,10 @@ public class DeliveryService {
         return deliveryRepository.save(delivery);
     }
 
-    public long deleteDelivery(String deliveryId){
+    public void deleteDelivery(String deliveryId){
         if(!deliveryRepository.existsByDeliveryId(deliveryId)){
             throw new OperationFailedException();
         }
-        return deliveryRepository.deleteByDeliveryId(deliveryId);
+        deliveryRepository.deleteByDeliveryId(deliveryId);
     }
 }

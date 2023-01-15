@@ -22,14 +22,13 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Item getByCode(int code){
-        return itemRepository.getByCode(code).orElseThrow(ElementNotFoundException::new);
+    public Item getById(Long id){
+        return itemRepository.findById(id).orElseThrow(ElementNotFoundException::new);
     }
     
     public Item saveItem(Item item){
-        if ((item.getId() != null && itemRepository.existsById(item.getId()))
-                || itemRepository.existsByCode(item.getCode())
-        ) {
+        if ((item.getId() != null && itemRepository.existsById(item.getId())))
+        {
             throw new OperationFailedException();
         }
         return itemRepository.save(item);

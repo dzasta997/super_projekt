@@ -36,8 +36,11 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
-    public long deleteLocation(String locationId) {
-        return locationRepository.deleteByLocationId(locationId);
+    public void deleteLocation(String locationId) {
+        if(!locationRepository.existsByLocationId(locationId)){
+            throw new OperationFailedException();
+        }
+         locationRepository.deleteByLocationId(locationId);
     }
 
 

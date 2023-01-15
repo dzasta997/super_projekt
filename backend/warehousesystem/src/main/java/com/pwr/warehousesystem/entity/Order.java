@@ -18,7 +18,7 @@ public class Order {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Client client;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "order_item",
             joinColumns = {@JoinColumn(name = "order_id")},

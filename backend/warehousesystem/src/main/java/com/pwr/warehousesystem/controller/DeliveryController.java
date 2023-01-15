@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,9 +44,10 @@ public class DeliveryController {
         return new ResponseEntity<>(deliveryMapper.toDto(savedDelivery), HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/{deliveryId}")
-    public ResponseEntity<Long> deleteDelivery(@PathVariable String deliveryId){
-        long deletedDelivery = deliveryService.deleteDelivery(deliveryId);
-        return new ResponseEntity<>(deletedDelivery, HttpStatus.OK);
+    public ResponseEntity deleteDelivery(@PathVariable String deliveryId){
+         deliveryService.deleteDelivery(deliveryId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

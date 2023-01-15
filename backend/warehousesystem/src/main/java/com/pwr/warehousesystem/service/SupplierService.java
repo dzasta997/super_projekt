@@ -36,10 +36,10 @@ public class SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    public Long deleteSupplier(String supplierId){
+    public void deleteSupplier(String supplierId){
         if(!supplierRepository.existsBySupplierId(supplierId)){
             throw new OperationFailedException();
         }
-        return supplierRepository.deleteBySupplierId(supplierId);
+         supplierRepository.deleteBySupplierId(supplierId);
     }
 }

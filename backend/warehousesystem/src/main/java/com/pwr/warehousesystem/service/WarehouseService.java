@@ -27,8 +27,11 @@ public class WarehouseService {
         return warehouseRepository.findAll();
     }
 
-    public long deleteWarehouse(String warehouseId) {
-        return warehouseRepository.deleteByWarehouseId(warehouseId);
+    public void deleteWarehouse(String warehouseId) {
+        if(!warehouseRepository.existsByWarehouseId(warehouseId)){
+            throw new OperationFailedException();
+        }
+         warehouseRepository.deleteByWarehouseId(warehouseId);
     }
 
     public Warehouse saveWarehouse(Warehouse warehouse) {

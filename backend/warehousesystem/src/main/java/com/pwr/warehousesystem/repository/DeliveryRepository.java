@@ -12,6 +12,6 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
 
     boolean existsByDeliveryId(String deliveryId);
 
-    long deleteByDeliveryId(String deliveryId);
+    void deleteByDeliveryId(String deliveryId);
 }
 

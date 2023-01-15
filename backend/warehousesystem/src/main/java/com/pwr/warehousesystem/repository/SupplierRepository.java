@@ -13,6 +13,6 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
     boolean existsBySupplierId(String supplierId);
 
-    Long deleteBySupplierId(String supplierId);
+    void deleteBySupplierId(String supplierId);
 }
 

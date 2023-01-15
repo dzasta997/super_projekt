@@ -11,7 +11,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
     Optional<Location> findByLocationId(String locationId);
 
-    long deleteByLocationId(String locationId);
+    void deleteByLocationId(String locationId);
 
     boolean existsByLocationId(String locationId);
 }

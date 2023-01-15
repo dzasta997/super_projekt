@@ -36,10 +36,10 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Long deleteOrder(String orderId){
+    public void deleteOrder(String orderId){
         if(!orderRepository.existsByOrderId(orderId)){
             throw new OperationFailedException();
         }
-        return  orderRepository.deleteByOrderId(orderId);
+         orderRepository.deleteByOrderId(orderId);
     }
 }

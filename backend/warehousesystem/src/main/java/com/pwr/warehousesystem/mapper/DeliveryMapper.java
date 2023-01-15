@@ -23,7 +23,7 @@ public class DeliveryMapper extends ApplicationMapper<Delivery, DeliveryDTO> {
         }
         Delivery delivery = new Delivery();
         delivery.setId(deliveryDTO.getId());
-        delivery.setDeliveryId(delivery.getDeliveryId());
+        delivery.setDeliveryId(deliveryDTO.getDeliveryId());
         delivery.setDeliveryDate(deliveryDTO.getDeliveryDate());
         delivery.setSupplier(supplierMapper.toEntity(deliveryDTO.getSupplier()));
         delivery.setItems(itemMapper.toEntity(deliveryDTO.getItems()));
@@ -37,7 +37,7 @@ public class DeliveryMapper extends ApplicationMapper<Delivery, DeliveryDTO> {
             return null;
         }
         DeliveryDTO deliveryDTO = new DeliveryDTO();
-        deliveryDTO.setId(deliveryDTO.getId());
+        deliveryDTO.setId(delivery.getId());
         deliveryDTO.setDeliveryId(delivery.getDeliveryId());
         deliveryDTO.setDeliveryDate(delivery.getDeliveryDate());
         deliveryDTO.setSupplier(supplierMapper.toDto(delivery.getSupplier()));

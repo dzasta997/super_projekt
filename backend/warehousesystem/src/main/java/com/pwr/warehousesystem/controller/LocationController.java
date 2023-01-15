@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,10 +44,11 @@ public class LocationController {
         return new ResponseEntity<>(locationMapper.toDto(savedLocation), HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/{locationId}")
-    public ResponseEntity<Long> deleteLocation(@PathVariable String locationId){
-        long deleted = locationService.deleteLocation(locationId);
-        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    public ResponseEntity deleteLocation(@PathVariable String locationId){
+        locationService.deleteLocation(locationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

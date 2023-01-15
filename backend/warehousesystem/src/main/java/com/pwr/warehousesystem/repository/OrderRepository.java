@@ -12,5 +12,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     boolean existsByOrderId(String orderId);
 
-    Long deleteByOrderId(String orderId);
+    void deleteByOrderId(String orderId);
 }

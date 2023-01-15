@@ -7,8 +7,8 @@ import com.pwr.warehousesystem.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,25 +27,26 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AddressDTO>> getAllAddresses(){
+    public ResponseEntity<List<AddressDTO>> getAllAddresses() {
         List<Address> addresses = addressService.findAll();
         return new ResponseEntity<>(addressMapper.toDto(addresses), HttpStatus.OK);
     }
 
-    @GetMapping("/{addressId}")
-    public ResponseEntity<AddressDTO> getAddress(@PathVariable long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<AddressDTO> getAddress(@PathVariable long id) {
         Address address = addressService.findByAddressId(id);
         return new ResponseEntity<>(addressMapper.toDto(address), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> postAddress(@RequestBody AddressDTO addressDTO){
+    public ResponseEntity<AddressDTO> postAddress(@RequestBody AddressDTO addressDTO) {
         Address addressSaved = addressService.saveAddress(addressMapper.toEntity(addressDTO));
         return new ResponseEntity<>(addressMapper.toDto(addressSaved), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteAddress(@PathVariable long id){
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAddress(@PathVariable long id) {
         addressService.deleteAddress(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

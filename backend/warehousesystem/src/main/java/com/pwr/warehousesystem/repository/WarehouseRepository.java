@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
     Optional<Warehouse> findByWarehouseId(String warehouseId);
 
-    long deleteByWarehouseId(String warehouseId);
+    void deleteByWarehouseId(String warehouseId);
 
     boolean existsByWarehouseId(String warehouseId);
 

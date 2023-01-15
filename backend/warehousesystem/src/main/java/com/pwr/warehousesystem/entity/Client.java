@@ -1,7 +1,5 @@
 package com.pwr.warehousesystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pwr.warehousesystem.enumeration.ItemSize;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +17,7 @@ public class Client {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "warehouse_client",
             joinColumns = @JoinColumn(name = "client_id"),

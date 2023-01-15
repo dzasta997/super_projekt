@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,9 +44,10 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeMapper.toDto(employee), HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/{employeeId}")
-    public ResponseEntity<Long> deleteEmployee(@PathVariable String employeeId){
-        Long id = employeeService.deleteEmployee(employeeId);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+    public ResponseEntity deleteEmployee(@PathVariable String employeeId){
+        employeeService.deleteEmployee(employeeId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

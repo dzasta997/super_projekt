@@ -26,8 +26,8 @@ public class ItemMapper extends ApplicationMapper<Item, ItemDTO> {
             return null;
         }
         ItemDTO itemDTO = new ItemDTO();
-        itemDTO.setId(itemDTO.getId());
-        itemDTO.setCode(itemDTO.getCode());
+        itemDTO.setId(item.getId());
+        itemDTO.setCode(item.getCode());
         itemDTO.setName(item.getName());
         itemDTO.setSize(item.getSize());
         itemDTO.setDescription(item.getDescription());

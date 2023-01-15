@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +32,9 @@ public class ItemController {
         return new ResponseEntity<>(itemMapper.toDto(items), HttpStatus.OK);
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<ItemDTO> getItemByCode(@PathVariable int code){
-        Item item = itemService.getByCode(code);
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDTO> getItemByCode(@PathVariable Long id){
+        Item item = itemService.getById(id);
         return new ResponseEntity<>(itemMapper.toDto(item), HttpStatus.OK);
     }
 
@@ -43,10 +44,12 @@ public class ItemController {
         return new ResponseEntity<>(itemMapper.toDto(item), HttpStatus.OK);
     }
 
+
+    @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity deleteItem(@PathVariable Long id){
         itemService.deleteItem(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
