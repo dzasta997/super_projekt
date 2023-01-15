@@ -1,12 +1,13 @@
 import React from 'react';
+import PageContainer from '../components/PageContainer';
 
 const AdminDashboard = () => {
   return (
-    <div className="w-full flex justify-center">
+    <PageContainer>
     <h1 className="text-xl">
         Admin Dashboard
     </h1>
-    </div>
+    </PageContainer>
   );
 };
   
