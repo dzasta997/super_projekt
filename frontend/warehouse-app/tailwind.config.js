@@ -9,8 +9,8 @@ module.exports = {
       'white': '#FFFFFF',
       'buttonPrimary': '#384693',
       'darkGray': "#626262",
-      'primaryGrey': '#D9D9D9',
-      'black': '#000000'
+      'black': '#000000',
+      'primaryGrey': '#D9D9D9'
     },
   },
   plugins: [],
