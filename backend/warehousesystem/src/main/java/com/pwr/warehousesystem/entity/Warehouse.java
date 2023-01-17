@@ -13,7 +13,7 @@ public class Warehouse {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(unique = true, nullable = false)
-    private String warehouseId;
+    private String warehouseName;
     private String description;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
@@ -21,7 +21,7 @@ public class Warehouse {
 
     @PrePersist
     private void constraintCheck(){
-        if(this.warehouseId == null)
+        if(this.warehouseName == null)
             throw  new OperationFailedException();
     }
 

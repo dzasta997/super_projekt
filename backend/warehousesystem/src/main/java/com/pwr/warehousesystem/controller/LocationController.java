@@ -29,24 +29,24 @@ public class LocationController {
     @GetMapping
     public ResponseEntity<List<LocationDTO>> getAllLocations(){
         List<Location> locations = locationService.findAll();
-        return new ResponseEntity<>(locationMapper.toDto(locations), HttpStatus.OK);
+        return new ResponseEntity<>(locationMapper.toDto(locations, false), HttpStatus.OK);
     }
 
     @GetMapping("/{locationId}")
-    public ResponseEntity<LocationDTO> getLocation(@PathVariable String locationId){
+    public ResponseEntity<LocationDTO> getLocation(@PathVariable long locationId){
         Location location = locationService.findByLocationId(locationId);
-        return new ResponseEntity<>(locationMapper.toDto(location), HttpStatus.OK);
+        return new ResponseEntity<>(locationMapper.toDto(location, false), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<LocationDTO> postLocation(@RequestBody LocationDTO locationDTO){
         Location savedLocation = locationService.saveLocation(locationMapper.toEntity(locationDTO));
-        return new ResponseEntity<>(locationMapper.toDto(savedLocation), HttpStatus.OK);
+        return new ResponseEntity<>(locationMapper.toDto(savedLocation, false), HttpStatus.OK);
     }
 
     @Transactional
     @DeleteMapping("/{locationId}")
-    public ResponseEntity deleteLocation(@PathVariable String locationId){
+    public ResponseEntity<Void> deleteLocation(@PathVariable long locationId){
         locationService.deleteLocation(locationId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

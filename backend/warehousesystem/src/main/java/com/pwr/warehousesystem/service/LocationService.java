@@ -23,25 +23,26 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public Location findByLocationId(String locationId) {
-        return locationRepository.findByLocationId(locationId).orElseThrow(ElementNotFoundException::new);
+    public Location findByLocationId(long id) {
+        return locationRepository.findById(id).orElseThrow(ElementNotFoundException::new);
     }
 
     public Location saveLocation(Location location) {
         if ((location.getId() != null && locationRepository.existsById(location.getId()))
-                || locationRepository.existsByLocationId(location.getLocationId())
         ) {
             throw new OperationFailedException();
         }
         return locationRepository.save(location);
     }
 
-    public void deleteLocation(String locationId) {
-        if(!locationRepository.existsByLocationId(locationId)){
+    public void deleteLocation(long id) {
+        if(!locationRepository.existsById(id)){
             throw new OperationFailedException();
         }
-         locationRepository.deleteByLocationId(locationId);
+         locationRepository.deleteById(id);
     }
+
+
 
 
 }

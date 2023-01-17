@@ -27,9 +27,7 @@ public class ClientService {
     }
 
     public Client saveClient(Client client) {
-        if ((client.getId() != null && clientRepository.existsById(client.getId()))
-                || clientRepository.existsByClientId(client.getClientId())
-        ) {
+        if ((client.getId() != null && clientRepository.existsById(client.getId()))) {
             throw new OperationFailedException();
         }
         return clientRepository.save(client);

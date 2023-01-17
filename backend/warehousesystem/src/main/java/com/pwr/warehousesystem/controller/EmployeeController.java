@@ -33,7 +33,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable String employeeId){
+    public ResponseEntity<EmployeeDTO> getEmployee(@PathVariable long employeeId){
         Employee employee = employeeService.findByEmployeeId(employeeId);
         return new ResponseEntity<>(employeeMapper.toDto(employee), HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class EmployeeController {
 
     @Transactional
     @DeleteMapping("/{employeeId}")
-    public ResponseEntity deleteEmployee(@PathVariable String employeeId){
+    public ResponseEntity<Void> deleteEmployee(@PathVariable long employeeId){
         employeeService.deleteEmployee(employeeId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

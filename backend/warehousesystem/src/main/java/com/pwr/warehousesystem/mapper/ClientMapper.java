@@ -8,11 +8,9 @@ import org.springframework.stereotype.Component;
 public class ClientMapper extends ApplicationMapper<Client, ClientDTO> {
 
     private final AddressMapper addressMapper;
-    private final WarehouseMapper warehouseMapper;
 
-    public ClientMapper(AddressMapper addressMapper, WarehouseMapper warehouseMapper) {
+    public ClientMapper(AddressMapper addressMapper) {
         this.addressMapper = addressMapper;
-        this.warehouseMapper = warehouseMapper;
     }
 
     @Override
@@ -22,11 +20,10 @@ public class ClientMapper extends ApplicationMapper<Client, ClientDTO> {
         }
         Client client = new Client();
         client.setId(clientDTO.getId());
-        client.setClientId(clientDTO.getClientId());
         client.setName(clientDTO.getName());
         client.setDescription(clientDTO.getDescription());
         client.setAddress(addressMapper.toEntity(clientDTO.getAddress()));
-        client.setWarehouses(warehouseMapper.toEntity(clientDTO.getWarehouses()));
+
         return client;
     }
 
@@ -37,11 +34,10 @@ public class ClientMapper extends ApplicationMapper<Client, ClientDTO> {
         }
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setId(client.getId());
-        clientDTO.setClientId(client.getClientId());
         clientDTO.setName(client.getName());
         clientDTO.setDescription(client.getDescription());
         clientDTO.setAddress(addressMapper.toDto(client.getAddress()));
-        clientDTO.setWarehouses(warehouseMapper.toDto(client.getWarehouses()));
+
         return  clientDTO;
     }
 }

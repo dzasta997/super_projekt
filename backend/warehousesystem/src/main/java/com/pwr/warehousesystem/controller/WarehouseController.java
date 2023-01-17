@@ -28,7 +28,7 @@ public class WarehouseController {
 
 
     @GetMapping("/{warehouseId}")
-    public ResponseEntity<WarehouseDTO> getWarehouse(@PathVariable String warehouseId) {
+    public ResponseEntity<WarehouseDTO> getWarehouse(@PathVariable long warehouseId) {
         Warehouse warehouse = warehouseService.findWarehouse(warehouseId);
         return new ResponseEntity<>(warehouseMapper.toDto(warehouse), HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class WarehouseController {
 
     @Transactional
     @DeleteMapping("/{warehouseId}")
-    public ResponseEntity deleteWarehouse(@PathVariable String warehouseId){
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable long warehouseId){
         warehouseService.deleteWarehouse(warehouseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
