@@ -15,7 +15,7 @@ export default function TextBox({
   products,
 }) {
   return (
-    <div className="rounded-[24px] bg-primaryGrey">
+    <div className="primary-bg">
       <div className="w-100 py-6 px-6 flex">
         <div className="delivery-text-field-column">
           <TextBoxElement label="Assigned to" data={assignedTo} />
