@@ -13,24 +13,28 @@
 function buttonStyle(color) {
     switch(color) {
         case "blue": 
-            return "bg-buttonPrimary active:bg-primaryBlue py-3 px-6 rounded-full text-white font-normal text-base transition duration-150 ease-in-out";
+            return "bg-buttonPrimary active:bg-primaryBlue py-2 px-8 rounded-full text-white font-normal text-base transition duration-150 ease-in-out";
         case "gray": 
-            return "bg-primaryGrey active:bg-darkGray py-3 px-6 rounded-full font-normal text-base transition duration-150 ease-in-out";
+            return "bg-primaryGrey active:bg-darkGray py-2 px-8 rounded-full font-normal text-base transition duration-150 ease-in-out";
         case "white": 
-            return "bg-white active:bg-primaryGrey border border-darkGray py-3 px-6 rounded-full font-normal text-base transition duration-150 ease-in-out";
+            return "bg-white active:bg-primaryGrey border border-darkGray py-2 px-8 rounded-full font-normal text-base transition duration-150 ease-in-out";
         case "transparent": 
-            return "bg-transparent active:bg-primaryGrey border border-white py-3 px-6 rounded-full text-white text-base font-normal transition duration-150 ease-in-out";
+            return "bg-transparent active:bg-primaryGrey border border-white py-2 px-8 rounded-full text-white text-base font-normal transition duration-150 ease-in-out";
     };
 }
 
 const Button = ({
+    id,
     label,
     color="blue",
     type="button",
+    value,
     onClick
 }) => {
     return (
         <button
+        id={id}
+        value={value}
         type={type}
         onClick={onClick}
         className={buttonStyle(color)}>

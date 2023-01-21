@@ -28,6 +28,5 @@ const ProtectedRoutes = ({user}) => {
       default:
         return <Navigate to="/login" replace/>;
     }
-    // return (isUser ? <UserLayout /> : <Navigate to="/login" replace/>)
 }
 export default ProtectedRoutes;

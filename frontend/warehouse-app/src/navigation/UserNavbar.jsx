@@ -70,8 +70,8 @@ const navList = (
 
 const UserNavbar = () => {
     return (
-        <Navbar className="">
-            <div className=" px-5 py-5 w-[200px] h-screen z-10 bg-primaryBlue text-white fixed">
+        <Navbar className="border-0 py-0 px-0">
+            <div className=" px-5 py-5 w-[200px] h-screen z-9 bg-primaryBlue text-white fixed">
                 <Typography
                     as="p"
                     variant="small"
