@@ -6,51 +6,101 @@ import AddEditDialogItem from './WarehouseDialogItem';
 import EditableProductList from './EditableProductList';
 
 export default function AddEditDialog({
+    buttonLabel,
+    buttonColor,
     title, 
     onConfirm
 }) {
 
-    const [employeeId, setEmployeeId] = useState(NaN);
-    const onEmployeeIdChange = id => setEmployeeId(id.target.value)
+    const [data, setData] = useState(
+        {
+            employeeId: NaN,
+            date: NaN,
+            status: "not sent",
+            address: {
+                street: "",
+                number: 0,
+                zipCode: "",
+                city: ""
+            },
+            name: "",
+            phone: "",
+            items: []
+        }
+    );
+    
+    function onEmployeeIdChange(id) {
+        let newData = {...data};
+        newData.employeeId = id.target.value;
+        setData(newData);
+    };
 
-    const [date, setDate] = useState(NaN);
-    const onDateChange = date => setDate(date.target.value)
+    function onDateChange(date) {
+        let newData = {...data};
+        newData.date = date.target.value;
+        setData(newData);
+    };
 
-    const [chosenButtonId, setChosenButtonId] = useState("not sent");
-    const onButtonChosen = id => setChosenButtonId(id.target.value)
+    function onStatusChange(status) {
+        let newData = {...data};
+        newData.status = status.target.value;
+        setData(newData);
+    };
 
-    const [address, setAddress] = useState("");
-    const onAddressChange = address => setAddress(address.target.value)
+    function onStreetChange(street) {
+        let newData = {...data};
+        newData.address.street = street.target.value;
+        setData(newData);
+    };
 
-    const [postalCode, setPostalCode] = useState("");
-    const onPostalCodeChange = code => setPostalCode(code.target.value)
+    function onStreetNumberChange(number) {
+        let newData = {...data};
+        newData.address.number = number.target.value;
+        setData(newData);
+    };
 
-    const [city, setCity] = useState("");
-    const onCityChange = city => setCity(city.target.value)
-
-    const [name, setName] = useState("");
-    const onNameChange = name => setName(name.target.value)
-
-    const [phone, setPhone] = useState("");
-    const onPhoneChange = phone => setPhone(phone.target.value)
-
-    const [items, setItems] = useState([]);
+    function onZipCodeChange(zipCode) {
+        let newData = {...data};
+        newData.address.zipCode = zipCode.target.value;
+        setData(newData);
+    };
+    
+    function onCityChange(city) {
+        let newData = {...data};
+        newData.address.city = city.target.value;
+        setData(newData);
+    };
+    
+    function onNameChange(name) {
+        let newData = {...data};
+        newData.name = name.target.value;
+        setData(newData);
+    };
+    
+    function onPhoneChange(phone) {
+        let newData = {...data};
+        newData.phone = phone.target.value;
+        setData(newData);
+    };
 
     function onAddItem() {
         const updateItems = [
-            ...items,
+            ...data.items,
             {
-                id: items.length + 1,
+                id: data.items.length + 1,
                 productId: NaN,
                 productName: "",
                 quantity: 1
             }
         ];
-        setItems(updateItems);
+
+        let newData = {...data};
+        newData.items = updateItems;
+        setData(newData);
     }
 
     function onProductIdChange(id, e) {
-        const currentItem = items.filter(item => item.id === id)[0]
+        const currentItem = data.items.filter(item => item.id === id)[0]
         const newItem = {
             id: id,
             productId: e.target.value,
@@ -58,15 +108,17 @@ export default function AddEditDialog({
             quantity: currentItem.quantity
         }
 
-        const updatedObject = items.map((item) =>
+        const updatedObject = data.items.map((item) =>
           item.id === id ? newItem : item
         );
 
-        setItems(updatedObject);
+        let newData = {...data};
+        newData.items = updatedObject;
+        setData(newData);
     }
 
     function onQuantityChange(id, e) {
-        const currentItem = items.filter(item => item.id === id)[0]
+        const currentItem = data.items.filter(item => item.id === id)[0]
         const newItem = {
             id: currentItem.id,
             productId: currentItem.productId,
@@ -74,15 +126,17 @@ export default function AddEditDialog({
             quantity: parseInt(e.target.value, 10)
         }
 
-        const updatedObject = items.map((item) =>
+        const updatedObject = data.items.map((item) =>
           item.id === id ? newItem : item
         );
 
-        setItems(updatedObject);
+        let newData = {...data};
+        newData.items = updatedObject;
+        setData(newData);
     }
 
     function increaseQuantity(id) {
-        const currentItem = items.filter(item => item.id === id)[0]
+        const currentItem = data.items.filter(item => item.id === id)[0]
         const newItem = {
             id: id,
             productId: currentItem.productId,
@@ -90,15 +144,17 @@ export default function AddEditDialog({
             quantity: currentItem.quantity+1
         }
 
-        const updatedObject = items.map((item) =>
+        const updatedObject = data.items.map((item) =>
           item.id === id ? newItem : item
         );
 
-        setItems(updatedObject);
+        let newData = {...data};
+        newData.items = updatedObject;
+        setData(newData);
     }
 
     function decreaseQuantity(id) {
-        const currentItem = items.filter(item => item.id === id)[0]
+        const currentItem = data.items.filter(item => item.id === id)[0]
         const newItem = {
             id: id,
             productId: currentItem.productId,
@@ -106,46 +162,49 @@ export default function AddEditDialog({
             quantity: currentItem.quantity-1
         }
 
-        const updatedObject = items.map((item) =>
+        const updatedObject = data.items.map((item) =>
           item.id === id ? newItem : item
         );
 
-        setItems(updatedObject);
+        let newData = {...data};
+        newData.items = updatedObject;
+        setData(newData);
     }
 
     return(
-        <WarehouseDialog title={title} onConfirm={onConfirm}>
+        <WarehouseDialog buttonLabel={buttonLabel} buttonColor={buttonColor} title={title} onConfirm={onConfirm}>
         <div className='flex flex-col space-y-6'>
             <AddEditDialogItem title="Assigned to">
-                <TextInputField label="Employee id" type="number" min="0" value={employeeId} onValueChange={onEmployeeIdChange}></TextInputField>
+                <TextInputField label="Employee id" type="number" min="0" value={data.employeeId} onValueChange={onEmployeeIdChange}></TextInputField>
             </AddEditDialogItem>
 
             <AddEditDialogItem title="Planned date of delivery">
-                <TextInputField label="Date" type="date" value={date} onValueChange={onDateChange}></TextInputField>
+                <TextInputField label="Date" type="date" value={data.date} onValueChange={onDateChange}></TextInputField>
             </AddEditDialogItem>
 
           <div>
             <p className='font-thin text-sm'>Status</p>
-            <StatusChoice chosenButtonId={chosenButtonId} onButtonChosen={onButtonChosen}/>
+            <StatusChoice chosenButtonId={data.status} onButtonChosen={onStatusChange}/>
           </div>
 
             <AddEditDialogItem title="Address">
                 <div className='grid auto-cols-min space-y-4' >
-                    <TextInputField label="Address" value={address} onValueChange={onAddressChange}></TextInputField>
-                    <TextInputField label="Postal code" value={postalCode} onValueChange={onPostalCodeChange}></TextInputField>
-                    <TextInputField label="City and country" value={city} onValueChange={onCityChange}></TextInputField>
+                    <TextInputField label="Street" value={data.street} onValueChange={onStreetChange}></TextInputField>
+                    <TextInputField label="Number" value={data.number} onValueChange={onStreetNumberChange}></TextInputField>
+                    <TextInputField label="Postal code" value={data.zipCode} onValueChange={onZipCodeChange}></TextInputField>
+                    <TextInputField label="City and country" value={data.city} onValueChange={onCityChange}></TextInputField>
                 </div>
             </AddEditDialogItem>
 
             <AddEditDialogItem title="Contact">
                 <div className='grid auto-cols-min space-y-4' >
-                <TextInputField label="Name" value={name} onValueChange={onNameChange}></TextInputField>
-                <TextInputField label="Phone" value={phone} onValueChange={onPhoneChange}></TextInputField>
+                <TextInputField label="Name" value={data.name} onValueChange={onNameChange}></TextInputField>
+                <TextInputField label="Phone" value={data.phone} onValueChange={onPhoneChange}></TextInputField>
                 </div>
             </AddEditDialogItem>
 
           <EditableProductList 
-            items={items} 
+            items={data.items} 
             onAddItem={onAddItem}
             increaseQuantity={increaseQuantity} 
             decreaseQuantity={decreaseQuantity}
