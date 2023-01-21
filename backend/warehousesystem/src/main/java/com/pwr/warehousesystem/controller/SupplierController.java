@@ -33,7 +33,7 @@ public class SupplierController {
     }
 
     @GetMapping("/{supplierId}")
-    public ResponseEntity<SupplierDTO> getBySupplierId(@PathVariable String supplierId) {
+    public ResponseEntity<SupplierDTO> getBySupplierId(@PathVariable long supplierId) {
         Supplier supplier = supplierService.getBySupplierId(supplierId);
         return new ResponseEntity<>(supplierMapper.toDto(supplier), HttpStatus.OK);
     }
@@ -47,9 +47,15 @@ public class SupplierController {
 
     @Transactional
     @DeleteMapping("/{supplierId}")
-    public ResponseEntity deleteSupplier(@PathVariable String supplierId) {
+    public ResponseEntity<Void> deleteSupplier(@PathVariable long supplierId) {
         supplierService.deleteSupplier(supplierId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<SupplierDTO>> getAllSuppliersByWarehouseId(@PathVariable long id){
+        List<Supplier> suppliers = supplierService.getAllByWarehouseId(id);
+        return new ResponseEntity<>(supplierMapper.toDto(suppliers), HttpStatus.OK);
     }
 
 }

@@ -4,6 +4,7 @@ import com.pwr.warehousesystem.entity.Supplier;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.SupplierRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +24,32 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Supplier getBySupplierId(String supplierId){
-        return supplierRepository.findBySupplierId(supplierId).orElseThrow(ElementNotFoundException::new);
+    public Supplier getBySupplierId(long supplierId){
+        return supplierRepository.findById(supplierId).orElseThrow(ElementNotFoundException::new);
+    }
+
+    public List<Supplier> getAllByWarehouseId(long warehouseId) {
+        return supplierRepository.findAllByWarehouseId(warehouseId);
     }
 
     public Supplier saveSupplier(Supplier supplier){
         if ((supplier.getId() != null && supplierRepository.existsById(supplier.getId()))
-                || supplierRepository.existsBySupplierId(supplier.getSupplierId())
         ) {
             throw new OperationFailedException();
         }
         return supplierRepository.save(supplier);
     }
 
-    public void deleteSupplier(String supplierId){
-        if(!supplierRepository.existsBySupplierId(supplierId)){
+    public void deleteSupplier(long supplierId){
+        if(!supplierRepository.existsById(supplierId)){
             throw new OperationFailedException();
         }
-         supplierRepository.deleteBySupplierId(supplierId);
+         supplierRepository.deleteById(supplierId);
+    }
+
+    public Supplier updateSupplier(Supplier supplier) {
+        Supplier oldSupplier = getBySupplierId(supplier.getId());
+        BeanUtils.copyProperties(supplier, oldSupplier);
+        return supplierRepository.save(oldSupplier);
     }
 }

@@ -20,8 +20,8 @@ public class WarehouseMapper extends ApplicationMapper<Warehouse, WarehouseDTO> 
             return null;
         }
         Warehouse warehouse = new Warehouse();
-        warehouse.setId(warehouse.getId());
-        warehouse.setWarehouseId(warehouseDTO.getWarehouseId());
+        warehouse.setId(warehouseDTO.getId());
+        warehouse.setWarehouseName(warehouseDTO.getWarehouseName());
         warehouse.setDescription(warehouseDTO.getDescription());
         warehouse.setAddress(addressMapper.toEntity(warehouseDTO.getAddress()));
         return warehouse;
@@ -34,7 +34,7 @@ public class WarehouseMapper extends ApplicationMapper<Warehouse, WarehouseDTO> 
         }
         WarehouseDTO warehouseDTO = new WarehouseDTO();
         warehouseDTO.setId(warehouse.getId());
-        warehouseDTO.setWarehouseId(warehouse.getWarehouseId());
+        warehouseDTO.setWarehouseName(warehouse.getWarehouseName());
         warehouseDTO.setDescription(warehouse.getDescription());
         warehouseDTO.setAddress(addressMapper.toDto(warehouse.getAddress()));
         return warehouseDTO;

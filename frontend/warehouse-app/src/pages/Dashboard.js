@@ -10,7 +10,7 @@ const handleConfirmed = () => setConfirmed(!confirmed);
   return (
     <PageContainer title="Dashboard" location="Świdnicka 25">
       <div className='z-1 flex justify-center items-center bg-primaryBlue p-2'>
-      <AddEditDialog title="Add shipping" xwonConfirm={handleConfirmed} />
+      <AddEditDialog title="Add shipping" onConfirm={handleConfirmed} />
       </div>
     </PageContainer>
   );

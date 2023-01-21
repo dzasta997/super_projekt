@@ -1,45 +1,92 @@
 package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Delivery;
+import com.pwr.warehousesystem.entity.ItemDelivery;
+import com.pwr.warehousesystem.entity.Supplier;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.DeliveryRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
+    private final ItemService itemService;
+    private final SupplierService supplierService;
 
     @Autowired
-    public DeliveryService(DeliveryRepository deliveryRepository) {
+    public DeliveryService(DeliveryRepository deliveryRepository, ItemService itemService, SupplierService supplierService) {
         this.deliveryRepository = deliveryRepository;
+        this.itemService = itemService;
+        this.supplierService = supplierService;
     }
 
     public List<Delivery> getAll(){
         return deliveryRepository.findAll();
     }
 
-    public Delivery findByDeliveryId(String deliveryId){
-        return deliveryRepository.findByDeliveryId(deliveryId).orElseThrow(ElementNotFoundException::new);
+    public List<Delivery> getAllByWarehouseId(long warehouseId){
+        return deliveryRepository.getAllByWarehouseId(warehouseId);
+    }
+
+    public Delivery findByDeliveryId(long deliveryId){
+        return deliveryRepository.findById(deliveryId).orElseThrow(ElementNotFoundException::new);
     }
 
     public Delivery saveDelivery(Delivery delivery) {
         if ((delivery.getId() != null && deliveryRepository.existsById(delivery.getId()))
-                || deliveryRepository.existsByDeliveryId(delivery.getDeliveryId())
         ) {
             throw new OperationFailedException();
         }
-        return deliveryRepository.save(delivery);
+
+        if (delivery.getSupplier().getId() != null) {
+            supplierService.updateSupplier(delivery.getSupplier());
+        } else {
+            Supplier savedSupplier = supplierService.saveSupplier(delivery.getSupplier());
+            delivery.setSupplier(savedSupplier);
+        }
+
+        List<ItemDelivery> itemDeliveries = delivery.getItems();
+        delivery.setItems(null);
+        Delivery savedDelivery = deliveryRepository.save(delivery);
+
+        itemDeliveries = itemDeliveries.stream().map(it -> {
+            it.setDelivery(savedDelivery);
+            return itemService.saveItemDelivery(it);
+        }).collect(Collectors.toList());
+
+        savedDelivery.setItems(itemDeliveries);
+
+        return savedDelivery;
     }
 
-    public void deleteDelivery(String deliveryId){
-        if(!deliveryRepository.existsByDeliveryId(deliveryId)){
+    public Delivery updateDelivery(Delivery delivery) {
+        if (delivery.getId() == null) {
             throw new OperationFailedException();
         }
-        deliveryRepository.deleteByDeliveryId(deliveryId);
+
+        if (delivery.getSupplier().getId() != null) {
+            supplierService.updateSupplier(delivery.getSupplier());
+        } else {
+            Supplier savedSupplier = supplierService.saveSupplier(delivery.getSupplier());
+            delivery.setSupplier(savedSupplier);
+        }
+
+        Delivery toUpdate = findByDeliveryId(delivery.getId());
+        BeanUtils.copyProperties(delivery, toUpdate);
+        return deliveryRepository.save(toUpdate);
+    }
+
+    public void deleteDelivery(long deliveryId){
+        if(!deliveryRepository.existsById(deliveryId)){
+            throw new OperationFailedException();
+        }
+        deliveryRepository.deleteById(deliveryId);
     }
 }

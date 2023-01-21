@@ -4,14 +4,10 @@ import com.pwr.warehousesystem.entity.Delivery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, Long> {
-    Optional<Delivery> findByDeliveryId(String deliveryId);
-
-    boolean existsByDeliveryId(String deliveryId);
-
-    void deleteByDeliveryId(String deliveryId);
+    List<Delivery> getAllByWarehouseId(long id);
 }
 

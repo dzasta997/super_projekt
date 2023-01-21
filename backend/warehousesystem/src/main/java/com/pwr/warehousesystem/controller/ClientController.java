@@ -27,7 +27,7 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientDTO>> getAllClient(){
+    public ResponseEntity<List<ClientDTO>> getAllClients(){
         List<Client> clients = clientService.findAllClients();
         return new ResponseEntity<>(clientMapper.toDto(clients), HttpStatus.OK);
     }
@@ -47,8 +47,14 @@ public class ClientController {
 
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteClient(@PathVariable long id){
+    public ResponseEntity<Void> deleteClient(@PathVariable long id){
         clientService.deleteClient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<ClientDTO>> getAllClientsByWarehouseId(@PathVariable long id){
+        List<Client> clients = clientService.findAllByWarehouseId(id);
+        return new ResponseEntity<>(clientMapper.toDto(clients), HttpStatus.OK);
     }
 }

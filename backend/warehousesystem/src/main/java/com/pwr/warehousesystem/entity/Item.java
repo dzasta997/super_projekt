@@ -4,15 +4,11 @@ import com.pwr.warehousesystem.enumeration.ItemSize;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 public class Item {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-    private int code;
+    private Long code;
     private String name;
     @Enumerated(EnumType.STRING)
     private ItemSize size;

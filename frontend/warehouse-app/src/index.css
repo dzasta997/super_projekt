@@ -23,4 +23,8 @@
     .text-box-element {
         @apply -mb-1
     }
+
+    .primary-bg {
+        @apply flex rounded-[24px] bg-primaryGrey
+    }
 }
