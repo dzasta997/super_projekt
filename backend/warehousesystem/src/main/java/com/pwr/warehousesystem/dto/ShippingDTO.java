@@ -6,12 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class OrderDTO {
+public class ShippingDTO {
 
     private Long id;
-    private String orderId;
     private Date orderDate;
     private ClientDTO client;
-    private List<ItemDTO> items;
-
+    private List<ItemShippingDTO> items;
+    private WarehouseDTO warehouse;
+    private EmployeeDTO employee;
+    private String status;
 }

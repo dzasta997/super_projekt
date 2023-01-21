@@ -5,7 +5,7 @@ public enum ItemSize {
     MEDIUM(2),
     BIG(3);
 
-    final int size;
+    public final int size;
     ItemSize(int size) {
         this.size = size;
     }

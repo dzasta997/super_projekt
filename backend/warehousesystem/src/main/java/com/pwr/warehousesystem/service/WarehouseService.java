@@ -19,24 +19,23 @@ public class WarehouseService {
         this.warehouseRepository = warehouseRepository;
     }
 
-    public Warehouse findWarehouse(String warehouseId) {
-        return warehouseRepository.findByWarehouseId(warehouseId).orElseThrow(ElementNotFoundException::new);
+    public Warehouse findWarehouse(long warehouseId) {
+        return warehouseRepository.findById(warehouseId).orElseThrow(ElementNotFoundException::new);
     }
 
     public List<Warehouse> findAll() {
         return warehouseRepository.findAll();
     }
 
-    public void deleteWarehouse(String warehouseId) {
-        if(!warehouseRepository.existsByWarehouseId(warehouseId)){
+    public void deleteWarehouse(long warehouseId) {
+        if(!warehouseRepository.existsById(warehouseId)){
             throw new OperationFailedException();
         }
-         warehouseRepository.deleteByWarehouseId(warehouseId);
+         warehouseRepository.deleteById(warehouseId);
     }
 
     public Warehouse saveWarehouse(Warehouse warehouse) {
         if ((warehouse.getId() != null && warehouseRepository.existsById(warehouse.getId()))
-                || warehouseRepository.existsByWarehouseId(warehouse.getWarehouseId())
         ) {
             throw new OperationFailedException();
         }

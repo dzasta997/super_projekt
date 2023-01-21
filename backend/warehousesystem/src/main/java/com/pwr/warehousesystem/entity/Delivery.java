@@ -12,16 +12,18 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    private String deliveryId;
     private Date deliveryDate;
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
-    @ManyToMany
-    @JoinTable(
-            name = "delivery_item",
-            joinColumns = {@JoinColumn(name = "delivery_id")},
-            inverseJoinColumns = {@JoinColumn(name="item_id")}
-    )
-    private List<Item> items;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
+    List<ItemDelivery> items;
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
+    private Warehouse warehouse;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+    private String status;
+
 }
