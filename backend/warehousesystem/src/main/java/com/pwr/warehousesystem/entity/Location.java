@@ -20,7 +20,7 @@ public class Location {
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "location")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "location", cascade = CascadeType.ALL)
     List<ItemLocation> items;
 
 }

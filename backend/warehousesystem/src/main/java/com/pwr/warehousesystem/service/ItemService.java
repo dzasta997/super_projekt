@@ -9,6 +9,7 @@ import com.pwr.warehousesystem.repository.ItemLocationRepository;
 import com.pwr.warehousesystem.repository.ItemRepository;
 import com.pwr.warehousesystem.repository.ItemShippingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ItemService {
     private final LocationService locationService;
 
     @Autowired
-    public ItemService(ItemRepository itemRepository, ItemLocationRepository itemLocationRepository, ItemDeliveryRepository itemDeliveryRepository, ItemShippingRepository itemShippingRepository, LocationService locationService) {
+    public ItemService(ItemRepository itemRepository, ItemLocationRepository itemLocationRepository, ItemDeliveryRepository itemDeliveryRepository, ItemShippingRepository itemShippingRepository, @Lazy LocationService locationService) {
         this.itemRepository = itemRepository;
         this.itemLocationRepository = itemLocationRepository;
         this.itemDeliveryRepository = itemDeliveryRepository;
@@ -68,10 +69,14 @@ public class ItemService {
     private void checkCapacity(ItemLocation itemLocation) {
         Item item = this.getById(itemLocation.getItem().getCode());
         Location location = locationService.findByLocationId(itemLocation.getLocation().getId());
+        int takenCapacity = 0;
 
-        int takenCapacity = location.getItems().stream()
-                .mapToInt(it -> it.getItem().getSize().size * it.getQuantity())
-                .sum();
+        if (location.getItems() != null) {
+            takenCapacity = location.getItems().stream()
+                    .mapToInt(it -> it.getItem().getSize().size * it.getQuantity())
+                    .sum();
+        }
+
         takenCapacity = takenCapacity + itemLocation.getQuantity() * item.getSize().size;
 
         if (takenCapacity > location.getCapacity()) {
@@ -86,6 +91,14 @@ public class ItemService {
         return itemLocationRepository.findAllByItemCode(code);
     }
 
+    public List<ItemLocation> getItemLocationsByWarehouseId(long warehouseId){
+        return itemLocationRepository.findAllByWarehouseId(warehouseId);
+    }
+
+    public void deleteItemLocationsByLocationId(long locationId) {
+        itemLocationRepository.deleteAllByLocationId(locationId);
+    }
+
     public ItemDelivery saveItemDelivery(ItemDelivery itemDelivery) {
         if ((itemDelivery.getId() != null && itemLocationRepository.existsById(itemDelivery.getId()))
         ) {
@@ -95,6 +108,10 @@ public class ItemService {
         return itemDeliveryRepository.save(itemDelivery);
     }
 
+    public void deleteItemDeliveriesByDeliveryId(long deliveryId) {
+        itemDeliveryRepository.deleteAllByDeliveryId(deliveryId);
+    }
+
     public ItemShipping saveItemShipping(ItemShipping itemShipping) {
         if ((itemShipping.getId() != null && itemLocationRepository.existsById(itemShipping.getId()))
         ) {
@@ -102,6 +119,10 @@ public class ItemService {
         }
 
         return itemShippingRepository.save(itemShipping);
+    }
+
+    public void deleteItemShippingsByShippingId(long shippingId) {
+        itemShippingRepository.deleteAllByShippingId(shippingId);
     }
 
 }
