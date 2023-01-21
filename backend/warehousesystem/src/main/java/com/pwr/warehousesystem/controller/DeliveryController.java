@@ -32,6 +32,13 @@ public class DeliveryController {
         return new ResponseEntity<>(deliveryMapper.toDto(deliveries, false), HttpStatus.OK);
     }
 
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<DeliveryDTO>> getAllDeliveriesByWarehouseId(@PathVariable long id){
+        List<Delivery> deliveries = deliveryService.getAllByWarehouseId(id);
+        return new ResponseEntity<>(deliveryMapper.toDto(deliveries, false), HttpStatus.OK);
+    }
+
+
     @GetMapping("/{deliveryId}")
     public ResponseEntity<DeliveryDTO> getByDeliveryId(@PathVariable long deliveryId){
         Delivery delivery = deliveryService.findByDeliveryId(deliveryId);
@@ -42,6 +49,13 @@ public class DeliveryController {
     @PostMapping
     public ResponseEntity<DeliveryDTO> saveDelivery(@RequestBody DeliveryDTO deliveryDTO){
         Delivery savedDelivery = deliveryService.saveDelivery(deliveryMapper.toEntity(deliveryDTO));
+        return new ResponseEntity<>(deliveryMapper.toDto(savedDelivery, false), HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity<DeliveryDTO> updateDelivery(@RequestBody DeliveryDTO deliveryDTO){
+        Delivery savedDelivery = deliveryService.updateDelivery(deliveryMapper.toEntity(deliveryDTO));
         return new ResponseEntity<>(deliveryMapper.toDto(savedDelivery, false), HttpStatus.OK);
     }
 

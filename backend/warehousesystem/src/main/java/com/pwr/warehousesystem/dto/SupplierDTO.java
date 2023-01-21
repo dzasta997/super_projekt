@@ -10,6 +10,4 @@ public class SupplierDTO {
     private String name;
     private String description;
     private AddressDTO address;
-    private List<WarehouseDTO> warehouses;
-
 }

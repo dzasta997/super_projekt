@@ -2,9 +2,11 @@ package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Delivery;
 import com.pwr.warehousesystem.entity.ItemDelivery;
+import com.pwr.warehousesystem.entity.Supplier;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.DeliveryRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +18,21 @@ public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
     private final ItemService itemService;
+    private final SupplierService supplierService;
 
     @Autowired
-    public DeliveryService(DeliveryRepository deliveryRepository, ItemService itemService) {
+    public DeliveryService(DeliveryRepository deliveryRepository, ItemService itemService, SupplierService supplierService) {
         this.deliveryRepository = deliveryRepository;
         this.itemService = itemService;
+        this.supplierService = supplierService;
     }
 
     public List<Delivery> getAll(){
         return deliveryRepository.findAll();
+    }
+
+    public List<Delivery> getAllByWarehouseId(long warehouseId){
+        return deliveryRepository.getAllByWarehouseId(warehouseId);
     }
 
     public Delivery findByDeliveryId(long deliveryId){
@@ -35,6 +43,13 @@ public class DeliveryService {
         if ((delivery.getId() != null && deliveryRepository.existsById(delivery.getId()))
         ) {
             throw new OperationFailedException();
+        }
+
+        if (delivery.getSupplier().getId() != null) {
+            supplierService.updateSupplier(delivery.getSupplier());
+        } else {
+            Supplier savedSupplier = supplierService.saveSupplier(delivery.getSupplier());
+            delivery.setSupplier(savedSupplier);
         }
 
         List<ItemDelivery> itemDeliveries = delivery.getItems();
@@ -49,6 +64,23 @@ public class DeliveryService {
         savedDelivery.setItems(itemDeliveries);
 
         return savedDelivery;
+    }
+
+    public Delivery updateDelivery(Delivery delivery) {
+        if (delivery.getId() == null) {
+            throw new OperationFailedException();
+        }
+
+        if (delivery.getSupplier().getId() != null) {
+            supplierService.updateSupplier(delivery.getSupplier());
+        } else {
+            Supplier savedSupplier = supplierService.saveSupplier(delivery.getSupplier());
+            delivery.setSupplier(savedSupplier);
+        }
+
+        Delivery toUpdate = findByDeliveryId(delivery.getId());
+        BeanUtils.copyProperties(delivery, toUpdate);
+        return deliveryRepository.save(toUpdate);
     }
 
     public void deleteDelivery(long deliveryId){

@@ -4,6 +4,7 @@ import com.pwr.warehousesystem.entity.Supplier;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.SupplierRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class SupplierService {
         return supplierRepository.findById(supplierId).orElseThrow(ElementNotFoundException::new);
     }
 
+    public List<Supplier> getAllByWarehouseId(long warehouseId) {
+        return supplierRepository.findAllByWarehouseId(warehouseId);
+    }
+
     public Supplier saveSupplier(Supplier supplier){
         if ((supplier.getId() != null && supplierRepository.existsById(supplier.getId()))
         ) {
@@ -40,5 +45,11 @@ public class SupplierService {
             throw new OperationFailedException();
         }
          supplierRepository.deleteById(supplierId);
+    }
+
+    public Supplier updateSupplier(Supplier supplier) {
+        Supplier oldSupplier = getBySupplierId(supplier.getId());
+        BeanUtils.copyProperties(supplier, oldSupplier);
+        return supplierRepository.save(oldSupplier);
     }
 }

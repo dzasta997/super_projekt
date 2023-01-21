@@ -51,4 +51,10 @@ public class ClientController {
         clientService.deleteClient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<ClientDTO>> getAllClientsByWarehouseId(@PathVariable long id){
+        List<Client> clients = clientService.findAllByWarehouseId(id);
+        return new ResponseEntity<>(clientMapper.toDto(clients), HttpStatus.OK);
+    }
 }

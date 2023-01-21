@@ -73,13 +73,13 @@ public class ItemController {
     }
 
     @PostMapping("/delivery")
-    public ResponseEntity<ItemDeliveryDTO> saveItemLocation(@RequestBody @Validated ItemDeliveryDTO itemDeliveryDTO){
+    public ResponseEntity<ItemDeliveryDTO> saveItemDelivery(@RequestBody @Validated ItemDeliveryDTO itemDeliveryDTO){
         ItemDelivery itemDelivery = itemService.saveItemDelivery(itemDeliveryMapper.toEntity(itemDeliveryDTO));
         return new ResponseEntity<>(itemDeliveryMapper.toDto(itemDelivery, false), HttpStatus.OK);
     }
 
     @PostMapping("/shipping")
-    public ResponseEntity<ItemShippingDTO> saveItemLocation(@RequestBody @Validated ItemShippingDTO itemShippingDTO){
+    public ResponseEntity<ItemShippingDTO> saveItemShipping(@RequestBody @Validated ItemShippingDTO itemShippingDTO){
         ItemShipping itemShipping = itemService.saveItemShipping(itemShippingMapper.toEntity(itemShippingDTO));
         return new ResponseEntity<>(itemShippingMapper.toDto(itemShipping, false), HttpStatus.OK);
     }
