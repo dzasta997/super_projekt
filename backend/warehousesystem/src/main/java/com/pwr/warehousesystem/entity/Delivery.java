@@ -13,7 +13,7 @@ public class Delivery {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Date deliveryDate;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")

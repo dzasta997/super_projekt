@@ -13,7 +13,7 @@ public class Shipping {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Date orderDate;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipping")

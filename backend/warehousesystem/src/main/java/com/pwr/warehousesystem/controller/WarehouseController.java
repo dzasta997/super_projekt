@@ -39,6 +39,12 @@ public class WarehouseController {
         return new ResponseEntity<>(warehouseMapper.toDto(warehouses), HttpStatus.OK);
     }
 
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<WarehouseDTO>> getAllWarehousesByCity(@PathVariable String city) {
+        List<Warehouse> warehouses = warehouseService.findAllByCity(city);
+        return new ResponseEntity<>(warehouseMapper.toDto(warehouses), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<WarehouseDTO> postWarehouse(@RequestBody WarehouseDTO warehouse){
         Warehouse saved = warehouseService.saveWarehouse(warehouseMapper.toEntity(warehouse));

@@ -27,7 +27,6 @@ public class SupplierMapper extends ApplicationMapper<Supplier, SupplierDTO> {
         supplier.setName(supplierDTO.getName());
         supplier.setDescription(supplierDTO.getDescription());
         supplier.setAddress(addressMapper.toEntity(supplierDTO.getAddress()));
-        supplier.setWarehouses(warehouseMapper.toEntity(supplierDTO.getWarehouses()));
         return supplier;
     }
 
@@ -41,7 +40,6 @@ public class SupplierMapper extends ApplicationMapper<Supplier, SupplierDTO> {
         supplierDTO.setName(supplier.getName());
         supplierDTO.setDescription(supplier.getDescription());
         supplierDTO.setAddress(addressMapper.toDto(supplier.getAddress()));
-        supplierDTO.setWarehouses(warehouseMapper.toDto(supplier.getWarehouses()));
         return supplierDTO;
     }
 }

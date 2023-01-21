@@ -27,6 +27,10 @@ public class WarehouseService {
         return warehouseRepository.findAll();
     }
 
+    public List<Warehouse> findAllByCity(String city) {
+        return warehouseRepository.findAllByAddressCity(city);
+    }
+
     public void deleteWarehouse(long warehouseId) {
         if(!warehouseRepository.existsById(warehouseId)){
             throw new OperationFailedException();

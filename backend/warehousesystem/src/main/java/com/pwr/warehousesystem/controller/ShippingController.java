@@ -30,16 +30,29 @@ public class ShippingController {
         return new ResponseEntity<>(shippingMapper.toDto(shippings, false), HttpStatus.OK);
     }
 
-    @Transactional
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<ShippingDTO>> getAllShippingsByWarehouseId(@PathVariable long id) {
+        List<Shipping> shippings = shippingService.getAllByWarehouseId(id);
+        return new ResponseEntity<>(shippingMapper.toDto(shippings, false), HttpStatus.OK);
+    }
+
     @GetMapping("/{shippingId}")
     public ResponseEntity<ShippingDTO> getByShippingId(@PathVariable long shippingId) {
         Shipping shipping = shippingService.getByShippingId(shippingId);
         return new ResponseEntity<>(shippingMapper.toDto(shipping, false), HttpStatus.OK);
     }
 
+    @Transactional
     @PostMapping
     public ResponseEntity<ShippingDTO> saveShipping(@RequestBody ShippingDTO shippingDTO) {
         Shipping shipping = shippingService.saveShipping(shippingMapper.toEntity(shippingDTO));
+        return new ResponseEntity<>(shippingMapper.toDto(shipping, false), HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity<ShippingDTO> updateShipping(@RequestBody ShippingDTO shippingDTO) {
+        Shipping shipping = shippingService.updateShipping(shippingMapper.toEntity(shippingDTO));
         return new ResponseEntity<>(shippingMapper.toDto(shipping, false), HttpStatus.OK);
     }
 
