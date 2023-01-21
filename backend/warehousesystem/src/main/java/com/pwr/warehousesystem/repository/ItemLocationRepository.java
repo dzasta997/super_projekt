@@ -11,7 +11,13 @@ import java.util.List;
 public interface ItemLocationRepository extends JpaRepository<ItemLocation, Long> {
     List<ItemLocation> findAllByItemCode(long code);
 
-    @Query()
-    List<ItemLocation> findAllByWarehouseId(long code);
+    @Query("SELECT il FROM ItemLocation il " +
+            "JOIN Location l ON il.location.id = l.id " +
+            "JOIN Warehouse w ON l.warehouse.id = w.id " +
+            "WHERE w.id = ?1 " +
+            "ORDER BY il.item.code")
+    List<ItemLocation> findAllByWarehouseId(long id);
+
+    void deleteAllByLocationId(long id);
 
 }

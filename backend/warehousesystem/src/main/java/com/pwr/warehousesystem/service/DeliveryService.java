@@ -56,10 +56,7 @@ public class DeliveryService {
         delivery.setItems(null);
         Delivery savedDelivery = deliveryRepository.save(delivery);
 
-        itemDeliveries = itemDeliveries.stream().map(it -> {
-            it.setDelivery(savedDelivery);
-            return itemService.saveItemDelivery(it);
-        }).collect(Collectors.toList());
+        itemDeliveries = updateItems(itemDeliveries, savedDelivery);
 
         savedDelivery.setItems(itemDeliveries);
 
@@ -80,7 +77,21 @@ public class DeliveryService {
 
         Delivery toUpdate = findByDeliveryId(delivery.getId());
         BeanUtils.copyProperties(delivery, toUpdate);
-        return deliveryRepository.save(toUpdate);
+        toUpdate.setItems(null);
+        Delivery savedDelivery = deliveryRepository.save(toUpdate);
+
+        itemService.deleteItemDeliveriesByDeliveryId(savedDelivery.getId());
+        List<ItemDelivery> items = updateItems(delivery.getItems(), toUpdate);
+        savedDelivery.setItems(items);
+
+        return savedDelivery;
+    }
+
+    private List<ItemDelivery> updateItems(List<ItemDelivery> itemDeliveries, Delivery savedDelivery) {
+        return itemDeliveries.stream().map(it -> {
+            it.setDelivery(savedDelivery);
+            return itemService.saveItemDelivery(it);
+        }).collect(Collectors.toList());
     }
 
     public void deleteDelivery(long deliveryId){

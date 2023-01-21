@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemDeliveryRepository extends JpaRepository<ItemDelivery, Long> {
+
+    void deleteAllByDeliveryId(long id);
 }
