@@ -32,6 +32,13 @@ public class LocationController {
         return new ResponseEntity<>(locationMapper.toDto(locations, false), HttpStatus.OK);
     }
 
+    @GetMapping("/warehouse/{id}")
+    public ResponseEntity<List<LocationDTO>> getAllLocationsByWarehouseId(@PathVariable long id){
+        List<Location> locations = locationService.findByWarehouseId(id);
+        return new ResponseEntity<>(locationMapper.toDto(locations, false), HttpStatus.OK);
+    }
+
+
     @GetMapping("/{locationId}")
     public ResponseEntity<LocationDTO> getLocation(@PathVariable long locationId){
         Location location = locationService.findByLocationId(locationId);
@@ -41,6 +48,13 @@ public class LocationController {
     @PostMapping
     public ResponseEntity<LocationDTO> postLocation(@RequestBody LocationDTO locationDTO){
         Location savedLocation = locationService.saveLocation(locationMapper.toEntity(locationDTO));
+        return new ResponseEntity<>(locationMapper.toDto(savedLocation, false), HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity<LocationDTO> updateLocation(@RequestBody LocationDTO locationDTO){
+        Location savedLocation = locationService.updateLocation(locationMapper.toEntity(locationDTO));
         return new ResponseEntity<>(locationMapper.toDto(savedLocation, false), HttpStatus.OK);
     }
 

@@ -1,8 +1,6 @@
 package com.pwr.warehousesystem.service;
 
-import com.pwr.warehousesystem.entity.Client;
-import com.pwr.warehousesystem.entity.ItemShipping;
-import com.pwr.warehousesystem.entity.Shipping;
+import com.pwr.warehousesystem.entity.*;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.ShippingRepository;
@@ -56,13 +54,9 @@ public class ShippingService {
         shipping.setItems(null);
         Shipping savedShipping = shippingRepository.save(shipping);
 
-        itemShippings = itemShippings.stream().map(it -> {
-            it.setShipping(savedShipping);
-            return itemService.saveItemShipping(it);
-        }).collect(Collectors.toList());
+        itemShippings = updateItems(itemShippings, savedShipping);
 
         savedShipping.setItems(itemShippings);
-
 
         return savedShipping;
     }
@@ -88,6 +82,21 @@ public class ShippingService {
 
         Shipping toUpdate = getByShippingId(shipping.getId());
         BeanUtils.copyProperties(shipping, toUpdate);
+        toUpdate.setItems(null);
+        Shipping savedShipping = shippingRepository.save(toUpdate);
+
+        itemService.deleteItemShippingsByShippingId(savedShipping.getId());
+        List<ItemShipping> items = updateItems(shipping.getItems(), toUpdate);
+        savedShipping.setItems(items);
+
         return shippingRepository.save(toUpdate);
     }
+
+    private List<ItemShipping> updateItems(List<ItemShipping> items, Shipping savedShipping) {
+        return items.stream().map(it -> {
+            it.setShipping(savedShipping);
+            return itemService.saveItemShipping(it);
+        }).collect(Collectors.toList());
+    }
+
 }
