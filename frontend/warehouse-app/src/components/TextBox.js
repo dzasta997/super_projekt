@@ -8,6 +8,8 @@ function TextBoxElement({ label, data }) {
 }
 
 export default function TextBox({
+  title,
+  id,
   assignedTo,
   plannedDate,
   status,
@@ -28,7 +30,7 @@ export default function TextBox({
             <p className="text-[20px]">{address.recipientName}</p>
             <p className="text-[20px]">{address.phoneNumber}</p>
           </div>
-          <TextBoxElement label="Street" data={address.street} />
+          <TextBoxElement label="Street" data={`${address.street} ${address.number}`} />
           <TextBoxElement label="Postal code" data={address.postalCode} />
           <TextBoxElement label="City" data={address.city} />
         </div>

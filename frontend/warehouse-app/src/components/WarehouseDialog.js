@@ -3,6 +3,8 @@ import Dialog from '@mui/material/Dialog';
 import Button from './Button';
 
 export default function WarehouseDialog({
+    buttonLabel,
+    buttonColor="blue",
     title,
     onConfirm,
     children
@@ -19,7 +21,7 @@ export default function WarehouseDialog({
 
     return (
         <div>
-        <Button label="open dialog" color="blue" onClick={handleClickOpen}/>
+        <Button label={buttonLabel} color={buttonColor} onClick={handleClickOpen}/>
         <Dialog open={open} onClose={handleClose} maxWidth='md'>
             <div className="py-6 px-8 flex flex-col">
                 <h3 className='text-3xl pb-2'>{title}</h3>
