@@ -7,7 +7,7 @@ import EditInventory from './pages/EditInventory';
 import Login from './pages/Login';
 import ProtectedRoutes from './navigation/ProtectedRoutes';
 import { Navigate } from "react-router-dom";
-import FindItem from './pages/FindItems';
+import FindItem from './pages/FindItem';
 import Delivery from './pages/Delivery';
 import Shipping from './pages/Shipping';
 import AdminDashboard from './pages/AdminDashboard';

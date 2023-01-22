@@ -8,10 +8,9 @@ export default function QuantitySetter({
     decreaseQuantity,
     onQuantityChange
 }) {
-    // TODO resize input field
     return (
         <div className='flex flex-row space-x-4'>
-            <TextInputField type="number" min="0" value={quantity} onValueChange={ e => onQuantityChange(itemId, e)}></TextInputField>
+            <TextInputField type="number" min="0" value={quantity} width="w-[75px]" onValueChange={ e => onQuantityChange(itemId, e)}></TextInputField>
             <Button label="+" color="gray" onClick={() => increaseQuantity(itemId)} />
             <Button label="-" color="gray" onClick={() => decreaseQuantity(itemId)} />
         </div>
