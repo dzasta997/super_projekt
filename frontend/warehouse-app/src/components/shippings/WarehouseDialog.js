@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
-import Button from './Button';
+import Button from '../buttons/Button';
 
 export default function WarehouseDialog({
     buttonLabel,

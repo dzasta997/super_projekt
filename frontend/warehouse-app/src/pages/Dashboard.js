@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import PageContainer from '../components/PageContainer';
-import AddEditDialog from '../components/AddEditDialog';
+import PageContainer from '../components/containers/PageContainer';
+import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
 
 const Dashboard = () => {
 
@@ -10,7 +10,7 @@ const handleConfirmed = () => setConfirmed(!confirmed);
   return (
     <PageContainer title="Dashboard" location="Świdnicka 25">
       <div className='z-1 flex justify-center items-center bg-primaryBlue p-2'>
-      <AddEditDialog title="Add shipping" onConfirm={handleConfirmed} />
+      <AddEditShippingDialog title="Add shipping" onConfirm={handleConfirmed}/>
       </div>
     </PageContainer>
   );

@@ -1,11 +1,6 @@
 import React from 'react';
-import Button from '../components/Button';
-
-function buttonColor(currentButtonId, chosenButtonId) {
-    if (currentButtonId === chosenButtonId)
-        return "blue"
-    else return "white"
-};
+import Button from '../buttons/Button';
+import { buttonColor } from '../buttons/utils';
 
 export default function StatusChoice({
     chosenButtonId,

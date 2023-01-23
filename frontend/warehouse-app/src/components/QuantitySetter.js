@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "./buttons/Button";
 import TextInputField from "./TextInputField";
 
 export default function QuantitySetter({

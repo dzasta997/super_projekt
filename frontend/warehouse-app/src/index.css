@@ -16,8 +16,8 @@
 }
 
 @layer components {
-    .delivery-text-field-column {
-        @apply mr-8
+    .text-box-column {
+        @apply mr-8 w-56
     }
 
     .text-box-element {
@@ -26,5 +26,13 @@
 
     .primary-bg {
         @apply flex rounded-[24px] bg-primaryGrey
+    }
+
+    .dialog-container {
+        @apply flex flex-col space-y-6
+    }
+
+    .text-box-container {
+        @apply py-6 px-6 flex
     }
 }

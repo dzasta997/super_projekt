@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import AddEditDialog from '../components/AddEditDialog';
-import PageContainer from '../components/PageContainer';
-import RemoveDialog from '../components/RemoveDialog';
-import TextBox from "../components/TextBox";
+import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
+import PageContainer from '../components/containers/PageContainer';
+import RemoveDialog from '../components/shippings/RemoveDialog';
+import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
   
 export default function Shipping({user}) {
 
@@ -88,7 +88,7 @@ export default function Shipping({user}) {
           {shippings.map( shipping =>
             <div>
               <h1 className="text-2xl font-thin pb-2">{`Shipping no ${shipping.id}`}</h1>
-              <TextBox
+              <ShippingDeliveryTextBox
               assignedTo={shipping.assignedTo}
               plannedDate={shipping.plannedDate}
               status={shipping.status}
@@ -103,15 +103,15 @@ export default function Shipping({user}) {
     return (
       <PageContainer title="Shippings from" location="Świdnicka 24">
         <div className='flex flex-col gap-4'>
-          <AddEditDialog buttonLabel="Add new" title="Add shipping"/>
+          <AddEditShippingDialog buttonLabel="Add new" title="Add shipping"/>
           {shippings.map( shipping =>
             <div>
               <div className='flex flex-row gap-4 items-center pb-2'>
                 <h1 className="text-2xl font-thin">{`Shipping no ${shipping.id}`}</h1>
-                <AddEditDialog buttonLabel="Edit" buttonColor="white" title="Edit shipping"/>
+                <AddEditShippingDialog buttonLabel="Edit" buttonColor="white" title="Edit shipping"/>
                 <RemoveDialog buttonLabel="Remove" buttonColor="gray" title="Remove shipping"/>
               </div>
-              <TextBox
+              <ShippingDeliveryTextBox
               assignedTo={shipping.assignedTo}
               plannedDate={shipping.plannedDate}
               status={shipping.status}
