@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from './Button';
-import QuantitySetter from './QuantitySetter';
-import TextInputField from '../components/TextInputField';
+import Button from '../buttons/Button';
+import QuantitySetter from '../QuantitySetter';
+import TextInputField from '../TextInputField';
 
 function Product({
     product,
@@ -15,7 +15,7 @@ function Product({
     return (
       <div key={product.id} className="flex flex-col space-y-4">
         <div className="flex flex-row items-center space-x-4">
-            <h3 className="text-1xl font-normal">Product id:</h3>
+            <h3 className="text-1xl font-normal whitespace-nowrap">Product id:</h3>
             <TextInputField label="Product id" type="number" min="0" value={product.productId} onValueChange={ e => onProductIdChange(product.id, e)}/>
             <p className="text-lg font-thin">{product.id}</p>
         </div>
