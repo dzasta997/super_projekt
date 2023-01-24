@@ -6,13 +6,37 @@ networks:
     driver: bridge
 
 services:
+  db:
+    image: postgres:15.1-alpine
+    restart: always
+    networks:
+      - warehouse-network
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
   warehouse-system:
       build:
         context: ./backend/warehousesystem
         dockerfile: Dockerfile
       networks:
         - warehouse-network
+      depends_on:
+        - db
       ports:
         - "8080:8080"
       expose:
         - "8080"
+
+  warehouse-app:
+    build:
+      context: ./frontend/warehouse-app
+      dockerfile: Dockerfile
+    networks:
+        - warehouse-network
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
