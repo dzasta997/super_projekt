@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from './Button';
-import QuantitySetter from './QuantitySetter';
-import TextInputField from '../components/TextInputField';
+import Button from '../buttons/Button';
+import QuantitySetter from '../QuantitySetter';
+import TextInputField from '../TextInputField';
 
 function Product({
     product,

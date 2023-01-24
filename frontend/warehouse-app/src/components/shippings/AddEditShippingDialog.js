@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import WarehouseDialog from './WarehouseDialog';
-import TextInputField from '../components/TextInputField';
-import StatusChoice from '../components/StatusChoice';
-import AddEditDialogItem from './WarehouseDialogItem';
+import TextInputField from '../TextInputField';
+import StatusChoice from './StatusChoice';
+import AddEditDialogItem from '../AddEditDialogItem';
 import EditableProductList from './EditableProductList';
 
-export default function AddEditDialog({
+export default function AddEditShippingDialog({
     buttonLabel,
     buttonColor,
     title, 
@@ -173,7 +173,7 @@ export default function AddEditDialog({
 
     return(
         <WarehouseDialog buttonLabel={buttonLabel} buttonColor={buttonColor} title={title} onConfirm={onConfirm}>
-        <div className='flex flex-col space-y-6'>
+        <div className='dialog-container'>
             <AddEditDialogItem title="Assigned to">
                 <TextInputField label="Employee id" type="number" min="0" value={data.employeeId} onValueChange={onEmployeeIdChange}></TextInputField>
             </AddEditDialogItem>

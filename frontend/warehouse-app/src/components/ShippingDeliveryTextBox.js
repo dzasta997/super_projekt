@@ -1,13 +1,6 @@
-function TextBoxElement({ label, data }) {
-  return (
-    <div key={label} className="text-box-element">
-      <h1 className="text-[15px] -mb-2 font-extralight">{label}</h1>
-      <p className="text-[20px]">{data}</p>
-    </div>
-  );
-}
+import TextBoxElement from "./TextBoxElement";
 
-export default function TextBox({
+export default function ShippingDeliveryTextBox({
   title,
   id,
   assignedTo,
@@ -18,13 +11,13 @@ export default function TextBox({
 }) {
   return (
     <div className="primary-bg">
-      <div className="w-100 py-6 px-6 flex">
-        <div className="delivery-text-field-column">
+      <div className="text-box-container w-100">
+        <div className="text-box-column">
           <TextBoxElement label="Assigned to" data={assignedTo} />
           <TextBoxElement label="Planned date of delivery" data={plannedDate} />
           <TextBoxElement label="Status" data={status} />
         </div>
-        <div className="delivery-text-field-column">
+        <div className="text-box-column">
           <div className="text-box-element">
             <h1 className="text-[15px] -mb-2 font-extralight">Contact</h1>
             <p className="text-[20px]">{address.recipientName}</p>
@@ -34,7 +27,7 @@ export default function TextBox({
           <TextBoxElement label="Postal code" data={address.postalCode} />
           <TextBoxElement label="City" data={address.city} />
         </div>
-        <div className="delivery-text-field-column">
+        <div className="text-box-column">
           {products.map((product) => (
             <TextBoxElement
               key={product.id}
