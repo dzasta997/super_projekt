@@ -6,6 +6,7 @@ import com.pwr.warehousesystem.mapper.ShippingMapper;
 import com.pwr.warehousesystem.service.ShippingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,7 @@ public class ShippingController {
 
     @Transactional
     @PostMapping
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<ShippingDTO> saveShipping(@RequestBody ShippingDTO shippingDTO) {
         Shipping shipping = shippingService.saveShipping(shippingMapper.toEntity(shippingDTO));
         return new ResponseEntity<>(shippingMapper.toDto(shipping, false), HttpStatus.OK);
@@ -51,6 +53,7 @@ public class ShippingController {
 
     @Transactional
     @PutMapping
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<ShippingDTO> updateShipping(@RequestBody ShippingDTO shippingDTO) {
         Shipping shipping = shippingService.updateShipping(shippingMapper.toEntity(shippingDTO));
         return new ResponseEntity<>(shippingMapper.toDto(shipping, false), HttpStatus.OK);
@@ -59,6 +62,7 @@ public class ShippingController {
 
     @Transactional
     @DeleteMapping("/{shippingId}")
+    @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteShipping(@PathVariable long shippingId) {
         shippingService.deleteShipping(shippingId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

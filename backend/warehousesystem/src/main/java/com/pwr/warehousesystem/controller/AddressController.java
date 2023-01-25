@@ -7,6 +7,7 @@ import com.pwr.warehousesystem.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class AddressController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<AddressDTO> postAddress(@RequestBody AddressDTO addressDTO) {
         Address addressSaved = addressService.saveAddress(addressMapper.toEntity(addressDTO));
         return new ResponseEntity<>(addressMapper.toDto(addressSaved), HttpStatus.OK);
@@ -46,6 +48,7 @@ public class AddressController {
 
     @Transactional
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity deleteAddress(@PathVariable long id) {
         addressService.deleteAddress(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

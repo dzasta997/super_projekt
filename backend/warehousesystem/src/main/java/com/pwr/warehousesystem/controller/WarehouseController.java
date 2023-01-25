@@ -7,6 +7,7 @@ import com.pwr.warehousesystem.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,8 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public ResponseEntity<WarehouseDTO> postWarehouse(@RequestBody WarehouseDTO warehouse){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<WarehouseDTO> postWarehouse(@RequestBody WarehouseDTO warehouse) {
         Warehouse saved = warehouseService.saveWarehouse(warehouseMapper.toEntity(warehouse));
         return new ResponseEntity<>(warehouseMapper.toDto(saved), HttpStatus.OK);
     }
@@ -54,7 +56,8 @@ public class WarehouseController {
 
     @Transactional
     @DeleteMapping("/{warehouseId}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable long warehouseId){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable long warehouseId) {
         warehouseService.deleteWarehouse(warehouseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
