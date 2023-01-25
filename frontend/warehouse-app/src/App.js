@@ -18,7 +18,7 @@ function App() {
 
   // The currently logged in user: employee, manager or admin.
   // Any other value means no user is logged in.
-  const [user, setUser] = useState("admin");
+  const [user, setUser] = useState("manager");
 
   const isAdmin = (user === "admin" ? true : false)
   const isAuth = (userList.includes(user) ? true : false)
