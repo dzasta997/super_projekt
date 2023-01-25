@@ -5,6 +5,7 @@ import com.pwr.warehousesystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,18 +26,22 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getUsername(){
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<String> getUsername() {
         return new ResponseEntity<>(userService.getUserName(), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAll(){
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<List<User>> getAll() {
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
 
     }
+
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         User saved = userService.addUser(user);
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
