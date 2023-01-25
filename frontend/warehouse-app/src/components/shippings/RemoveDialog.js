@@ -1,4 +1,4 @@
-import WarehouseDialog from './WarehouseDialog';
+import WarehouseDialog from '../WarehouseDialog';
 
 export default function RemoveDialog({
     buttonLabel,

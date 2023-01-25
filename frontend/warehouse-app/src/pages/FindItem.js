@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AddItemToLocationDialog from "../components/AddItemToLocationDialog";
 import Button from "../components/buttons/Button";
 import PageContainer from "../components/containers/PageContainer";
 import QuantitySetter from "../components/QuantitySetter";
@@ -69,6 +70,9 @@ function FindItemsScreenContent({
   increaseQuantity,
   decreaseQuantity,
   onUpdateAllClick,
+  addItemToLocation,
+  productId,
+  onIdChange
 }) {
   if (searchType === "items") {
     return (
@@ -142,6 +146,16 @@ function FindItemsScreenContent({
                 decreaseQuantity={decreaseQuantity}
               />
             ))}
+            <div className="">
+              <AddItemToLocationDialog
+                productId={productId}
+                onIdChange={onIdChange}
+                buttonLabel="+ Add new item"
+                buttonColor="white"
+                title="Add item to location"
+                onConfirm={addItemToLocation}
+              />
+            </div>
             <div>
               <Button label="Update all" onClick={onUpdateAllClick} />
             </div>
@@ -165,6 +179,9 @@ const FindItem = () => {
     alley: 0,
     rack: 0,
   });
+
+  const [productId, setProductId] = useState(0);
+  const onIdChange = (e) => setProductId(parseInt(e.target.value, 10));
 
   function onSearchAlleyChange(e) {
     let currentLocation = { ...searchedLocation };
@@ -248,6 +265,20 @@ const FindItem = () => {
 
   // todo quantity changes for search by location
 
+  function addItemToLocation() {
+    const newItems = [
+      ...items,
+      {
+        id: productId,
+        name: "",
+        quantity: 1,
+        alley: searchedLocation.alley,
+        rack: searchedLocation.rack,
+      },
+    ];
+    setItems(newItems);
+  }
+
   return (
     <PageContainer title="Search items" location="Świdnicka 24">
       <div className="flex flex-col gap-10">
@@ -256,7 +287,7 @@ const FindItem = () => {
           onButtonChosen={(e) => setSearchType(e.target.value)}
           firstButtonLabel="Search by items"
           firstButtonValue="items"
-          secondButtonLabel="Search by items"
+          secondButtonLabel="Search by location"
           secondButtonValue="location"
         />
         <FindItemsScreenContent
@@ -270,6 +301,9 @@ const FindItem = () => {
           onQuantityChange={onQuantityChange}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
+          addItemToLocation={addItemToLocation}
+          productId={productId}
+          onIdChange={onIdChange}
         />
       </div>
     </PageContainer>

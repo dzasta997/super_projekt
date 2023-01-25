@@ -11,14 +11,14 @@ import FindItem from './pages/FindItem';
 import Delivery from './pages/Delivery';
 import Shipping from './pages/Shipping';
 import AdminDashboard from './pages/AdminDashboard';
-import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 function App() {
   const userList = ['employee', 'manager', 'admin'];
 
   // The currently logged in user: employee, manager or admin.
   // Any other value means no user is logged in.
-  const [user, setUser] = useState("admin");
+  const [user, setUser] = useState("manager");
 
   const isAdmin = (user === "admin" ? true : false)
   const isAuth = (userList.includes(user) ? true : false)
@@ -32,13 +32,13 @@ function App() {
           <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory/>} />
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory/>} />
           <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem/>} />
-          <Route path='/delivery' element={isAdmin ? <Navigate to="/" replace/> : <Delivery/>} />
+          <Route path='/delivery' element={isAdmin ? <Navigate to="/" replace/> : <Delivery user={user}/>} />
           <Route path='/shipping' element={isAdmin ? <Navigate to="/" replace/> : <Shipping user={user}/>} />
         </Route>
 
        {/* Routes that don't require the user to be logged in */}
         <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login />} />
-        <Route path='/sign-in' element={isAuth ? <Navigate to="/" /> : <SignIn />} />
+        <Route path='/sign-in' element={isAuth ? <Navigate to="/" /> : <SignUp />} />
     </Routes>
     </Router>
   );
