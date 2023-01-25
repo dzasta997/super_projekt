@@ -35,4 +35,8 @@
     .text-box-container {
         @apply py-6 px-6 flex
     }
+
+    .nav-bar-style {
+        @apply border-0 py-0 px-0
+    }
 }
