@@ -16,8 +16,8 @@ export default function IconButton({
         <button
         type={type}
         onClick={onClick}
-        className={"bg-primaryGrey active:bg-darkGray py-2 px-7 rounded-full font-normal text-base transition duration-150 ease-in-out"}>
-            <div className="flex flex-row justify-center">
+        className={"bg-primaryGrey active:bg-darkGray py-3 px-5 rounded-full font-light text-base transition duration-150 ease-in-out"}>
+            <div className="flex flex-row items-center">
                 <div className="pr-2"><Icon/></div>
             {label}
             </div>
