@@ -6,7 +6,7 @@ import {
 
 const AdminNavbar = () => {
     return (
-        <Navbar className="nav-bar-style">
+        <Navbar className="border-0 py-0 px-0">
             <div className=" px-5 py-5 w-[200px] h-screen z-10 bg-primaryBlue fixed text-white">
                 <Typography
                     as="p"

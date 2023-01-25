@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PageContainer from '../components/containers/PageContainer';
-import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
+import AddEditShippingDialog from '../components/shippings/AddEditDialog';
 
 const Dashboard = () => {
 
