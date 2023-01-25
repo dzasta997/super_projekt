@@ -35,7 +35,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.httpBasic().and()
+        return http.formLogin().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
