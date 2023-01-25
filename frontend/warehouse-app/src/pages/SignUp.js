@@ -1,7 +1,7 @@
 import React from "react";
 import PageContainer from '../components/containers/PageContainer';
   
-const Login = () => {
+export default function SignUp() {
   return (
     <PageContainer>
       <h1 className="text-xl">
@@ -10,5 +10,3 @@ const Login = () => {
     </PageContainer>
   );
 };
-  
-export default Login;

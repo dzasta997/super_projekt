@@ -1,4 +1,4 @@
-import WarehouseDialog from "../shippings/WarehouseDialog";
+import WarehouseDialog from "../WarehouseDialog";
 import AddEditDialogItem from "../AddEditDialogItem";
 import TextInputField from "../TextInputField";
 import { useState } from "react";
