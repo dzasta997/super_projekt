@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
+import AddEditDialog from '../components/shippings/AddEditDialog';
 import PageContainer from '../components/containers/PageContainer';
 import RemoveDialog from '../components/shippings/RemoveDialog';
 import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
@@ -78,6 +78,30 @@ export default function Shipping({user}) {
           name: "food"
         },
       ]
+    },
+    {
+      id: 4,
+      assignedTo: 1,
+      plannedDate: "01/05/2023",
+      status: "ongoing",
+      address: {
+        street: "Ścinawska",
+        number: 2,
+        postalCode: "42-900",
+        city: "Wrocław"
+      },
+      products: [
+        {
+          id: 1,
+          quantity: 2,
+          name: "mydło"
+        },
+        {
+          id: 2,
+          quantity: 10,
+          name: "food"
+        },
+      ]
     }
   ]);
 
@@ -103,12 +127,21 @@ export default function Shipping({user}) {
     return (
       <PageContainer title="Shippings from" location="Świdnicka 24">
         <div className='flex flex-col gap-4'>
-          <AddEditShippingDialog buttonLabel="Add new" title="Add shipping"/>
+          <AddEditDialog 
+            isDeliveryOrShipping="shipping" 
+            isAddOrEdit="add"
+            buttonLabel="Add new" 
+            title="Add shipping"/>
           {shippings.map( shipping =>
             <div>
               <div className='flex flex-row gap-4 items-center pb-2'>
                 <h1 className="text-2xl font-thin">{`Shipping no ${shipping.id}`}</h1>
-                <AddEditShippingDialog buttonLabel="Edit" buttonColor="white" title="Edit shipping"/>
+                <AddEditDialog 
+                  isDeliveryOrShipping="shipping" 
+                  isAddOrEdit="edit"
+                  buttonLabel="Edit" 
+                  buttonColor="white" 
+                  title="Edit shipping"/>
                 <RemoveDialog buttonLabel="Remove" buttonColor="gray" title="Remove shipping"/>
               </div>
               <ShippingDeliveryTextBox

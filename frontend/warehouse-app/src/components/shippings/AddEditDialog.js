@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import WarehouseDialog from './WarehouseDialog';
+import WarehouseDialog from '../WarehouseDialog';
 import TextInputField from '../TextInputField';
 import StatusChoice from './StatusChoice';
 import AddEditDialogItem from '../AddEditDialogItem';
 import EditableProductList from './EditableProductList';
 
-export default function AddEditShippingDialog({
+export default function AddEditDialog({
+    isDeliveryOrShipping,
+    isAddOrEdit,
     buttonLabel,
     buttonColor,
     title, 
