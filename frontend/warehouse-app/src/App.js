@@ -18,7 +18,7 @@ function App() {
 
   // The currently logged in user: employee, manager or admin.
   // Any other value means no user is logged in.
-  const [user, setUser] = useState("manager");
+  const [user, setUser] = useState("");
 
   const isAdmin = (user === "admin" ? true : false)
   const isAuth = (userList.includes(user) ? true : false)
@@ -38,7 +38,7 @@ function App() {
 
        {/* Routes that don't require the user to be logged in */}
         <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login />} />
-        <Route path='/sign-in' element={isAuth ? <Navigate to="/" /> : <SignUp />} />
+        <Route path='/sign-up' element={isAuth ? <Navigate to="/" /> : <SignUp />} />
     </Routes>
     </Router>
   );
