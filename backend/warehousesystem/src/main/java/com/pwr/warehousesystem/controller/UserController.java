@@ -31,6 +31,12 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserName(), HttpStatus.OK);
     }
 
+    @GetMapping("/role")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<String> getRole() {
+        return new ResponseEntity<>(userService.getRole(), HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     @PreAuthorize("permitAll()")
     public ResponseEntity<List<User>> getAll() {
@@ -40,9 +46,19 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         User saved = userService.addUser(user);
         return new ResponseEntity<>(saved, HttpStatus.OK);
+    }
+
+    @PostMapping("/success")
+    public ResponseEntity<Void> success() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/failure")
+    public ResponseEntity<Void> failure() {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
