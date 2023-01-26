@@ -52,13 +52,4 @@ public class UserController {
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
 
-    @PostMapping("/success")
-    public ResponseEntity<Void> success() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/failure")
-    public ResponseEntity<Void> failure() {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 }
