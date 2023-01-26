@@ -25,6 +25,11 @@ public class UserService {
         return authentication.getName();
     }
 
+    public String getRole(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getAuthorities().stream().findFirst().orElseThrow().getAuthority();
+    }
+
     public User addUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
