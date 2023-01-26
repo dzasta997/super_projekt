@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .csrf().disable()
+                .cors().disable()
                 .build();
     }
 }
