@@ -9,7 +9,7 @@ export default function SignUp() {
     username: "",
     password: "",
     passwordConfirm: "",
-    role: "employee"
+    role: "EMPLOYEE"
   })
 
   function onUsernameChange(e) {
@@ -36,8 +36,38 @@ export default function SignUp() {
     setData(newObject);
   }
 
-  // TODO request
-  function onCreateAccount() {}
+  // TODO error messages -> passwords don't match
+
+  // todo form data not json
+  const onCreateAccount = async(event) => {
+    event.preventDefault();
+    try {
+      let requestBody = JSON.stringify({
+        username: data.username,
+        password: data.password,
+        role: data.role
+      });
+      let response = await fetch("https://localhost:3000/user", {
+        method: "POST",
+        body: requestBody,
+      });
+
+      let responseJson = await request.json();
+      if (response.status === 200) {
+        setData({
+          username: "",
+          password: "",
+          passwordConfirm: "",
+          role: "EMPLOYEE"
+        });
+        // TODO success alert
+      } else {
+        // TODO fail alert
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="w-full h-screen bg-primaryBlue flex justify-center align-middle items-center">
