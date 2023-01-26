@@ -42,14 +42,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.formLogin(form -> form.successForwardUrl("/success").failureHandler(authenticationFailureHandler))
+        return http.formLogin(form -> form.successForwardUrl("/success")
+                        .failureHandler(authenticationFailureHandler))
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .csrf().disable()
-                .cors().disable()
+                .cors().and()
                 .build();
     }
+
 }
