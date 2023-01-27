@@ -18,4 +18,7 @@ public class User {
     private String username;
     private String password;
     private Role role;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

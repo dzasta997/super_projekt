@@ -26,6 +26,7 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    public long getId() {return user.getId();}
     @Override
     public String getPassword() {
         return user.getPassword();

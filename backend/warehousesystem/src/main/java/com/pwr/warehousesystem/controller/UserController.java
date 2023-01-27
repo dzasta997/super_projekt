@@ -34,12 +34,17 @@ public class UserController {
         return new ResponseEntity<>(userService.getRole(), HttpStatus.OK);
     }
 
+    @GetMapping("/employee")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<Long> getEmployeeId() {
+        return new ResponseEntity<>(userService.getEmployeeId(), HttpStatus.OK);
+    }
+
     @GetMapping("/all")
     @PreAuthorize("permitAll()")
     public ResponseEntity<List<User>> getAll() {
         List<User> users = userService.getAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
-
     }
 
     @PostMapping
