@@ -66,9 +66,9 @@ public class ItemController {
         return new ResponseEntity<>(itemLocationMapper.toDto(itemLocation, false), HttpStatus.OK);
     }
 
-    @GetMapping("/location/itemcode/{code}")
-    public ResponseEntity<List<ItemLocationDTO>> getItemLocationsByItemCode(@PathVariable long code){
-        List<ItemLocation> itemLocations = itemService.getItemLocationsByItemCode(code);
+    @GetMapping("/location/itemcode/{code}/{warehouseId}")
+    public ResponseEntity<List<ItemLocationDTO>> getItemLocationsByItemCode(@PathVariable long code, @PathVariable long warehouseId){
+        List<ItemLocation> itemLocations = itemService.getItemLocationsByItemCode(code, warehouseId);
         return new ResponseEntity<>(itemLocationMapper.toDto(itemLocations, false), HttpStatus.OK);
     }
 
