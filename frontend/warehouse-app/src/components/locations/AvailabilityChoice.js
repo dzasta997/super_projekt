@@ -6,17 +6,17 @@ export default function AvailabilityChoice({ chosenButtonId, onButtonChosen }) {
   return (
     <div className="flex flex-row space-x-4">
       <Button
-        id="locationAvailable"
+        id={1}
         label="Available"
-        color={buttonColor("locationAvailable", chosenButtonId)}
-        value="locationAvailable"
+        color={buttonColor(1, chosenButtonId)}
+        value={1}
         onClick={onButtonChosen}
       />
       <Button
-        id="locationNotAvailable"
+        id={0}
         label="Not available"
-        color={buttonColor("locationNotAvailable", chosenButtonId)}
-        value="locationNotAvailable"
+        color={buttonColor(0, chosenButtonId)}
+        value={0}
         onClick={onButtonChosen}
       />
     </div>
