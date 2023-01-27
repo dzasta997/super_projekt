@@ -4,34 +4,38 @@ import TextInputField from "../TextInputField";
 import { useState } from "react";
 import AvailabilityChoice from "./AvailabilityChoice";
 
-export default function AddLocationDialog({ onConfirm }) {
+export default function AddLocationDialog({updateList}) {
   const [locationData, setLocationData] = useState({
-    warehouseId: NaN,
-    rack: NaN,
-    alley: NaN,
-    availability: "locationAvailable",
-    capacity: NaN,
+    warehouse: {
+      id: NaN,
+    },
+    rack: "",
+    alley: "",
+    availability: 1,
+    capacity: 100,
     description: "",
   });
 
   const isAvailable =
-    locationData.availability == "locationAvailable" ? true : false;
+    locationData.availability === 1 ? true : false;
 
   function onWarehouseIdChange(id) {
     let newData = { ...locationData };
-    newData.warehouseId = id.target.value;
+    newData.warehouse = {
+      id: parseInt(id.target.value, 10),
+    }
     setLocationData(newData);
   }
 
   function onRackChange(rack) {
     let newData = { ...locationData };
-    newData.rack = rack.target.value;
+    newData.rack = parseInt(rack.target.value, 10);
     setLocationData(newData);
   }
 
   function onAlleyChange(alley) {
     let newData = { ...locationData };
-    newData.alley = alley.target.value;
+    newData.alley = parseInt(alley.target.value, 10);
     setLocationData(newData);
   }
 
@@ -53,12 +57,45 @@ export default function AddLocationDialog({ onConfirm }) {
     setLocationData(newData);
   }
 
+  const addLocation = async () => {
+    console.log(locationData);
+    let requestBody = JSON.stringify(locationData);
+    let res = await fetch('http://localhost:8080/locations', { 
+      method: 'POST',
+      body: requestBody,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      mode: 'cors',
+      referrerPolicy: 'no-referrer',
+      origin: "http://localhost:3000/",
+    });
+  
+    if (res.status === 200) {
+      console.log("Successfully added new location.");
+      setLocationData({
+        warehouse: {
+          id: NaN,
+        },
+        rack: "",
+        alley: "",
+        availability: 1,
+        capacity: 100,
+        description: "",
+      });
+      updateList();
+    } else {
+      console.log("Could not add new location.");
+    }
+  };
+
   return (
     <>
       <WarehouseDialog
         buttonLabel="Add location"
         title="Add location"
-        onConfirm={onConfirm}
+        onConfirm={addLocation}
       >
         <div className="dialog-container">
           <AddEditDialogItem title="Warehouse id">
@@ -66,7 +103,7 @@ export default function AddLocationDialog({ onConfirm }) {
               label="Warehouse id"
               type="number"
               min="0"
-              value={locationData.warehouseId}
+              value={locationData.warehouse.id}
               onValueChange={onWarehouseIdChange}
             ></TextInputField>
           </AddEditDialogItem>

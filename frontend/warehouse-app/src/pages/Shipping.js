@@ -5,7 +5,6 @@ import RemoveDialog from '../components/shippings/RemoveDialog';
 import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
   
 export default function Shipping({user}) {
-  
 
   const [shippings, setShippings] = useState([
     {
@@ -106,7 +105,7 @@ export default function Shipping({user}) {
     }
   ]);
 
-  if (user==="employee") {
+  if (user==="ROLE_EMPLOYEE") {
     return (
       <PageContainer title="Shippings from" location="Świdnicka 24">
         <div className='flex flex-col gap-4'>
@@ -124,7 +123,7 @@ export default function Shipping({user}) {
         </div>
       </PageContainer>
     );
-  } else if (user==="manager") {
+  } else if (user==="ROLE_MANAGER") {
     return (
       <PageContainer title="Shippings from" location="Świdnicka 24">
         <div className='flex flex-col gap-4'>
