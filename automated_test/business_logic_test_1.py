@@ -62,8 +62,11 @@ def main():
 
         get_delivery_response = requests.get(url + "/deliveries/" + str(delivery_id), cookies=cookies)
         delivery_employee = get_delivery_response.json()["employee"]
-        
-        if delivery_employee["id"] != employee["id"] or delivery_employee["name"] != employee["name"] or delivery_employee["warehouse"]["id"] != employee["warehouse"]["id"]:
+
+        get_assigned_employee_response = requests.get(url + "/employees/" + str(employee_id), cookies=cookies)
+        assigned_employee = get_assigned_employee_response.json()
+
+        if assigned_employee != delivery_employee: 
             raise Exception("ASSIGNED EMPLOYEE AND RETURNED EMPLOYEE ARE NOT THE SAME")
 
         print("TEST PASSED")
