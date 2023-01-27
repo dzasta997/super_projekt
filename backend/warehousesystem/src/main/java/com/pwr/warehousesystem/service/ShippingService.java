@@ -43,9 +43,9 @@ public class ShippingService {
             throw new OperationFailedException();
         }
 
-        if (shipping.getClient().getId() != null) {
+        if (shipping.getClient() != null && shipping.getClient().getId() != null) {
             clientService.updateClient(shipping.getClient());
-        } else {
+        } else if (shipping.getClient() != null) {
             Client savedClient = clientService.saveClient(shipping.getClient());
             shipping.setClient(savedClient);
         }

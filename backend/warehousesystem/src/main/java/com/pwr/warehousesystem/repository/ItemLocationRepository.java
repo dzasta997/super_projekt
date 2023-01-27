@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ItemLocationRepository extends JpaRepository<ItemLocation, Long> {
-    List<ItemLocation> findAllByItemCode(long code);
+    List<ItemLocation> findAllByItemCodeAndLocationWarehouseId(long code, long warehouseId);
 
     @Query("SELECT il FROM ItemLocation il " +
             "JOIN Location l ON il.location.id = l.id " +

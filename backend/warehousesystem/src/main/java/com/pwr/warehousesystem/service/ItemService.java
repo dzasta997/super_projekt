@@ -87,8 +87,8 @@ public class ItemService {
         itemLocation.setLocation(location);
     }
 
-    public List<ItemLocation> getItemLocationsByItemCode(long code){
-        return itemLocationRepository.findAllByItemCode(code);
+    public List<ItemLocation> getItemLocationsByItemCode(long code, long warehouseId){
+        return itemLocationRepository.findAllByItemCodeAndLocationWarehouseId(code, warehouseId);
     }
 
     public List<ItemLocation> getItemLocationsByWarehouseId(long warehouseId){

@@ -45,9 +45,9 @@ public class DeliveryService {
             throw new OperationFailedException();
         }
 
-        if (delivery.getSupplier().getId() != null) {
+        if (delivery.getSupplier() != null && delivery.getSupplier().getId() != null) {
             supplierService.updateSupplier(delivery.getSupplier());
-        } else {
+        } else if (delivery.getSupplier() != null) {
             Supplier savedSupplier = supplierService.saveSupplier(delivery.getSupplier());
             delivery.setSupplier(savedSupplier);
         }
