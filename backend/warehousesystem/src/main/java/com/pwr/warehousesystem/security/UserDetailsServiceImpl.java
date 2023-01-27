@@ -1,5 +1,6 @@
 package com.pwr.warehousesystem.security;
 
+import com.pwr.warehousesystem.entity.Employee;
 import com.pwr.warehousesystem.entity.User;
 import com.pwr.warehousesystem.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -31,7 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private void initUser(String username, String password, Role role) {
         if (!userRepository.existsByUsername(username)) {
+            Employee employee = new Employee();
             User user = new User();
+            user.setEmployee(employee);
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
             user.setRole(role);
