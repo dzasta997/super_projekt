@@ -68,7 +68,7 @@ const navList = (
     </ul>
 );
 
-const UserNavbar = () => {
+const UserNavbar = ({onLogout}) => {
     return (
         <Navbar className="border-0 py-0 px-0">
             <div className=" px-5 py-5 w-[200px] h-screen z-9 bg-primaryBlue text-white fixed">
@@ -87,7 +87,7 @@ const UserNavbar = () => {
                     variant="small"
                     className='absolute px-5 py-5 font-thin left-0 bottom-0'
                 >
-                    <a href="/login"> Log out </a>
+                <div onClick={onLogout} className="text-white hover:text-darkGray">Log out </div>
                 </Typography>
             </div>
         </Navbar>

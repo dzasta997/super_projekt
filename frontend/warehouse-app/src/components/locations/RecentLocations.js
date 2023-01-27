@@ -21,7 +21,7 @@ export default function RecentLocations() {
     <div className="flex flex-col gap-4">
       {
         (locations.map((location) => (
-          <div>
+          <div key={location.id}>
             <h1 className="text-2xl font-thin pb-2">{`Location id ${location.id}`}</h1>
             <LocationTextBox
               warehouseId={location.warehouseId}

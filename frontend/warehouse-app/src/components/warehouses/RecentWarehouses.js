@@ -20,7 +20,7 @@ export default function RecentWarehouses() {
     <>
       <div className="flex flex-col gap-4">
         {warehouses.map((warehouse) => (
-          <div>
+          <div key={warehouse.id}>
             <h1 className="text-2xl font-thin pb-2">{`Warehouse id ${warehouse.id}`}</h1>
             <WarehouseTextBox
               name={warehouse.name}
