@@ -2,29 +2,29 @@ import { Navigate, Outlet } from "react-router-dom";
 import UserNavbar from "./UserNavbar";
 import AdminNavbar from "./AdminNavbar";
 
-const UserLayout = () => (
+const UserLayout = ({onLogout}) => (
     <>
-      <UserNavbar />
+      <UserNavbar onLogout={onLogout}/>
       <Outlet />
     </>
 );
 
-const AdminLayout = () => (
+const AdminLayout = ({onLogout}) => (
     <>
-      <AdminNavbar />
+      <AdminNavbar onLogout={onLogout}/>
       <Outlet />
     </>
 );
 
-const ProtectedRoutes = ({user}) => {
+const ProtectedRoutes = ({user, onLogout}) => {
 
     switch(user) {
-      case "employee":
-        return <UserLayout />;
-      case "manager":
-        return <UserLayout />;
-      case "admin":
-        return <AdminLayout />;
+      case "ROLE_EMPLOYEE":
+        return <UserLayout onLogout={onLogout}/>;
+      case "ROLE_MANAGER":
+        return <UserLayout onLogout={onLogout}/>;
+      case "ROLE_ADMIN":
+        return <AdminLayout onLogout={onLogout}/>;
       default:
         return <Navigate to="/login" replace/>;
     }

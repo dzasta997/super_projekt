@@ -1,8 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Button from "../components/buttons/Button";
+import ErrorAlert from "../components/ErrorAlert";
 import TextInputField from "../components/TextInputField";
+import { redirect } from "react-router-dom";
   
-export default function Login() {
+export default function Login({onUserChange}) {
+
+  const [isError, setIsError] = useState(false);
+  const onError = () => setIsError(true);
+  const onCloseAlert = () => setIsError(false);
 
   const [data, setData] = useState({
     username: "",
@@ -15,18 +21,66 @@ export default function Login() {
     setData(newObject);
   }
 
-  function onPassowrdChange(e) {
+  function onPasswordChange(e) {
     let newObject = {...data};
     newObject.password = e.target.value;
     setData(newObject);
   }
 
-  // TODO request
-  function onLogin() {}
+  let onLogin = async(event) => {
+    console.log("on login clicked")
+    event.preventDefault();
+    try {
+      let formData = new FormData();
+      formData.append('username', data.username);
+      formData.append('password', data.password);
+
+      let res = await fetch('http://localhost:8080/login', { 
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+        mode: 'cors',
+        referrerPolicy: 'no-referrer',
+        origin: "http://localhost:3000/",
+      });
+
+      if (res.status === 200) {
+        console.log("login succeeded");
+        setData({
+          username: "",
+          password: "",
+        });
+
+        let userRole = await fetch('http://localhost:8080/user/role', {
+          method: 'GET',
+          credentials: 'include',
+          mode: 'cors',
+          referrerPolicy: 'no-referrer',
+          origin: "http://localhost:3000/",
+        });
+
+        if (userRole.status === 200) {
+          let role = await userRole.text();
+          redirect("/");
+          onUserChange(role);
+        } else {
+          console.log("user role failed, status: " + userRole.status);
+          onError();
+        }
+      } else  {
+        console.log("login failed");
+        onError();
+      }
+    } catch (error) {
+      console.log(error);
+      onError();
+    }
+  }
 
   return (
     <div className="w-full h-screen bg-primaryBlue flex justify-center align-middle items-center">
       <p className="absolute top-4 left-4 font-thin text-sm text-white">Warehouse  <br/> Management <br/> System </p>
+      { isError ? <ErrorAlert title="Login failed!" text="Incorrect username or password." onClose={onCloseAlert} /> : null }
       <form onSubmit={onLogin}>
         <div className="flex flex-col gap-4 items-center">
           <h1 className="text-2xl font-thin text-white">Please log in</h1>
@@ -38,17 +92,13 @@ export default function Login() {
           <TextInputField
             label="Password" 
             width="w-80" 
+            type="password"
             value={data.password}
-            onValueChange={onPassowrdChange} />
+            onValueChange={onPasswordChange} />
           <div className="flex flex-row gap-4 items-center">
             <Button
               label="Log in"
               type="submit" />
-            <a href="/sign-up">
-            <Button
-              label="Create account"
-              color="transparent" />
-            </a>
           </div>
         </div>
       </form>
