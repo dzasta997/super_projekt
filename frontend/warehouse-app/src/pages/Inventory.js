@@ -7,34 +7,6 @@ export default function Inventory({warehouseId=1}) {
 
   const documentIcon = () => <DocumentTextIcon className="h-6"/>
 
-  // TODO requests
-
-  const onGenerateReportClick = async() => {
-    if (Number.isNaN(warehouseId)) {
-      return;
-    }
-
-    let res = await fetch(`http://localhost:8080/reports/inventory/${warehouseId}`, { 
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        mode: 'cors',
-        referrerPolicy: 'no-referrer',
-        origin: "http://localhost:3000/",
-    });
-    
-    if (res.status === 200) {
-        console.log("Successfully gathered items.");
-    } else {
-        console.log("Could not gather items.");
-        console.log("Status: " + res.status);
-    }
-  }
-
-  function onGenerateTransactionReportClick() {}
-
   return (
     <PageContainer title="Inventory" location="Świdnicka 24">
       <div className='grid grid-flow-row cols-1 space-y-4'>
