@@ -60,23 +60,36 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       let newLocationItem = {...currentItem};
       newLocationItem.quantity = parseInt(e.target.value, 10);
   
-      const updatedObject = data.items.map((locationItem) =>
+      let updatedObject = {...data};
+      updatedObject.items = data.items.map((locationItem) =>
         locationItem.item.code === code ? newLocationItem : locationItem
       );
   
       setData(updatedObject);
     }
-  
+
+
     function increaseQuantity(code) {
         console.log(data);
         console.log(data.items);
       const currentItem = data.items.filter((locationItem) => locationItem.item.code === code)[0];
+      
+      console.log("current item");
+      console.log(currentItem);
+
       let newLocationItem = {...currentItem};
       newLocationItem.quantity = currentItem.quantity + 1;
-  
-      const updatedObject = data.items.map((locationItem) =>
+
+      console.log("newLocationItem");
+      console.log(newLocationItem);
+
+      let updatedObject = {...data};
+      updatedObject.items = data.items.map((locationItem) =>
         locationItem.item.code === code ? newLocationItem : locationItem
       );
+
+      console.log("updatedObject");
+      console.log(updatedObject);
   
       setData(updatedObject);
     }
@@ -86,7 +99,8 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       let newLocationItem = {...currentItem};
       newLocationItem.quantity = currentItem.quantity - 1;
   
-      const updatedObject = data.items.map((locationItem) =>
+      let updatedObject = {...data};
+      updatedObject.items = data.items.map((locationItem) =>
         locationItem.item.code === code ? newLocationItem : locationItem
       );
   
@@ -94,8 +108,17 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
     }
   
     function addItemToLocation() {
+        // todo check if item with this code already exists in this list
         console.log(chosenValueIndex);
         const itemObj = items[chosenValueIndex];
+
+        const arrLen = data.items.filter((locationItem) => locationItem.item.code === itemObj.code).length
+        console.log(arrLen);
+        if (arrLen > 0) {
+            // todo show error dialog -> item already exists in list
+            console.log("item already exists");
+            return;
+        }
         
         console.log(data);
         console.log(itemObj);
@@ -268,6 +291,7 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
                 <div className="">
                     <AddItemToLocationDialog
                         items={items}
+                        chosenValueIndex={chosenValueIndex}
                         buttonLabel="+ Add new item"
                         buttonColor="white"
                         title="Add item to location"

@@ -4,6 +4,7 @@ import ItemsDropdown from "./ItemsDropDown";
 
 export default function AddItemToLocationDialog({
     items,
+    chosenValueIndex,
     buttonLabel,
     buttonColor,
     title,
@@ -15,7 +16,7 @@ export default function AddItemToLocationDialog({
             <div className='py-10 flex flex-col items-center gap-4'>
             <span>Choose item:</span>
             <div className="flex border-2 border-primaryBlue">
-            <ItemsDropdown items={items} onValueChange={onChosenItemChange} />
+            <ItemsDropdown items={items} chosenValueIndex={chosenValueIndex} onValueChange={onChosenItemChange} />
             </div>
             </div>
         </WarehouseDialog>
