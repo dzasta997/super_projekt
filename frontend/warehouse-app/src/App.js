@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route}
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, redirect }
     from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
@@ -12,23 +12,31 @@ import Delivery from './pages/Delivery';
 import Shipping from './pages/Shipping';
 import AdminDashboard from './pages/AdminDashboard';
 import SignUp from './pages/SignUp';
+import useLocalStorage from './hooks/LocalStorageHook';
 
 function App() {
-  const userList = ['employee', 'manager', 'admin'];
+  const userList = ['ROLE_EMPLOYEE', 'ROLE_MANAGER', 'ROLE_ADMIN'];
 
   // The currently logged in user: employee, manager or admin.
   // Any other value means no user is logged in.
-  const [user, setUser] = useState("");
+  const [user, setUser, removeUser] = useLocalStorage("user_role", "");
+  const onUserChange = (usern) => setUser(usern);
+  const onRemoveUser = () => removeUser();
 
-  const isAdmin = (user === "admin" ? true : false)
+  function onLogoutClick() {
+    onRemoveUser();
+    redirect("/");
+  }
+
+  const isAdmin = (user === "ROLE_ADMIN" ? true : false)
   const isAuth = (userList.includes(user) ? true : false)
 
   return (
     <Router>
     <Routes>
        {/* Routes that require the user to be logged in */}
-       <Route element={<ProtectedRoutes user={user}/>}>
-          <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard />} />
+       <Route element={<ProtectedRoutes user={user} onLogout={onLogoutClick}/>}>
+          <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard user={user}/>} />
           <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory/>} />
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory/>} />
           <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem/>} />
@@ -37,8 +45,8 @@ function App() {
         </Route>
 
        {/* Routes that don't require the user to be logged in */}
-        <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login />} />
-        <Route path='/sign-up' element={isAuth ? <Navigate to="/" /> : <SignUp />} />
+        <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login onUserChange={onUserChange} />} />
+        <Route path='/sign-up' element={isAdmin ?  <SignUp /> : <Navigate to="/" />} />
     </Routes>
     </Router>
   );

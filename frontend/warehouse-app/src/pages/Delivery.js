@@ -80,7 +80,7 @@ export default function Delivery({user}) {
   }
 ]);
 
-if (user==="employee") {
+if (user==="ROLE_EMPLOYEE") {
   return (
     <PageContainer title="Deliveries from" location="Świdnicka 24">
       <div className='flex flex-col gap-4'>
@@ -98,7 +98,7 @@ if (user==="employee") {
       </div>
     </PageContainer>
   );
-} else if (user==="manager") {
+} else if (user==="ROLE_MANAGER") {
   return (
     <PageContainer title="Deliveries from" location="Świdnicka 24">
       <div className='flex flex-col gap-4'>

@@ -37,6 +37,10 @@ public class LocationService {
         return locationRepository.findAllByWarehouseId(warehouseId);
     }
 
+    public Location findByWarehouseIdAndRackAndAlley(long warehouseId, String rack, String alley) {
+        return locationRepository.findByWarehouseIdAndRackAndAlley(warehouseId, rack, alley).orElseThrow();
+    }
+
     public Location saveLocation(Location location) {
         if ((location.getId() != null && locationRepository.existsById(location.getId()))
         ) {

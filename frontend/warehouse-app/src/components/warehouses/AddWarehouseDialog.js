@@ -3,21 +3,21 @@ import AddEditDialogItem from "../AddEditDialogItem";
 import TextInputField from "../TextInputField";
 import { useState } from "react";
 
-export default function AddWarehouseDialog({ onConfirm }) {
+export default function AddWarehouseDialog({updateList}) {
   const [warehouseData, setWarehouseData] = useState({
-    name: "",
+    warehouseName: "",
     address: {
       street: "",
       number: 0,
-      zipCode: "",
+      zipcode: "",
       city: "",
     },
     description: "",
   });
 
-  function onWarehouseNameChange(name) {
+  function onWarehouseNameChange(warehouseName) {
     let newData = { ...warehouseData };
-    newData.name = name.target.value;
+    newData.warehouseName = warehouseName.target.value;
     setWarehouseData(newData);
   }
 
@@ -35,7 +35,7 @@ export default function AddWarehouseDialog({ onConfirm }) {
 
   function onZipCodeChange(zipCode) {
     let newData = { ...warehouseData };
-    newData.address.zipCode = zipCode.target.value;
+    newData.address.zipcode = zipCode.target.value;
     setWarehouseData(newData);
   }
 
@@ -51,19 +51,51 @@ export default function AddWarehouseDialog({ onConfirm }) {
     setWarehouseData(newData);
   }
 
+  const addWarehouse = async () => {
+    let requestBody = JSON.stringify(warehouseData);
+    let res = await fetch('http://localhost:8080/warehouses', { 
+      method: 'POST',
+      body: requestBody,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      mode: 'cors',
+      referrerPolicy: 'no-referrer',
+      origin: "http://localhost:3000/",
+    })
+  
+    if (res.status === 200) {
+      console.log("Successfully added new warehouse.");
+      setWarehouseData({
+        warehouseName: "",
+        address: {
+          street: "",
+          number: 0,
+          zipcode: "",
+          city: "",
+        },
+        description: "",
+      });
+      updateList();
+    } else {
+      console.log("Could not add new warehouse.");
+    }
+  };
+
   return (
     <>
       <WarehouseDialog
         buttonLabel="Add warehouse"
         title="Add warehouse"
-        onConfirm={onConfirm}
+        onConfirm={addWarehouse}
       >
         <div className="dialog-container">
           <AddEditDialogItem title="Name">
             <TextInputField
               label="Warehouse name"
               type="text"
-              value={warehouseData.name}
+              value={warehouseData.warehouseName}
               onValueChange={onWarehouseNameChange}
             ></TextInputField>
           </AddEditDialogItem>
@@ -82,7 +114,7 @@ export default function AddWarehouseDialog({ onConfirm }) {
               ></TextInputField>
               <TextInputField
                 label="Postal code"
-                value={warehouseData.zipCode}
+                value={warehouseData.zipcode}
                 onValueChange={onZipCodeChange}
               ></TextInputField>
               <TextInputField
