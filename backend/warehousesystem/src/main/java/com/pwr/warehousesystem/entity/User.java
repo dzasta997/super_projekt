@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "warehouse_user")
 @Data
@@ -18,6 +21,7 @@ public class User {
     private String username;
     private String password;
     private Role role;
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;

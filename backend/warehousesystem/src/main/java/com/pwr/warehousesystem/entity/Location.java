@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Data
 public class Location {
@@ -17,6 +20,7 @@ public class Location {
     private int capacity;
     private int availability;
     private String description;
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;

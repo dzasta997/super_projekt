@@ -5,6 +5,7 @@ import com.pwr.warehousesystem.entity.Location;
 import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.exception.OperationFailedException;
 import com.pwr.warehousesystem.repository.LocationRepository;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -38,7 +39,7 @@ public class LocationService {
     }
 
     public Location findByWarehouseIdAndRackAndAlley(long warehouseId, String rack, String alley) {
-        return locationRepository.findByWarehouseIdAndRackAndAlley(warehouseId, rack, alley).orElseThrow();
+        return locationRepository.findByWarehouseIdAndRackAndAlley(warehouseId, rack, alley).orElseThrow(ElementNotFoundException::new);
     }
 
     public Location saveLocation(Location location) {

@@ -2,6 +2,7 @@ package com.pwr.warehousesystem.service;
 
 import com.pwr.warehousesystem.entity.Employee;
 import com.pwr.warehousesystem.entity.User;
+import com.pwr.warehousesystem.exception.ElementNotFoundException;
 import com.pwr.warehousesystem.repository.UserRepository;
 import com.pwr.warehousesystem.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class UserService {
 
     public long getEmployeeId(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findById(((UserDetailsImpl)authentication.getPrincipal()).getId()).orElseThrow();
+        User user = userRepository.findById(((UserDetailsImpl)authentication.getPrincipal()).getId()).orElseThrow(ElementNotFoundException::new);
         return user.getEmployee().getId();
     }
 

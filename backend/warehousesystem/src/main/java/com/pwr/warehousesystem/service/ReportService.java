@@ -119,6 +119,7 @@ public class ReportService {
                 ),
                 body(
                         h1("Transaction Report"),
+                        h4("For last 30 days"),
                         br(),
                         h3("Incoming deliveries"),
                         table(
