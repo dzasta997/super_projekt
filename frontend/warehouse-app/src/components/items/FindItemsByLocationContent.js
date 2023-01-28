@@ -147,9 +147,13 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       }
     };
 
-
     // todo search on click or on item change?
     const onGetItemsByLocationClick = async() => {
+        if (Number.isNaN(warehouseId) 
+            || Number.isNaN(searchedLocation.rack) 
+            || Number.isNaN(searchedLocation.alley)) {
+            return;
+        }
         let res = await fetch(`http://localhost:8080/locations/warehouse/${warehouseId}/rack/${searchedLocation.rack}/alley/${searchedLocation.alley}`, { 
             method: 'GET',
             credentials: 'include',
@@ -205,6 +209,7 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
     }, [searchedLocation]);
 
     useEffect(() => {
+        onGetItemsByLocationClick();
         getItemsData();
     }, []);
 
