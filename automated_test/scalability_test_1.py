@@ -6,7 +6,7 @@ def main():
     url = "http://localhost:8080"
     warehouse_id = None
     employee_id = None
-    codes = [random.randint(0, 100000) for _ in range(200)]
+    codes = [random.randint(0, 100000) for _ in range(100)]
     delivery_id = None
 
     try:
