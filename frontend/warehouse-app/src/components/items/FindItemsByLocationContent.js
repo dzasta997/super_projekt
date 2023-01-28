@@ -176,7 +176,6 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       }
     };
 
-    // todo search on click or on item change?
     const onGetItemsByLocationClick = async() => {
         if (Number.isNaN(warehouseId) 
             || Number.isNaN(searchedLocation.rack) 

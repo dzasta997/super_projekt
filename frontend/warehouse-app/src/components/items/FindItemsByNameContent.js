@@ -13,18 +13,18 @@ function ResultItem({
 }) {
     return (
       <div key={index} className="flex flex-col gap-2">
-        <h2 className="text-2xl font-normal">{`${data.name} id: ${data.id}, found in alley ${data.alley}, rack ${data.rack}`}</h2>
+        <h2 className="text-2xl font-normal">{`${data.item.name} id: ${data.item.code}, found in alley ${data.location.alley}, rack ${data.location.rack}`}</h2>
         <div>
           <p className="font-thin text-sm">Change quantity</p>
           <div className="flex flex-row gap-4">
             <QuantitySetter
-              itemId={data.id}
+              itemId={data.item.code}
               quantity={data.quantity}
-              increaseQuantity={() => increaseQuantity(data.id)}
-              decreaseQuantity={() => decreaseQuantity(data.id)}
-              onQuantityChange={(e) => onQuantityChange(data.id, e)}
+              increaseQuantity={() => increaseQuantity(data.item.code)}
+              decreaseQuantity={() => decreaseQuantity(data.item.code)}
+              onQuantityChange={(e) => onQuantityChange(data.item.code, e)}
             />
-            <Button label="Update" onClick={onButtonClick(data.id)} />
+            <Button label="Update" onClick={onButtonClick(data.item.code)} />
           </div>
         </div>
       </div>
@@ -32,60 +32,132 @@ function ResultItem({
 }
 
 export default function FindItemsByNameContent({warehouseId=1}) {
-    const [searchedItem, setSearchedItem] = useState("");
-    const onSearchItemChange = (e) => setSearchedItem(e.target.value);
+    const [searchedItem, setSearchedItem] = useState(0);
+    const onSearchItemChange = (e) => setSearchedItem(parseInt(e.target.value, 0));
 
     // Location items
     const [data, setData] = useState([]);
 
-    function onQuantityChange(id, e) {
-        const currentItem = data.filter((locationItem) => locationItem.item.id === id)[0];
+    function onQuantityChange(code, e) {
+        const currentItem = data.filter((locationItem) => locationItem.item.code === code)[0];
         let newLocationItem = {...currentItem};
         newLocationItem.quantity = parseInt(e.target.value, 10);
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.id === id ? newLocationItem : locationItem
+          locationItem.item.code === code ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
     }
     
-    function increaseQuantity(id) {
-        const currentItem = data.filter((locationItem) => locationItem.item.id === id)[0];
+    function increaseQuantity(code) {
+        const currentItem = data.filter((locationItem) => locationItem.item.code === code)[0];
         let newLocationItem = {...currentItem};
         newLocationItem.quantity = currentItem.quantity + 1;
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.id === id ? newLocationItem : locationItem
+          locationItem.item.code === code ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
     }
     
-    function decreaseQuantity(id) {
-        const currentItem = data.filter((locationItem) => locationItem.item.id === id)[0];
+    function decreaseQuantity(code) {
+        const currentItem = data.filter((locationItem) => locationItem.item.code === code)[0];
         let newLocationItem = {...currentItem};
         newLocationItem.quantity = currentItem.quantity - 1;
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.id === id ? newLocationItem : locationItem
+          locationItem.item.code === code ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
-    }
+    };
 
-    const onUpdateItem = async(id) => {
-        // todo if item quantity < 0 -> remove
-        // else update
-    }
+    const onUpdateItem = async(code) => {
+        const currentLocItem = data.filter((locationItem) => locationItem.item.code === code)[0];
+
+        if (currentLocItem.quantity > 0) {
+            let requestBody = JSON.stringify(currentLocItem);
+            let res = await fetch('http://localhost:8080/items/edit', { 
+              method: 'POST',
+              body: requestBody,
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include',
+              mode: 'cors',
+              referrerPolicy: 'no-referrer',
+              origin: "http://localhost:3000/",
+            });   
+            
+            if (res.status === 200) {
+                console.log("Successfully updated item, code: " + currentLocItem.item.code);
+                onGetItemsByLocationClick();
+            } else {
+                console.log("Could not update item, code: " + currentLocItem.item.code);
+            }
+        } else {
+            let res = await fetch('http://localhost:8080/items/delete', { 
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              credentials: 'include',
+              mode: 'cors',
+              referrerPolicy: 'no-referrer',
+              origin: "http://localhost:3000/",
+            });   
+            
+            if (res.status === 204) {
+                console.log("Successfully deleted item.");
+                onGetItemsByLocationClick();
+            } else {
+                console.log("Could not delete item.");
+            }
+        }
+    };
+
+    const onGetItemsClick = async() => {
+        if (Number.isNaN(warehouseId) 
+            || Number.isNaN(searchedItem)) {
+            return;
+        }
+
+        let res = await fetch(`http://localhost:8080/items/itemcode/${searchedItem}/${warehouseId}`, { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            mode: 'cors',
+            referrerPolicy: 'no-referrer',
+            origin: "http://localhost:3000/",
+        });
+        
+        if (res.status === 200) {
+            console.log("Successfully gathered items.");
+            const json = await res.json();
+            console.log(json);
+            setData(json);
+        } else {
+            console.log("Could not gather items.");
+            console.log("Status: " + res.status);
+        }
+    };
+
+    useEffect(() => {
+        onGetItemsClick();
+    }, [searchedItem]);
   
     return (
         <div className="flex flex-col gap-10">
           <div>
             <p className="font-thin text-sm">Search for</p>
             <TextInputField
-              label="Item name"
+              label="Item code"
               value={searchedItem}
+              type="number"
               width="w-[300px]"
               onValueChange={onSearchItemChange}
             />
@@ -109,4 +181,4 @@ export default function FindItemsByNameContent({warehouseId=1}) {
           </div>
         </div>
       );
-}
+};
