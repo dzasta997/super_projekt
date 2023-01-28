@@ -8,6 +8,7 @@ import com.pwr.warehousesystem.repository.ItemDeliveryRepository;
 import com.pwr.warehousesystem.repository.ItemLocationRepository;
 import com.pwr.warehousesystem.repository.ItemRepository;
 import com.pwr.warehousesystem.repository.ItemShippingRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,20 @@ public class ItemService {
         checkCapacity(itemLocation);
 
         return itemLocationRepository.save(itemLocation);
+    }
+
+    public ItemLocation updateItemLocation(ItemLocation itemLocation) {
+        if ((itemLocation.getId() == null || !itemLocationRepository.existsById(itemLocation.getId()))
+                || itemLocation.getItem().getCode() == null || itemLocation.getLocation().getId() == null
+        ) {
+            throw new OperationFailedException();
+        }
+
+        checkCapacity(itemLocation);
+
+        ItemLocation toUpdate = itemLocationRepository.findById(itemLocation.getId()).orElseThrow();
+        BeanUtils.copyProperties(itemLocation, toUpdate);
+        return itemLocationRepository.save(toUpdate);
     }
 
     private void checkCapacity(ItemLocation itemLocation) {
