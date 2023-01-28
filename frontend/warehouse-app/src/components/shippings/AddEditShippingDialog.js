@@ -18,19 +18,19 @@ export default function AddEditShippingDialog({
     const onConfirm = async () => {
         console.log(data);
         let newItems = [];
-        data.items.forEach(locationItem => {
-            if (locationItem.quantity > 0) {
-                let newLocationItem = {...locationItem};
-                newLocationItem.item = {
-                    code: locationItem.item.code,
+        data.items.forEach(shippingItem => {
+            if (shippingItem.quantity > 0) {
+                let newShippingItem = {...shippingItem};
+                newShippingItem.item = {
+                    code: shippingItem.item.code,
                 };
-                newItems.push(newLocationItem);
+                newItems.push(newShippingItem);
             }
         });
         data.items = newItems;
 
         let requestBody = JSON.stringify(data);
-        let res = await fetch('http://localhost:8080/warehouses', { 
+        let res = await fetch('http://localhost:8080/shippings', { 
           method: 'POST',
           body: requestBody,
           headers: {

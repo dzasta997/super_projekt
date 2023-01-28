@@ -21,7 +21,9 @@ export default function AddEditDeliveryDialog({
         data.items.forEach(deliveryItem => {
             if (deliveryItem.quantity > 0) {
                 let newLocationItem = {...deliveryItem};
-                newLocationItem.item.code = deliveryItem.item.code;
+                newLocationItem.item = {
+                    code: deliveryItem.item.code,
+                };
                 newItems.push(newLocationItem);
             }
         });
