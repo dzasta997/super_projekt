@@ -4,7 +4,7 @@ import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
 import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
 import RemoveShippingDialog from '../components/shippings/RemoveShippingDialog';
   
-export default function Shipping({user, warehouseId}) {
+export default function Shipping({user, warehouseId, warehouseStreet}) {
 
   const [shippings, setShippings] = useState([]);
 
@@ -32,7 +32,7 @@ export default function Shipping({user, warehouseId}) {
 
   if (user==="ROLE_EMPLOYEE") {
     return (
-      <PageContainer title="Shippings from" location="Świdnicka 24">
+      <PageContainer title="Shippings from" location={warehouseStreet}>
         <div className='flex flex-col gap-4'>
           {shippings.map( shipping =>
             <div>
@@ -52,7 +52,7 @@ export default function Shipping({user, warehouseId}) {
     );
   } else if (user==="ROLE_MANAGER") {
     return (
-      <PageContainer title="Shippings from" location="Świdnicka 24">
+      <PageContainer title="Shippings from" location={warehouseStreet}>
         <div className='flex flex-col gap-4'>
           <AddEditShippingDialog 
             warehouseId={warehouseId}

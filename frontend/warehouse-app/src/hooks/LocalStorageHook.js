@@ -49,3 +49,8 @@ export default function useLocalStorage(key, initialValue) {
 
     return [storedValue, setValue, removeValue];
 };
+
+export const userRoleKey = "user_role";
+export const userIDKey = "user_id";
+export const warehouseIDKey = "warehouse_id";
+export const warehouseStreetKey = "warehouse_street";

@@ -1,67 +1,125 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PageContainer from "../components/containers/PageContainer";
 import Tabs from "../components/Tabs";
 import RecentActions from "../components/RecentActions";
-import { LocationContext } from "../context/LocationContext";
-import Button from "../components/buttons/Button";
 import WarehouseDialog from "../components/WarehouseDialog";
 
-function LocationChooser() {
-  const [locations, setLocations] = useState(["Świdnicka 1", "Rynek 2"]);
-  const { location, setLocation } = useContext(LocationContext);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-
-  const onOptionSelected = (e) => setSelectedLocation(e.target.value);
-  const onConfirm = () => setLocation(selectedLocation);
+function AddressChooser({ warehouses, setWarehouseStreet, setWarehouseId }) {
+  const [selectedWarehouse, setSelectedWarehouse] = useState();
+  const onOptionSelected = (e) => setSelectedWarehouse(e.target.value);
+  const onConfirm = () => {
+    if (selectedWarehouse != null) {
+      const warehouseId = warehouses[selectedWarehouse].id;
+      const warehouse = warehouses.find(warehouse => warehouse.id == warehouseId);
+      setWarehouseId(warehouseId);
+      setWarehouseStreet(`${warehouse.address.street} ${warehouse.address.number}`);
+    }
+  };
 
   return (
     <WarehouseDialog
-      buttonLabel="Change location"
+      buttonLabel="Change address"
       buttonColor="gray"
-      title="Change location"
+      title="Change address"
       onConfirm={onConfirm}
     >
       <select
         onChange={onOptionSelected}
         className="w-full py-2 px-4 text-gray-500 bg-white border-r-8 border-y-2 border-white rounded-full shadow-sm outline-none focus:border-indigo-600"
       >
-        {locations.map((location) => (
-          <option key={location} value={location}>
-            {location}
-          </option>
-        ))}
+        {warehouses.map((warehouse, index) => {
+          if (index === selectedWarehouse) {
+            return (<option key={index} value={index} selected>
+              {`${warehouse.address.street} ${warehouse.address.number}, ${warehouse.address.city}`}
+            </option>)
+          } else {
+            return (<option key={index} value={index}>
+                {`${warehouse.address.street} ${warehouse.address.number}, ${warehouse.address.city}`}
+              </option>)
+          }})}
       </select>
     </WarehouseDialog>
   );
 }
 
-function RecentItems({ searchType }) {
-  if (searchType === "recentShippings") {
-    return <RecentActions type="shipping" />;
-  } else {
-    return <RecentActions type="delivery" />;
-  }
-}
 
-export default function Dashboard({ user }) {
-  const [searchType, setSearchType] = useState("recentShippings");
-  const { location, setLocation } = useContext(LocationContext);
+export default function Dashboard({ user, warehouseStreet, setWarehouseStreet, setWarehouseId }) {
+  const [warehouses, setWarehouses] = useState([]);
+
+  const [recentDeliveries, setRecentDeliveries] = useState([]);
+  const [recentShippings, setRecentShippings] = useState([]);
+
+  const getRecentDeliveries = async () => {
+    let res = await fetch(`http://localhost:8080/deliveries`, {
+      method: "GET",
+      credentials: "include",
+      mode: "cors",
+      referrerPolicy: "no-referrer",
+      origin: "http://localhost:3000/",
+    });
+
+    if (res.status === 200) {
+      const json = await res.json();
+      console.log("Successfully loaded data.");
+      setRecentDeliveries(json);
+    } else {
+      console.log("Could not load data.");
+    }
+  };
+
+  const getRecentShippings = async () => {
+    let res = await fetch(`http://localhost:8080/orders`, {
+      method: "GET",
+      credentials: "include",
+      mode: "cors",
+      referrerPolicy: "no-referrer",
+      origin: "http://localhost:3000/",
+    });
+
+    if (res.status === 200) {
+      const json = await res.json();
+      console.log("Successfully loaded data.");
+      setRecentShippings(json);
+    } else {
+      console.log("Could not load data.");
+    }
+  };
+
+  const getWarehouses = async () => {
+    let res = await fetch("http://localhost:8080/warehouses", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      mode: "cors",
+      referrerPolicy: "no-referrer",
+      origin: "http://localhost:3000/",
+    });
+
+    if (res.status === 200) {
+      console.log("Successfully gathered warehouses.");
+      const json = await res.json();
+      setWarehouses(json);
+    } else {
+      console.log("Could not load more data.");
+    }
+  };
+
+  useEffect(() => {
+    getWarehouses();
+    getRecentDeliveries();
+    getRecentShippings();
+  }, []);
 
   return (
-    <PageContainer title="Dashboard" location={location}>
+    <PageContainer title="Dashboard" location={warehouseStreet}>
       <div className="mb-4">
-        <LocationChooser />
+        <AddressChooser warehouses={warehouses} setWarehouseStreet={setWarehouseStreet} setWarehouseId={setWarehouseId}/>
       </div>
-      <div className="flex flex-col gap-10">
-        <Tabs
-          chosenButtonId={searchType}
-          onButtonChosen={(e) => setSearchType(e.target.value)}
-          firstButtonLabel="Shippings"
-          firstButtonValue="recentShippings"
-          secondButtonLabel="Deliveries"
-          secondButtonValue="recentDeliveries"
-        />
-        <RecentItems searchType={searchType} />
+      <div className="flex gap-10">
+        <RecentActions id="recentShippings" type="shipping" recent={recentShippings} />
+        <RecentActions id="recentDeliveries" type="delivery" recent={recentDeliveries} />
       </div>
     </PageContainer>
   );
