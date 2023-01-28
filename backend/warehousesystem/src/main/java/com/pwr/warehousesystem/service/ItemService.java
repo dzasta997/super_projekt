@@ -81,6 +81,10 @@ public class ItemService {
         return itemLocationRepository.save(toUpdate);
     }
 
+    public void deleteItemLocationById(long id) {
+        itemLocationRepository.deleteById(id);
+    }
+
     private void checkCapacity(ItemLocation itemLocation) {
         Item item = this.getById(itemLocation.getItem().getCode());
         Location location = locationService.findByLocationId(itemLocation.getLocation().getId());
