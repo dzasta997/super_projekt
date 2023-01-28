@@ -12,7 +12,7 @@ export default function RemoveShippingDialog({
         let res = await fetch(`http://localhost:8080/orders/${shippingId}`, { 
             method: 'DELETE',
             credentials: 'include',
-            mode: 'no-cors',
+            mode: 'cors',
             referrerPolicy: 'no-referrer',
             origin: "http://localhost:3000/",
         })
