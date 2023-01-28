@@ -12,7 +12,7 @@ export default function RemoveDeliveryDialog({
         let res = await fetch(`http://localhost:8080/deliveries/${deliveryId}`, { 
             method: 'DELETE',
             credentials: 'include',
-            mode: 'no-cors',
+            mode: 'cors',
             referrerPolicy: 'no-referrer',
             origin: "http://localhost:3000/",
         })
