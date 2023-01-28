@@ -221,7 +221,10 @@ export default function AddEditShippingDialog({
     function onProductIdChange(code, e) {
         const currentItem = data.items.filter((shippingItem) => shippingItem.item.code === code)[0];
         let newShippingItem = {...currentItem};
-        newShippingItem.item.code = parseInt(e.target.value, 10);
+
+        let parsed = parseInt(e.target.value, 10);
+        let num = isNaN(parsed) ? 0 : parsed
+        newShippingItem.item.code = num;
     
         let updatedObject = {...data};
         updatedObject.items = data.items.map((shippingItem) =>
@@ -289,8 +292,8 @@ export default function AddEditShippingDialog({
             <AddEditDialogItem title="Address">
                 <div className='grid auto-cols-min space-y-4' >
                     <TextInputField label="Street" value={data.client.address.street} onValueChange={onStreetChange}></TextInputField>
-                    <TextInputField label="Number" value={data.client.address.number} onValueChange={onStreetNumberChange}></TextInputField>
-                    <TextInputField label="Postal code" value={data.client.address.zipCode} onValueChange={onZipCodeChange}></TextInputField>
+                    <TextInputField label="Number" min="0" value={data.client.address.number} onValueChange={onStreetNumberChange}></TextInputField>
+                    <TextInputField label="Postal code" value={data.client.address.zipcode} onValueChange={onZipCodeChange}></TextInputField>
                     <TextInputField label="City and country" value={data.client.address.city} onValueChange={onCityChange}></TextInputField>
                 </div>
             </AddEditDialogItem>
