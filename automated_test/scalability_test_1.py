@@ -1,5 +1,6 @@
 import requests
 import random
+import time
 
 
 def main():
@@ -10,6 +11,8 @@ def main():
     delivery_id = None
 
     try:
+        start_time = time.time()
+
         # LOG IN
         form_data = {'username': 'admin', 'password': 'pass'}
         auth_response = requests.post(url + "/login", data=form_data)
@@ -76,7 +79,14 @@ def main():
         delivery_items_codes = [item["item"]["code"] for item in delivery_items]
 
         if delivery_items_codes != codes:
-            raise Exception("DELIVERY DATA WAS CORRUPTED")            
+            raise Exception("DELIVERY DATA WAS CORRUPTED")    
+
+        end_time = time.time()
+
+        if end_time - start_time > 10:
+            raise Exception("EXECUTION TOOK TO MUCH TIME")
+
+        print("TOOK " + str(end_time - start_time) + " SECONDS")        
 
         print("TEST PASSED")
     except Exception as e:
