@@ -16,7 +16,7 @@ public class Shipping {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipping")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "shipping", cascade = CascadeType.REMOVE)
     private List<ItemShipping> items;
     @ManyToOne
     @JoinColumn(name = "warehouse_id")

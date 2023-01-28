@@ -16,7 +16,7 @@ public class Delivery {
     @ManyToOne
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "delivery", cascade = CascadeType.REMOVE)
     List<ItemDelivery> items;
     @ManyToOne
     @JoinColumn(name = "warehouse_id")

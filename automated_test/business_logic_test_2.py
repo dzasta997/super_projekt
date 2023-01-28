@@ -2,8 +2,14 @@ import requests
 import random
 
 def main():
+    url = "http://localhost:8080"
+
+    warehouse_id = None
+    location_id = None
+    code_1 = None
+    code_2 = None
+
     try:
-        url = "http://localhost:8080"
 
         # LOG IN
         form_data = {'username': 'admin', 'password': 'pass'}
@@ -87,10 +93,29 @@ def main():
         if location["capacity"] is None or location["availability"] is None or location["items"] is None:
             raise Exception("LOCATION DOES NOT HAVE SUFFICIENT INFORMATION TO DETERMINE NEW ITEM'S LOCATION")
 
+        # NEGATIVE TEST: DELETE ALL LOCATIONS AND CHECK IF DATA ABOUT THEM IS SENT - SHOULD BE FALSE
+
+        delete_location_response = requests.delete(url + "/locations/" + str(location_id), cookies=cookies)
+
+        if delete_location_response.status_code != 204:
+            raise Exception("LOCATION COULD NOT BE DELETED")
+
+        get_locations_response = requests.get(url + "/locations/warehouse/" + str(warehouse_id), cookies=cookies)
+        locations = get_locations_response.json()
+    
+        if len(locations) != 0:
+            raise Exception("THERE SHOULDN'T BE ANY LOCATIONS")
+
         print("TEST PASSED")
     except Exception as e:
         print("TEST FAILED")
         print(e)
-
+    finally:
+        # CLEAN UP
+        requests.delete(url + "/locations/" + str(location_id), cookies=cookies)
+        requests.delete(url + "/items/" + str(code_1), cookies=cookies)
+        requests.delete(url + "/items/" + str(code_2), cookies=cookies)
+        requests.delete(url + "/warehouses/" + str(warehouse_id), cookies=cookies)
+        
 if __name__ == "__main__":
-    main()
+    main()  
