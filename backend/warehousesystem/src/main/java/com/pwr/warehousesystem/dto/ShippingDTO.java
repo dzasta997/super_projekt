@@ -10,7 +10,7 @@ import java.util.List;
 public class ShippingDTO {
 
     private Long id;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date orderDate;
     private ClientDTO client;
     private List<ItemShippingDTO> items;

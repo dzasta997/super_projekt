@@ -1,7 +1,6 @@
 import requests
 import random
 
-
 def main():
     url = "http://localhost:8080"
     warehouse_id = None
@@ -37,6 +36,7 @@ def main():
 
         if get_warehouse_request.status_code != 400:
             raise Exception("SHOULDN'T BE ABLE TO PERFORM SQL INJECTION")
+
 
         print("TEST PASSED")
     except Exception as e:
