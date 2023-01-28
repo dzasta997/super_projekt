@@ -66,6 +66,12 @@ public class ItemController {
         return new ResponseEntity<>(itemLocationMapper.toDto(itemLocation, false), HttpStatus.OK);
     }
 
+    @PutMapping("/location")
+    public ResponseEntity<ItemLocationDTO> updateItemLocation(@RequestBody @Validated ItemLocationDTO itemLocationDTO){
+        ItemLocation itemLocation = itemService.updateItemLocation(itemLocationMapper.toEntity(itemLocationDTO));
+        return new ResponseEntity<>(itemLocationMapper.toDto(itemLocation, false), HttpStatus.OK);
+    }
+
     @GetMapping("/location/itemcode/{code}/{warehouseId}")
     public ResponseEntity<List<ItemLocationDTO>> getItemLocationsByItemCode(@PathVariable long code, @PathVariable long warehouseId){
         List<ItemLocation> itemLocations = itemService.getItemLocationsByItemCode(code, warehouseId);

@@ -1,6 +1,5 @@
 package com.pwr.warehousesystem.dto;
 
-import com.pwr.warehousesystem.enumeration.ItemSize;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
