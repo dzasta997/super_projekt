@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddItemToLocationDialog from "../components/AddItemToLocationDialog";
+import AddItemToLocationDialog from "../components/items/AddItemToLocationDialog";
 import Button from "../components/buttons/Button";
 import PageContainer from "../components/containers/PageContainer";
 import QuantitySetter from "../components/QuantitySetter";
@@ -71,8 +71,6 @@ function FindItemsScreenContent({
   decreaseQuantity,
   onUpdateAllClick,
   addItemToLocation,
-  productId,
-  onIdChange
 }) {
   if (searchType === "items") {
     return (
@@ -148,8 +146,6 @@ function FindItemsScreenContent({
             ))}
             <div className="">
               <AddItemToLocationDialog
-                productId={productId}
-                onIdChange={onIdChange}
                 buttonLabel="+ Add new item"
                 buttonColor="white"
                 title="Add item to location"
@@ -163,8 +159,8 @@ function FindItemsScreenContent({
         </div>
       </div>
     );
-  }
-}
+  };
+};
 
 const FindItem = () => {
   /**
@@ -180,9 +176,6 @@ const FindItem = () => {
     rack: 0,
   });
 
-  const [productId, setProductId] = useState(0);
-  const onIdChange = (e) => setProductId(parseInt(e.target.value, 10));
-
   function onSearchAlleyChange(e) {
     let currentLocation = { ...searchedLocation };
     currentLocation.alley = parseInt(e.target.value, 10);
@@ -195,89 +188,118 @@ const FindItem = () => {
     setSearchedLocation(currentLocation);
   }
 
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Shampoo",
-      quantity: 4,
-      alley: 5,
-      rack: 2,
-    },
-    {
-      id: 2,
-      name: "Soap",
-      quantity: 7,
-      alley: 1,
-      rack: 3,
-    },
-  ]);
+  const [data, setData] = useState({});
 
   function onQuantityChange(id, e) {
-    const currentItem = items.filter((item) => item.id === id)[0];
-    const newItem = {
-      id: currentItem.id,
-      name: currentItem.name,
-      quantity: parseInt(e.target.value, 10),
-      alley: currentItem.alley,
-      rack: currentItem.rack,
-    };
+    const currentItem = data.items.filter((locationItem) => locationItem.item.id === id)[0];
+    let newLocationItem = {...currentItem};
+    newLocationItem.quantity = parseInt(e.target.value, 10);
 
-    const updatedObject = items.map((item) =>
-      item.id === id ? newItem : item
+    const updatedObject = data.items.map((locationItem) =>
+      locationItem.item.id === id ? newLocationItem : locationItem
     );
 
-    setItems(updatedObject);
+    setData(updatedObject);
   }
 
   function increaseQuantity(id) {
-    const currentItem = items.filter((item) => item.id === id)[0];
-    const newItem = {
-      id: currentItem.id,
-      name: currentItem.name,
-      quantity: currentItem.quantity + 1,
-      alley: currentItem.alley,
-      rack: currentItem.rack,
-    };
+    const currentItem = data.items.filter((locationItem) => locationItem.item.id === id)[0];
+    let newLocationItem = {...currentItem};
+    newLocationItem.quantity = currentItem.quantity + 1;
 
-    const updatedObject = items.map((item) =>
-      item.id === id ? newItem : item
+    const updatedObject = data.items.map((locationItem) =>
+      locationItem.item.id === id ? newLocationItem : locationItem
     );
 
-    setItems(updatedObject);
+    setData(updatedObject);
   }
 
   function decreaseQuantity(id) {
-    const currentItem = items.filter((item) => item.id === id)[0];
-    const newItem = {
-      id: currentItem.id,
-      name: currentItem.name,
-      quantity: currentItem.quantity - 1,
-      alley: currentItem.alley,
-      rack: currentItem.rack,
-    };
+    const currentItem = data.items.filter((locationItem) => locationItem.item.id === id)[0];
+    let newLocationItem = {...currentItem};
+    newLocationItem.quantity = currentItem.quantity - 1;
 
-    const updatedObject = items.map((item) =>
-      item.id === id ? newItem : item
+    const updatedObject = data.items.map((locationItem) =>
+      locationItem.item.id === id ? newLocationItem : locationItem
     );
 
-    setItems(updatedObject);
+    setData(updatedObject);
   }
 
-  // todo quantity changes for search by location
-
-  function addItemToLocation() {
-    const newItems = [
-      ...items,
+  function addItemToLocation(id) {
+    let newObj = {...data};
+    newObj.items = [
+      ...newObj.items,
       {
-        id: productId,
-        name: "",
+        item: {
+          id: id,
+        },
         quantity: 1,
-        alley: searchedLocation.alley,
-        rack: searchedLocation.rack,
       },
     ];
-    setItems(newItems);
+    setData(newObj);
   }
+
+  const onUpdateAllClick = async() => {
+    let newItems = [];
+    data.items.forEach(locationItem => {
+      if (locationItem.quantity > 0) {
+        newItems.push(locationItem);
+      }
+    });
+    data.items = newItems;
+
+    let requestBody = JSON.stringify(data);
+    let res = await fetch('http://localhost:8080/locations', { 
+      method: 'POST',
+      body: requestBody,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      mode: 'cors',
+      referrerPolicy: 'no-referrer',
+      origin: "http://localhost:3000/",
+    });
+  
+    if (res.status === 200) {
+      console.log("Successfully added new item.");
+      setData({
+        code: NaN,
+        name: "",
+        description: "",
+        size: 1
+      });
+    } else {
+      console.log("Could not add new item.");
+    }
+  };
+
+  const onGetItemsByLocationClick = async() => {
+    let res = await fetch('http://localhost:8080/locations/warehouse/1/rack/1/alley/1', { 
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      mode: 'cors',
+      referrerPolicy: 'no-referrer',
+      origin: "http://localhost:3000/",
+    });
+  
+    if (res.status === 200) {
+      console.log("Successfully added new item.");
+      const json = await res.json();
+      console.log(json);
+      setData(json);
+    } else {
+      console.log("Could not add new item.");
+    }
+  };
+
+  useEffect(() => {
+    onGetItemsByLocationClick();
+  }, []);
 
   return (
     <PageContainer title="Search items" location="Świdnicka 24">
@@ -297,13 +319,12 @@ const FindItem = () => {
           onSearchItemChange={onSearchItemChange}
           onSearchAlleyChange={onSearchAlleyChange}
           onSearchRackChange={onSearchRackChange}
-          items={items}
+          items={data.items}
           onQuantityChange={onQuantityChange}
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
           addItemToLocation={addItemToLocation}
-          productId={productId}
-          onIdChange={onIdChange}
+          onUpdateAllClick={onUpdateAllClick}
         />
       </div>
     </PageContainer>
