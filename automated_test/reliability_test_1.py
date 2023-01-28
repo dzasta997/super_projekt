@@ -1,15 +1,15 @@
 import requests
 import random
 
-def main():
 
+def main():
+    url = "http://localhost:8080"
     warehouse_id = None
-    location_id = None
+    employee_id = None
     code = None
+    delivery_id = None
 
     try:
-        url = "http://localhost:8080"
-
         # LOG IN
         form_data = {'username': 'admin', 'password': 'pass'}
         auth_response = requests.post(url + "/login", data=form_data)
@@ -29,109 +29,67 @@ def main():
         if create_warehouse_response.status_code != 200:
             raise Exception("WAREHOUSE COULDN'T BE CREATED")
 
+        # CREATE EMPLOYEE
+        json_data = {"name" : "Bob", "warehouse": {"id": warehouse_id}}
+        create_employee_response = requests.post(url + "/employees", json=json_data, cookies=cookies)
+        employee_id = create_employee_response.json()["id"]
+
+        if create_employee_response.status_code != 200:
+            raise Exception("EMPLOYEE COULDN'T BE CREATED")
+
         # CREATE ITEMS
         code = random.randint(0, 100000)
         json_data = {"code" : code, "name": "Item 1", "size": 1, "description": "Test 1"}
         create_item_response = requests.post(url + "/items", json=json_data, cookies=cookies)
-        requests.post(url + "/items", json=json_data, cookies=cookies)
 
         if create_item_response.status_code != 200:
             raise Exception("ITEMS COULDN'T BE CREATED")
 
-        # CREATE LOCATION IN WAREHOUSE
+        # CREATE DELIVERY WITH CORRECT DATA
 
-        json_data = {"rack": 20,
-                    "alley": 20,
-                    "capacity": 100,
-                    "availability": 1,
-                    "description": "Test 1",
-                    "warehouse" : {
-                        "id": warehouse_id
-                    }}
+        json_data = {"deliveryDate": "23/10/2023",
+        "warehouse": {"id": warehouse_id},
+        "employee": {"id": employee_id},
+        "items": [{"item": {"code": code}, "quantity": 2}]
+        }
 
-        create_location_response = requests.post(url + "/locations", json=json_data, cookies=cookies)
-        location_id = create_location_response.json()["id"]
+        create_delivery_response = requests.post(url + "/deliveries", json=json_data, cookies=cookies)
+        delivery_id = create_delivery_response.json()["id"]
 
-        if create_location_response.status_code != 200:
-            raise Exception("LOCATION COULDN'T BE CREATED")
+        if create_delivery_response.status_code != 200:
+            raise Exception("DELIVERY COULDN'T BE CREATED")
 
-        # PUT ITEMS IN LOCATION
-        
-        get_location_response = requests.get(url + "/locations/" + str(location_id), cookies=cookies)
-        location_json = get_location_response.json()
-        items_json = [{
-            "item": {
-                "code": code
-            },
-            "quantity": 3
-            }]
-        location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
-        location_json["items"] = None # reset items for later comparison 
+        # GET DELIVERY AND TRY TO UPDATE IT WITH INCORRECT DATA - SHOULDN'T BE POSSIBLE
 
-        if put_location_response.status_code != 200:
-            raise Exception("LOCATION COULDN'T BE UPDATED")
-        
-        # GET ALL ALL INFORMATION ABOUT CREATED LOCATION AND CHECK IF DATA ABOUT ITEMS IS CORRECT
+        get_delivery_response = requests.get(url + "/deliveries/" + str(delivery_id), cookies=cookies)
+        delivery= get_delivery_response.json()
+        json_data = delivery
+        json_data["items"] = [{"item": {"code": code}, "quantity": 2147483648}]
+        put_delivery_response = requests.post(url + "/deliveries/edit", json=json_data, cookies=cookies)
 
-        get_location_response = requests.get(url + "/locations/" + str(location_id), cookies=cookies)
+        if put_delivery_response.status_code != 500:
+            raise Exception("THIS OPERATION SHOULD RESULT IN ERROR")
 
-        if get_location_response.status_code != 200:
-            raise Exception("COULDN'T GET LOCATION")
+        # CHECK IF DELIVERY DATA WAS NOT CORRUPTED
 
-        assigned_items = get_location_response.json()["items"]
+        get_delivery_response = requests.get(url + "/deliveries/" + str(delivery_id), cookies=cookies)
 
-        if len(assigned_items) != 1:
-            raise Exception("THERE SHOULD BE 1 ITEMS ASSIGNED TO THIS LOCATION")
+        if get_delivery_response.status_code != 200:
+            print("DELIVERY DATA WAS DESTROYED")
 
-        if assigned_items[0]["item"]["code"] != items_json[0]["item"]["code"] or assigned_items[0]["quantity"] != items_json[0]["quantity"]:
-            raise Exception("ITEM DATA IS CORRUPTED")
+        delivery_after = get_delivery_response.json()
 
-
-        # NEGATIVE TEST: DELETE ALL ITEMS IN THIS LOCATION AND TRY TO UPDATE IT WITH INCORRECT QUANTITY OF 
-        # ITEMS (MORE THAN CAPACITY ALLOWS). CHECK IF THERE ARE ANY ITEMS IN LOCATION - SHOULD BE FALSE
-        
-        get_location_response = requests.get(url + "/locations/" + str(location_id), cookies=cookies)
-        location_json = get_location_response.json()
-        items_json = []
-        location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
-
-        if put_location_response.status_code != 200:
-            raise Exception("COUDLN'T DELETE ITEMS")
-
-        get_location_response = requests.get(url + "/locations/" + str(location_id), cookies=cookies)
-        location_json = get_location_response.json()
-        items_json = [{
-            "item": {
-                "code": code
-            },
-            "quantity": 1000
-            }]
-        location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
-
-        if put_location_response.status_code != 400:
-            raise Exception("UPDATED ITEMS WHEN IT SHOULDN'T UPDATE")
-
-        get_location_response = requests.get(url + "/locations/" + str(location_id), cookies=cookies)
-        if get_location_response.status_code != 200:
-            raise Exception("COULDN'T GET LOCATION")
-
-        assigned_items = get_location_response.json()["items"]
-
-        if len(assigned_items) != 0:
-            raise Exception("THERE SHOULD BE NO ITEMS ASSIGNED TO THIS LOCATION")
+        if delivery != delivery_after:
+            print("DELIVERY DATA WAS CORRUPTED")
 
         print("TEST PASSED")
-
     except Exception as e:
         print("TEST FAILED")
         print(e)
-
     finally:
         # CLEAN UP
-        requests.delete(url + "/locations/" + str(location_id), cookies=cookies)
+        requests.delete(url + "/deliveries/" + str(delivery_id), cookies=cookies)
+        requests.delete(url + "/employees/" + str(employee_id), cookies=cookies)
         requests.delete(url + "/items/" + str(code), cookies=cookies)
         requests.delete(url + "/warehouses/" + str(warehouse_id), cookies=cookies)
 

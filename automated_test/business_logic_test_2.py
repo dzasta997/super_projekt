@@ -75,7 +75,7 @@ def main():
             "quantity": 1
             }]
         location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
+        put_location_response = requests.post(url + "/locations/edit", json=location_json, cookies=cookies)
 
         if put_location_response.status_code != 200:
             raise Exception("LOCATION COULDN'T BE UPDATED")

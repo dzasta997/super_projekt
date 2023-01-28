@@ -55,7 +55,7 @@ public class DeliveryController {
     }
 
     @Transactional
-    @PutMapping
+    @PostMapping("/edit")
     @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<DeliveryDTO> updateDelivery(@RequestBody DeliveryDTO deliveryDTO) {
         Delivery savedDelivery = deliveryService.updateDelivery(deliveryMapper.toEntity(deliveryDTO));
