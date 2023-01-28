@@ -27,11 +27,8 @@ export default function Delivery({user, warehouseId}) {
       const json = await res.json();
 
       console.log("awaiting json");  
-      
-      if (json.length > 0) {
-        console.log("Successfully loaded data.");
-        setDeliveries(json);
-      }
+      console.log("Successfully loaded data.");
+      setDeliveries(json);
     } else {
       console.log("Could not load data.");
     }

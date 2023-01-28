@@ -9,13 +9,10 @@ export default function RemoveShippingDialog({
 }) {
 
     const onConfirm = async () => {
-        let res = await fetch(`http://localhost:8080/deliveries/${shippingId}`, { 
+        let res = await fetch(`http://localhost:8080/orders/${shippingId}`, { 
             method: 'DELETE',
-            headers: {
-            'Content-Type': 'application/json'
-            },
             credentials: 'include',
-            mode: 'cors',
+            mode: 'no-cors',
             referrerPolicy: 'no-referrer',
             origin: "http://localhost:3000/",
         })
