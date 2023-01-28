@@ -1,5 +1,8 @@
 package com.pwr.warehousesystem.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +15,7 @@ public class Employee {
     private String name;
     private String surname;
     private String function;
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
