@@ -6,15 +6,16 @@ import FindItemsByNameContent from "../components/items/FindItemsByNameContent";
 
 function FindItemsScreenContent({
   searchType,
+  warehouseId,
 }) {
   if (searchType === "items") {
-    return <FindItemsByNameContent />
+    return <FindItemsByNameContent warehouseId={warehouseId}/>
   } else {
-    return <FindItemsByLocationContent />
+    return <FindItemsByLocationContent warehouseId={warehouseId}/>
   };
 };
 
-const FindItem = () => {
+export default function FindItem({warehouseId}) {
   /**
    * Type of serach, can be either "items" or "location".
    */
@@ -31,9 +32,8 @@ const FindItem = () => {
           secondButtonLabel="Search by location"
           secondButtonValue="location"
         />
-        <FindItemsScreenContent searchType={searchType}/>
+        <FindItemsScreenContent searchType={searchType} warehouseId={warehouseId} />
       </div>
     </PageContainer>
   );
 };
-export default FindItem;

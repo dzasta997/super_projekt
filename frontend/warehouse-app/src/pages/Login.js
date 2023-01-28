@@ -4,7 +4,10 @@ import ErrorAlert from "../components/ErrorAlert";
 import TextInputField from "../components/TextInputField";
 import { redirect } from "react-router-dom";
   
-export default function Login({onUserChange}) {
+export default function Login({
+  onUserChange,
+  onUserIdChange,
+}) {
 
   const [isError, setIsError] = useState(false);
   const onError = () => setIsError(true);
@@ -66,6 +69,21 @@ export default function Login({onUserChange}) {
         } else {
           console.log("user role failed, status: " + userRole.status);
           onError();
+        }
+
+        let userId = await fetch('http://localhost:8080/user/employee', {
+          method: 'GET',
+          credentials: 'include',
+          mode: 'cors',
+          referrerPolicy: 'no-referrer',
+          origin: "http://localhost:3000/",
+        });
+
+        if (userId.status === 200) {
+          let id = await userId.text();
+          console.log("userId");
+          console.log(id);
+          onUserIdChange(id);
         }
       } else  {
         console.log("login failed");
