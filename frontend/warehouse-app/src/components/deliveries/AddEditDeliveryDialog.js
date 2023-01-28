@@ -229,7 +229,10 @@ export default function AddEditDeliveryDialog({
     function onProductIdChange(code, e) {
         const currentItem = data.items.filter((deliveryItem) => deliveryItem.item.code === code)[0];
         let newDeliveryItem = {...currentItem};
-        newDeliveryItem.item.code = parseInt(e.target.value, 10);
+
+        let parsed = parseInt(e.target.value, 10);
+        let num = isNaN(parsed) ? 0 : parsed
+        newDeliveryItem.item.code = num;
     
         let updatedObject = {...data};
         updatedObject.items = data.items.map((deliveryItem) =>
