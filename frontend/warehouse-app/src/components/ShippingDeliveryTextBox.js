@@ -24,15 +24,15 @@ export default function ShippingDeliveryTextBox({
             <p className="text-[20px]">{address.phoneNumber}</p>
           </div>
           <TextBoxElement label="Street" data={`${address.street} ${address.number}`} />
-          <TextBoxElement label="Postal code" data={address.postalCode} />
+          <TextBoxElement label="Postal code" data={address.zipcode} />
           <TextBoxElement label="City" data={address.city} />
         </div>
         <div className="text-box-column">
           {products.map((product) => (
             <TextBoxElement
               key={product.id}
-              label={`ID:${product.id}`}
-              data={`${product.quantity} ${product.name}`}
+              label={`ID:${product.item.id}`}
+              data={`${product.quantity} ${product.item.name}`}
             />
           ))}
         </div>

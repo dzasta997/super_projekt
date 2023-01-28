@@ -1,6 +1,6 @@
 import WarehouseDialog from '../WarehouseDialog';
 
-export default function RemoveDialog({
+export default function RemoveShippingDialog({
     buttonLabel,
     buttonColor,
     title, 

@@ -1,18 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WarehouseDialog from '../WarehouseDialog';
 import TextInputField from '../TextInputField';
-import StatusChoice from './StatusChoice';
+import StatusChoice from '../StatusChoice';
 import AddEditDialogItem from '../AddEditDialogItem';
-import EditableProductList from './EditableProductList';
+import EditableProductList from '../EditableProductList';
 
-export default function AddEditDialog({
-    isDeliveryOrShipping,
-    isAddOrEdit,
+export default function AddEditShippingDialog({
+    warehouseId,
+    isEdit,
+    shippingId,
     buttonLabel,
     buttonColor,
-    title, 
-    onConfirm
+    title,
+    updateList
 }) {
+
+    const onConfirm = async () => {
+        console.log(data);
+        let newItems = [];
+        data.items.forEach(locationItem => {
+            if (locationItem.quantity > 0) {
+                let newLocationItem = {...locationItem};
+                newLocationItem.item = {
+                    code: locationItem.item.code,
+                };
+                newItems.push(newLocationItem);
+            }
+        });
+        data.items = newItems;
+
+        let requestBody = JSON.stringify(data);
+        let res = await fetch('http://localhost:8080/warehouses', { 
+          method: 'POST',
+          body: requestBody,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          mode: 'cors',
+          referrerPolicy: 'no-referrer',
+          origin: "http://localhost:3000/",
+        })
+      
+        if (res.status === 200) {
+          console.log("Successfully added new warehouse.");
+          setData({});
+          updateList();
+        } else {
+          console.log("Could not add new warehouse.");
+        }
+      };
 
     const [data, setData] = useState(
         {
