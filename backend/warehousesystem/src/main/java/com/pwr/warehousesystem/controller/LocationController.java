@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +41,8 @@ public class LocationController {
 
     @GetMapping("/warehouse/{id}/rack/{rack}/alley/{alley}")
     public ResponseEntity<LocationDTO> getLocationByWarehouseIdAndRackAndAlley(@PathVariable long id,
-                                                                               @PathVariable String rack,
-                                                                               @PathVariable String alley) {
+            @PathVariable String rack,
+            @PathVariable String alley) {
         Location location = locationService.findByWarehouseIdAndRackAndAlley(id, rack, alley);
         return new ResponseEntity<>(locationMapper.toDto(location, false), HttpStatus.OK);
     }
@@ -62,7 +61,7 @@ public class LocationController {
     }
 
     @Transactional
-    @PutMapping
+    @PostMapping("/edit")
     public ResponseEntity<LocationDTO> updateLocation(@RequestBody LocationDTO locationDTO) {
         Location savedLocation = locationService.updateLocation(locationMapper.toEntity(locationDTO));
         return new ResponseEntity<>(locationMapper.toDto(savedLocation, false), HttpStatus.OK);
