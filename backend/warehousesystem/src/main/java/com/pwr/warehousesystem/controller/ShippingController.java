@@ -52,7 +52,7 @@ public class ShippingController {
     }
 
     @Transactional
-    @PutMapping
+    @PostMapping("/edit")
     @PreAuthorize("hasRole('MANAGER') or hasRole('ADMIN')")
     public ResponseEntity<ShippingDTO> updateShipping(@RequestBody ShippingDTO shippingDTO) {
         Shipping shipping = shippingService.updateShipping(shippingMapper.toEntity(shippingDTO));

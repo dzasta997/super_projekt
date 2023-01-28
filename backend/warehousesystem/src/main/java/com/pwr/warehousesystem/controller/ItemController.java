@@ -66,7 +66,7 @@ public class ItemController {
         return new ResponseEntity<>(itemLocationMapper.toDto(itemLocation, false), HttpStatus.OK);
     }
 
-    @PutMapping("/location")
+    @PostMapping("/location/edit")
     public ResponseEntity<ItemLocationDTO> updateItemLocation(@RequestBody @Validated ItemLocationDTO itemLocationDTO){
         ItemLocation itemLocation = itemService.updateItemLocation(itemLocationMapper.toEntity(itemLocationDTO));
         return new ResponseEntity<>(itemLocationMapper.toDto(itemLocation, false), HttpStatus.OK);

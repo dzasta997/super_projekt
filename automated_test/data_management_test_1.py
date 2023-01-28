@@ -66,7 +66,7 @@ def main():
             "quantity": 3
             }]
         location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
+        put_location_response = requests.post(url + "/locations/edit", json=location_json, cookies=cookies)
         location_json["items"] = None # reset items for later comparison 
 
         if put_location_response.status_code != 200:
@@ -95,7 +95,7 @@ def main():
         location_json = get_location_response.json()
         items_json = []
         location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
+        put_location_response = requests.post(url + "/locations/edit", json=location_json, cookies=cookies)
 
         if put_location_response.status_code != 200:
             raise Exception("COUDLN'T DELETE ITEMS")
@@ -109,7 +109,7 @@ def main():
             "quantity": 1000
             }]
         location_json["items"] = items_json
-        put_location_response = requests.put(url + "/locations", json=location_json, cookies=cookies)
+        put_location_response = requests.post(url + "/locations/edit", json=location_json, cookies=cookies)
 
         if put_location_response.status_code != 400:
             raise Exception("UPDATED ITEMS WHEN IT SHOULDN'T UPDATE")
