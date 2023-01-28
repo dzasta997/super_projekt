@@ -64,7 +64,7 @@ public class LocationService {
         items = updateItems(items, saved);
         saved.setItems(items);
 
-        return locationRepository.save(location);
+        return saved;
     }
 
     private List<ItemLocation> updateItems(List<ItemLocation> items, Location svaedLocation) {
