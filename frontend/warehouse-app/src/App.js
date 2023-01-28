@@ -53,7 +53,7 @@ function App() {
        {/* Routes that require the user to be logged in */}
        <Route element={<ProtectedRoutes user={user} onLogout={onLogoutClick}/>}>
           <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard user={user}/>} />
-          <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory/>} />
+          <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory warehouseId={warehouseId} />} />
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory/>} />
           <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem warehouseId={warehouseId} />} />
           <Route path='/delivery' element={isAdmin ? <Navigate to="/" replace/> : <Delivery user={user}/>} />
