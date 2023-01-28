@@ -113,11 +113,13 @@ export default function Shipping({user}) {
             <div>
               <h1 className="text-2xl font-thin pb-2">{`Shipping no ${shipping.id}`}</h1>
               <ShippingDeliveryTextBox
-              assignedTo={shipping.assignedTo}
-              plannedDate={shipping.plannedDate}
+              assignedTo={shipping.employee.id}
+              plannedDate={shipping.orderDate}
+              recipientName={shipping.client.name}
+              phoneNumber={shipping.client.description}
               status={shipping.status}
-              address={shipping.address}
-              products={shipping.products} />
+              address={shipping.client.address}
+              products={shipping.items} />
             </div>
           )}
         </div>
@@ -142,14 +144,20 @@ export default function Shipping({user}) {
                   buttonLabel="Edit" 
                   buttonColor="white" 
                   title="Edit shipping"/>
-                <RemoveShippingDialog buttonLabel="Remove" buttonColor="gray" title="Remove shipping"/>
+                <RemoveShippingDialog 
+                  shippingId={shipping.id}
+                  buttonLabel="Remove" 
+                  buttonColor="gray" 
+                  title="Remove shipping"/>
               </div>
               <ShippingDeliveryTextBox
-              assignedTo={shipping.assignedTo}
-              plannedDate={shipping.plannedDate}
+              assignedTo={shipping.employee.id}
+              plannedDate={shipping.orderDate}
+              recipientName={shipping.client.name}
+              phoneNumber={shipping.client.description}
               status={shipping.status}
-              address={shipping.address}
-              products={shipping.products} />
+              address={shipping.client.address}
+              products={shipping.items} />
             </div>
           )}
         </div>

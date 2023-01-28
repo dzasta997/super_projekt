@@ -21,9 +21,7 @@ export default function AddEditDeliveryDialog({
         data.items.forEach(deliveryItem => {
             if (deliveryItem.quantity > 0) {
                 let newLocationItem = {...deliveryItem};
-                newLocationItem.item = {
-                    code: deliveryItem.item.code,
-                };
+                newLocationItem.item.code = deliveryItem.item.code;
                 newItems.push(newLocationItem);
             }
         });
@@ -41,6 +39,12 @@ export default function AddEditDeliveryDialog({
             };
             requestBody = JSON.stringify(newData);
         }
+
+        console.log("data");
+        console.log(data);
+        
+        console.log("requestBody");
+        console.log(requestBody);
 
         let res = await fetch(requestPath, { 
             method: 'POST',
@@ -63,7 +67,9 @@ export default function AddEditDeliveryDialog({
     };
 
     const getApiData = async () => {
-        if (deliveryId == null) {
+        console.log("inside get api data dialog");
+        console.log(deliveryId);
+        if (!isEdit) {
             setData({
                 employee: {
                     id: 0,
@@ -79,7 +85,15 @@ export default function AddEditDeliveryDialog({
                     },
                     description: "",
                 },
-                items: [],
+                items: [
+                    {
+                        item: {
+                            code: 0,
+                            name: "",
+                        },
+                        quantity: 0,
+                    },
+                ],
                 warehouse: {
                     id: 0,
                 },
@@ -87,7 +101,8 @@ export default function AddEditDeliveryDialog({
             });
             return;
         }
-
+        
+        console.log("fetching datag");
         let res = await fetch(`http://localhost:8080/deliveries/${deliveryId}`, { 
           method: 'GET',
           headers: {
@@ -100,11 +115,11 @@ export default function AddEditDeliveryDialog({
         })
       
         if (res.status === 200) {
+          console.log("awaiting json");
           const json = await res.json();
-          if (json.length > 0) {
-            console.log("Successfully loaded data.");
-            setData(json);
-          }
+          console.log(json);
+          console.log("Successfully loaded data.");
+          setData(json);
         } else {
           console.log("Could not load data.");
         }
@@ -202,7 +217,7 @@ export default function AddEditDeliveryDialog({
         let newObj = {...data};
         newObj.items.push({
             item: {
-                code: NaN,
+                code: 0,
             },
             quantity: 1
         });
@@ -212,7 +227,7 @@ export default function AddEditDeliveryDialog({
     function onProductIdChange(code, e) {
         const currentItem = data.items.filter((deliveryItem) => deliveryItem.item.code === code)[0];
         let newDeliveryItem = {...currentItem};
-        newDeliveryItem.ite.code = parseInt(e.target.value, 10);
+        newDeliveryItem.item.code = parseInt(e.target.value, 10);
     
         let updatedObject = {...data};
         updatedObject.items = data.items.map((deliveryItem) =>

@@ -52,9 +52,11 @@ if (user==="ROLE_EMPLOYEE") {
             <ShippingDeliveryTextBox
             assignedTo={delivery.employee.id}
             plannedDate={delivery.deliveryDate}
+            recipientName={delivery.supplier.name}
+            phoneNumber={delivery.supplier.description}
             status={delivery.status}
-            address={delivery.address}
-            products={delivery.products} />
+            address={delivery.supplier.address}
+            products={delivery.items} />
           </div>
         )}
       </div>
@@ -68,7 +70,8 @@ if (user==="ROLE_EMPLOYEE") {
           warehouseId={warehouseId}
           isEdit={false} 
           buttonLabel="Add new" 
-          title="Add delivery"/>
+          title="Add delivery"
+          updateList={getApiData} />
         {deliveries.map( delivery =>
           <div>
             <div className='flex flex-row gap-4 items-center pb-2'>
@@ -79,15 +82,23 @@ if (user==="ROLE_EMPLOYEE") {
                 isEdit={true} 
                 buttonLabel="Edit" 
                 buttonColor="white" 
-                title="Edit delivery"/>
-              <RemoveDeliveryDialog buttonLabel="Remove" buttonColor="gray" title="Remove delivery"/>
+                title="Edit delivery"
+                updateList={getApiData} />
+              <RemoveDeliveryDialog 
+                deliveryId={delivery.id} 
+                buttonLabel="Remove" 
+                buttonColor="gray" 
+                title="Remove delivery"
+                updateList={getApiData} />
             </div>
             <ShippingDeliveryTextBox
             assignedTo={delivery.employee.id}
             plannedDate={delivery.deliveryDate}
+            recipientName={delivery.supplier.name}
+            phoneNumber={delivery.supplier.description}
             status={delivery.status}
-            address={delivery.address}
-            products={delivery.products} />
+            address={delivery.supplier.address}
+            products={delivery.items} />
           </div>
         )}
       </div>
