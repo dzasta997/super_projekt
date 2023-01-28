@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../buttons/Button';
-import { buttonColor } from '../buttons/utils';
+import Button from './buttons/Button';
+import { buttonColor } from './buttons/utils';
 
 export default function StatusChoice({
     chosenButtonId,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import AddEditDialog from '../components/shippings/AddEditDialog';
 import PageContainer from '../components/containers/PageContainer';
-import RemoveDialog from '../components/shippings/RemoveDialog';
 import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
+import AddEditShippingDialog from '../components/shippings/AddEditShippingDialog';
+import RemoveShippingDialog from '../components/shippings/RemoveShippingDialog';
   
 export default function Shipping({user}) {
 
@@ -113,11 +113,13 @@ export default function Shipping({user}) {
             <div>
               <h1 className="text-2xl font-thin pb-2">{`Shipping no ${shipping.id}`}</h1>
               <ShippingDeliveryTextBox
-              assignedTo={shipping.assignedTo}
-              plannedDate={shipping.plannedDate}
+              assignedTo={shipping.employee.id}
+              plannedDate={shipping.orderDate}
+              recipientName={shipping.client.name}
+              phoneNumber={shipping.client.description}
               status={shipping.status}
-              address={shipping.address}
-              products={shipping.products} />
+              address={shipping.client.address}
+              products={shipping.items} />
             </div>
           )}
         </div>
@@ -127,7 +129,7 @@ export default function Shipping({user}) {
     return (
       <PageContainer title="Shippings from" location="Świdnicka 24">
         <div className='flex flex-col gap-4'>
-          <AddEditDialog 
+          <AddEditShippingDialog 
             isDeliveryOrShipping="shipping" 
             isAddOrEdit="add"
             buttonLabel="Add new" 
@@ -136,20 +138,26 @@ export default function Shipping({user}) {
             <div>
               <div className='flex flex-row gap-4 items-center pb-2'>
                 <h1 className="text-2xl font-thin">{`Shipping no ${shipping.id}`}</h1>
-                <AddEditDialog 
+                <AddEditShippingDialog 
                   isDeliveryOrShipping="shipping" 
                   isAddOrEdit="edit"
                   buttonLabel="Edit" 
                   buttonColor="white" 
                   title="Edit shipping"/>
-                <RemoveDialog buttonLabel="Remove" buttonColor="gray" title="Remove shipping"/>
+                <RemoveShippingDialog 
+                  shippingId={shipping.id}
+                  buttonLabel="Remove" 
+                  buttonColor="gray" 
+                  title="Remove shipping"/>
               </div>
               <ShippingDeliveryTextBox
-              assignedTo={shipping.assignedTo}
-              plannedDate={shipping.plannedDate}
+              assignedTo={shipping.employee.id}
+              plannedDate={shipping.orderDate}
+              recipientName={shipping.client.name}
+              phoneNumber={shipping.client.description}
               status={shipping.status}
-              address={shipping.address}
-              products={shipping.products} />
+              address={shipping.client.address}
+              products={shipping.items} />
             </div>
           )}
         </div>

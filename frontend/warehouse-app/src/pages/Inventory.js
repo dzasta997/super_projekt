@@ -15,16 +15,14 @@ export default function Inventory({warehouseId=1}) {
           <a href={`http://localhost:8080/reports/inventory/${warehouseId}`}>
             <IconButton
               label="Generate report"
-              Icon={documentIcon} 
-              onClick={onGenerateReportClick} />
+              Icon={documentIcon}  />
           </a>
         </div>
         <div>
           <a href={`http://localhost:8080/reports/transaction/${warehouseId}`}>
             <IconButton
               label="Generate transaction report"
-              Icon={documentIcon}
-              onClick={onGenerateTransactionReportClick} />
+              Icon={documentIcon} />
           </a>
         </div>
       </div>
