@@ -97,4 +97,11 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Transactional
+    @DeleteMapping("/location/{id}")
+    public ResponseEntity<Void> deleteItemLocationById(@PathVariable Long id) {
+        itemService.deleteItem(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
