@@ -22,9 +22,25 @@ function App() {
   const [user, setUser, removeUser] = useLocalStorage("user_role", "");
   const onUserChange = (usern) => setUser(usern);
   const onRemoveUser = () => removeUser();
+  
+  const [userId, setUserId, removeUserId] = useLocalStorage("user_id", "");
+  const onUserIdChange = (id) => setUserId(id);
+  const onRemovedUserId = () => removeUserId();
+  
+  const [warehouseId, setWarehouseId, removeWarehouseId] = useLocalStorage("warehouse_id", "1");
+  const onWarehouseIdChange = (id) => setWarehouseId(id);
+  const onRemoveWarehouseId = () => removeWarehouseId();
+  
+  // todo, get data somehow
+  const [warehouseStreet, setWarehouseStreet, removeWarehouseStreet] = useLocalStorage("warehouse_street", "");
+  const onWarehouseStreetChange = (s) => setWarehouseStreet(s);
+  const onWarehouseStreetUser = () => removeWarehouseStreet();
 
   function onLogoutClick() {
     onRemoveUser();
+    onRemovedUserId();
+    onRemoveWarehouseId();
+    onWarehouseStreetUser();
     redirect("/");
   }
 
@@ -39,13 +55,16 @@ function App() {
           <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard user={user}/>} />
           <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory/>} />
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory/>} />
-          <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem/>} />
+          <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem warehouseId={warehouseId} />} />
           <Route path='/delivery' element={isAdmin ? <Navigate to="/" replace/> : <Delivery user={user}/>} />
           <Route path='/shipping' element={isAdmin ? <Navigate to="/" replace/> : <Shipping user={user}/>} />
         </Route>
 
        {/* Routes that don't require the user to be logged in */}
-        <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login onUserChange={onUserChange} />} />
+        <Route path='/login' element={
+          isAuth 
+            ? <Navigate to="/" /> 
+            : <Login onUserChange={onUserChange} onUserIdChange={onUserIdChange} />} />
         <Route path='/sign-up' element={isAdmin ?  <SignUp /> : <Navigate to="/" />} />
     </Routes>
     </Router>

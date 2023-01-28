@@ -87,7 +87,7 @@ const UserNavbar = ({onLogout}) => {
                     variant="small"
                     className='absolute px-5 py-5 font-thin left-0 bottom-0'
                 >
-                <div onClick={onLogout} className="text-white hover:text-darkGray">Log out </div>
+                <a href="/" onClick={onLogout} className="text-white hover:text-darkGray">Log out</a>
                 </Typography>
             </div>
         </Navbar>
