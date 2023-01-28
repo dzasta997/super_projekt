@@ -29,8 +29,20 @@ export default function AddEditShippingDialog({
         });
         data.items = newItems;
 
+        let requestPath = 'http://localhost:8080/orders/edit';
         let requestBody = JSON.stringify(data);
-        let res = await fetch('http://localhost:8080/shippings', { 
+
+        if (!isEdit) {
+            requestPath = 'http://localhost:8080/orders';
+            let newData = {...data,
+                warehouse: {
+                    id: warehouseId,
+                },
+            };
+            requestBody = JSON.stringify(newData);
+        }
+
+        let res = await fetch(requestPath, { 
           method: 'POST',
           body: requestBody,
           headers: {
@@ -43,40 +55,113 @@ export default function AddEditShippingDialog({
         })
       
         if (res.status === 200) {
-          console.log("Successfully added new warehouse.");
-          setData({});
+          console.log("Successfully added new shipping.");
           updateList();
         } else {
-          console.log("Could not add new warehouse.");
+          console.log("Could not add new shipping.");
         }
-      };
+    };
+
+    const getApiData = async () => {
+    if (!isEdit) {
+        setData({
+            employee: {
+                id: 0,
+            },
+            orderDate: "",
+            client: {
+                name: "",
+                address: {
+                    street: "",
+                    number: 0,
+                    zipcode: "",
+                    city: "",
+                },
+                description: "",
+            },
+            items: [
+                {
+                    item: {
+                        code: 0,
+                        name: "",
+                    },
+                    quantity: 0,
+                },
+            ],
+            warehouse: {
+                id: 0,
+            },
+            status: "",
+        });
+        return;
+    }
+    
+    let res = await fetch(`http://localhost:8080/orders/${shippingId}`, { 
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        mode: 'cors',
+        referrerPolicy: 'no-referrer',
+        origin: "http://localhost:3000/",
+    })
+    
+    if (res.status === 200) {
+        const json = await res.json();
+        console.log(json);
+        console.log("Successfully loaded data.");
+        setData(json);
+    } else {
+        console.log("Could not load data.");
+    }
+    };
+    
+    useEffect(() => {
+        getApiData();
+    }, []);
 
     const [data, setData] = useState(
         {
-            employeeId: NaN,
-            date: NaN,
-            status: "not sent",
-            address: {
-                street: "",
-                number: 0,
-                zipCode: "",
-                city: ""
+            employee: {
+                id: 0,
             },
-            name: "",
-            phone: "",
-            items: []
+            orderDate: "",
+            client: {
+                name: "",
+                address: {
+                    street: "",
+                    number: 0,
+                    zipcode: "",
+                    city: "",
+                },
+                description: "",
+            },
+            items: [
+                {
+                    item: {
+                        code: 0,
+                        name: "",
+                    },
+                    quantity: 0,
+                },
+            ],
+            warehouse: {
+                id: 0,
+            },
+            status: "",
         }
     );
     
     function onEmployeeIdChange(id) {
         let newData = {...data};
-        newData.employeeId = id.target.value;
+        newData.employee.id = parseInt(id.target.value, 10);
         setData(newData);
     };
 
     function onDateChange(date) {
         let newData = {...data};
-        newData.date = date.target.value;
+        newData.orderDate = date.target.value;
         setData(newData);
     };
 
@@ -88,137 +173,112 @@ export default function AddEditShippingDialog({
 
     function onStreetChange(street) {
         let newData = {...data};
-        newData.address.street = street.target.value;
+        newData.client.address.street = street.target.value;
         setData(newData);
     };
 
     function onStreetNumberChange(number) {
         let newData = {...data};
-        newData.address.number = number.target.value;
+        newData.client.address.number = parseInt(number.target.value, 10);
         setData(newData);
     };
 
     function onZipCodeChange(zipCode) {
         let newData = {...data};
-        newData.address.zipCode = zipCode.target.value;
+        newData.client.address.zipcode = zipCode.target.value;
         setData(newData);
     };
     
     function onCityChange(city) {
         let newData = {...data};
-        newData.address.city = city.target.value;
+        newData.client.address.city = city.target.value;
         setData(newData);
     };
     
     function onNameChange(name) {
         let newData = {...data};
-        newData.name = name.target.value;
+        newData.client.name = name.target.value;
         setData(newData);
     };
     
     function onPhoneChange(phone) {
         let newData = {...data};
-        newData.phone = phone.target.value;
+        newData.client.description = phone.target.value;
         setData(newData);
     };
 
     function onAddItem() {
-        const updateItems = [
-            ...data.items,
-            {
-                id: data.items.length + 1,
-                productId: NaN,
-                productName: "",
-                quantity: 1
-            }
-        ];
-
-        let newData = {...data};
-        newData.items = updateItems;
-        setData(newData);
+        let newObj = {...data};
+        newObj.items.push({
+            item: {
+                code: 0,
+            },
+            quantity: 1
+        });
+        setData(newObj);
     }
 
-    function onProductIdChange(id, e) {
-        const currentItem = data.items.filter(item => item.id === id)[0]
-        const newItem = {
-            id: id,
-            productId: e.target.value,
-            productName: currentItem.productName,
-            quantity: currentItem.quantity
-        }
-
-        const updatedObject = data.items.map((item) =>
-          item.id === id ? newItem : item
+    function onProductIdChange(code, e) {
+        const currentItem = data.items.filter((shippingItem) => shippingItem.item.code === code)[0];
+        let newShippingItem = {...currentItem};
+        newShippingItem.item.code = parseInt(e.target.value, 10);
+    
+        let updatedObject = {...data};
+        updatedObject.items = data.items.map((shippingItem) =>
+            shippingItem.item.code === code ? newShippingItem : shippingItem
         );
-
-        let newData = {...data};
-        newData.items = updatedObject;
-        setData(newData);
+    
+        setData(updatedObject);
     }
 
-    function onQuantityChange(id, e) {
-        const currentItem = data.items.filter(item => item.id === id)[0]
-        const newItem = {
-            id: currentItem.id,
-            productId: currentItem.productId,
-            productName: currentItem.productName,
-            quantity: parseInt(e.target.value, 10)
-        }
-
-        const updatedObject = data.items.map((item) =>
-          item.id === id ? newItem : item
+    function onQuantityChange(code, e) {
+        const currentItem = data.items.filter((shippingItem) => shippingItem.item.code === code)[0];
+        let newShippingItem = {...currentItem};
+        newShippingItem.quantity = parseInt(e.target.value, 10);
+    
+        let updatedObject = {...data};
+        updatedObject.items = data.items.map((shippingItem) =>
+            shippingItem.item.code === code ? newShippingItem : shippingItem
         );
-
-        let newData = {...data};
-        newData.items = updatedObject;
-        setData(newData);
+    
+        setData(updatedObject);
     }
 
-    function increaseQuantity(id) {
-        const currentItem = data.items.filter(item => item.id === id)[0]
-        const newItem = {
-            id: id,
-            productId: currentItem.productId,
-            productName: currentItem.productName,
-            quantity: currentItem.quantity+1
-        }
-
-        const updatedObject = data.items.map((item) =>
-          item.id === id ? newItem : item
+    function increaseQuantity(code) {
+        const currentItem = data.items.filter((shippingItem) => shippingItem.item.code === code)[0];
+        let newShippingItem = {...currentItem};
+        newShippingItem.quantity = currentItem.quantity + 1;
+    
+        let updatedObject = {...data};
+        updatedObject.items = data.items.map((shippingItem) =>
+            shippingItem.item.code === code ? newShippingItem : shippingItem
         );
-
-        let newData = {...data};
-        newData.items = updatedObject;
-        setData(newData);
+    
+        setData(updatedObject);
     }
 
-    function decreaseQuantity(id) {
-        const currentItem = data.items.filter(item => item.id === id)[0]
-        const newItem = {
-            id: id,
-            productId: currentItem.productId,
-            productName: currentItem.productName,
-            quantity: currentItem.quantity-1
-        }
-
-        const updatedObject = data.items.map((item) =>
-          item.id === id ? newItem : item
+    function decreaseQuantity(code) {
+        const currentItem = data.items.filter((shippingItem) => shippingItem.item.code === code)[0];
+        let newShippingItem = {...currentItem};
+        newShippingItem.quantity = currentItem.quantity - 1;
+    
+        let updatedObject = {...data};
+        updatedObject.items = data.items.map((shippingItem) =>
+            shippingItem.item.code === code ? newShippingItem : shippingItem
         );
-
-        let newData = {...data};
-        newData.items = updatedObject;
-        setData(newData);
+    
+        setData(updatedObject);
     }
 
     return(
         <WarehouseDialog buttonLabel={buttonLabel} buttonColor={buttonColor} title={title} onConfirm={onConfirm}>
         <div className='dialog-container'>
             <AddEditDialogItem title="Assigned to">
-                <TextInputField label="Employee id" type="number" min="0" value={data.employeeId} onValueChange={onEmployeeIdChange}></TextInputField>
+                <TextInputField label="Employee id" type="number" min="0" value={data.employee.id} onValueChange={onEmployeeIdChange}></TextInputField>
             </AddEditDialogItem>
 
             <AddEditDialogItem title="Planned date of delivery">
-                <TextInputField label="Date" type="date" value={data.date} onValueChange={onDateChange}></TextInputField>
+                <TextInputField label="Date" type="date" value={data.orderDate} onValueChange={onDateChange}></TextInputField>
             </AddEditDialogItem>
 
           <div>
@@ -228,17 +288,17 @@ export default function AddEditShippingDialog({
 
             <AddEditDialogItem title="Address">
                 <div className='grid auto-cols-min space-y-4' >
-                    <TextInputField label="Street" value={data.street} onValueChange={onStreetChange}></TextInputField>
-                    <TextInputField label="Number" value={data.number} onValueChange={onStreetNumberChange}></TextInputField>
-                    <TextInputField label="Postal code" value={data.zipCode} onValueChange={onZipCodeChange}></TextInputField>
-                    <TextInputField label="City and country" value={data.city} onValueChange={onCityChange}></TextInputField>
+                    <TextInputField label="Street" value={data.client.address.street} onValueChange={onStreetChange}></TextInputField>
+                    <TextInputField label="Number" value={data.client.address.number} onValueChange={onStreetNumberChange}></TextInputField>
+                    <TextInputField label="Postal code" value={data.client.address.zipCode} onValueChange={onZipCodeChange}></TextInputField>
+                    <TextInputField label="City and country" value={data.client.address.city} onValueChange={onCityChange}></TextInputField>
                 </div>
             </AddEditDialogItem>
 
             <AddEditDialogItem title="Contact">
                 <div className='grid auto-cols-min space-y-4' >
-                <TextInputField label="Name" value={data.name} onValueChange={onNameChange}></TextInputField>
-                <TextInputField label="Phone" value={data.phone} onValueChange={onPhoneChange}></TextInputField>
+                <TextInputField label="Name" value={data.client.name} onValueChange={onNameChange}></TextInputField>
+                <TextInputField label="Phone" value={data.client.description} onValueChange={onPhoneChange}></TextInputField>
                 </div>
             </AddEditDialogItem>
 

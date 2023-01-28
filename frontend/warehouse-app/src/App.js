@@ -57,7 +57,7 @@ function App() {
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory/>} />
           <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem warehouseId={warehouseId} />} />
           <Route path='/delivery' element={isAdmin ? <Navigate to="/" replace/> : <Delivery user={user} warehouseId={warehouseId} />} />
-          <Route path='/shipping' element={isAdmin ? <Navigate to="/" replace/> : <Shipping user={user}/>} />
+          <Route path='/shipping' element={isAdmin ? <Navigate to="/" replace/> : <Shipping user={user} warehouseId={warehouseId}/>} />
         </Route>
 
        {/* Routes that don't require the user to be logged in */}

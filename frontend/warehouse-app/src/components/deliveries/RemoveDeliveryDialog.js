@@ -11,11 +11,8 @@ export default function RemoveDeliveryDialog({
     const onConfirm = async () => {
         let res = await fetch(`http://localhost:8080/deliveries/${deliveryId}`, { 
             method: 'DELETE',
-            headers: {
-            'Content-Type': 'application/json'
-            },
             credentials: 'include',
-            mode: 'cors',
+            mode: 'no-cors',
             referrerPolicy: 'no-referrer',
             origin: "http://localhost:3000/",
         })
@@ -31,7 +28,7 @@ export default function RemoveDeliveryDialog({
     return (
         <WarehouseDialog buttonLabel={buttonLabel} buttonColor={buttonColor} title={title} onConfirm={onConfirm}>
             <div className='py-10'>
-            <span>Are you sure you want to remove this item?</span>
+            <span>Are you sure you want to remove this delivery?</span>
             </div>
         </WarehouseDialog>
     );
