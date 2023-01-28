@@ -28,7 +28,7 @@ public class AddressService {
     }
 
     public void deleteById(long id){
-        if(addressRepository.existsById(id)){
+        if(!addressRepository.existsById(id)){
             throw new OperationFailedException();
         }
         addressRepository.deleteById(id);
