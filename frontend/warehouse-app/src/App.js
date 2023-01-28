@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, redirect }
     from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
@@ -13,6 +14,7 @@ import Shipping from './pages/Shipping';
 import AdminDashboard from './pages/AdminDashboard';
 import SignUp from './pages/SignUp';
 import useLocalStorage from './hooks/LocalStorageHook';
+import { LocationContext } from './context/LocationContext';
 
 function App() {
   const userList = ['ROLE_EMPLOYEE', 'ROLE_MANAGER', 'ROLE_ADMIN'];
@@ -47,6 +49,8 @@ function App() {
   const isAdmin = (user === "ROLE_ADMIN" ? true : false)
   const isAuth = (userList.includes(user) ? true : false)
 
+  const [location, setLocation] = useState("Location was not set");
+
   return (
     <Router>
     <Routes>
@@ -60,13 +64,11 @@ function App() {
           <Route path='/shipping' element={isAdmin ? <Navigate to="/" replace/> : <Shipping user={user} warehouseId={warehouseId}/>} />
         </Route>
 
-       {/* Routes that don't require the user to be logged in */}
-        <Route path='/login' element={
-          isAuth 
-            ? <Navigate to="/" /> 
-            : <Login onUserChange={onUserChange} onUserIdChange={onUserIdChange} />} />
-        <Route path='/sign-up' element={isAdmin ?  <SignUp /> : <Navigate to="/" />} />
-    </Routes>
+          {/* Routes that don't require the user to be logged in */}
+            <Route path='/login' element={isAuth ? <Navigate to="/" /> : <Login onUserChange={onUserChange} />} />
+            <Route path='/sign-up' element={isAdmin ?  <SignUp /> : <Navigate to="/" />} />
+        </Routes>
+      </LocationContext.Provider>
     </Router>
   );
 }
