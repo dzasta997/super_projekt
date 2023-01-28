@@ -26,6 +26,33 @@ function TextInputWithTitle({
   
 const EditInventory = () => {
 
+  const [isSuccess, setIsSuccess] = useState({
+    value: false,
+    title: "",
+    message: "",
+  });
+
+  const onSuccessChange = (obj) => setIsSuccess(obj);
+  const onSuccessReset = () => { setIsSuccess({
+    value: false,
+    title: "",
+    message: "",
+  }) }
+
+  const [isError, setIsError] = useState({
+    value: false,
+    title: "",
+    message: "",
+  });
+
+  const onErrorChange = (obj) => setIsError(obj);
+  const onErrorReset = () => { setIsError({
+    value: false,
+    title: "",
+    message: "",
+  }) }
+
+
   const [data, setData] = useState({
     code: NaN,
     name: "",
@@ -73,6 +100,11 @@ const EditInventory = () => {
   
     if (res.status === 200) {
       console.log("Successfully added new item.");
+      onSuccessChange({
+        value: true,
+        title: "Success!",
+        message: "Successfully created new item.",
+      });
       setData({
         code: NaN,
         name: "",
@@ -81,12 +113,18 @@ const EditInventory = () => {
       });
     } else {
       console.log("Could not add new item.");
+      onErrorChange({
+        value: true,
+        title: "Add item error!",
+        message: "Could not add new item.",
+      });
     }
   };
 
-  // TODO alert
   return (
     <PageContainer title="Edit inventory" location="Świdnicka 24">
+      { isError.value ? <ErrorAlert title={isError.title} text={isError.message} onClose={onErrorReset} /> : null }
+      { isSuccess.value ? <SuccessAlert title={isSuccess.title} text={isSuccess.message} onClose={onSuccessReset} /> : null}
       <div className='flex flex-col gap-4'>
         <p className="font-light text-md">Add new items</p>
         <TextInputWithTitle 
