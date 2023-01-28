@@ -63,11 +63,11 @@ def main():
 
         get_delivery_response = requests.get(url + "/deliveries/" + str(delivery_id), cookies=cookies)
         delivery= get_delivery_response.json()
-        json_data = delivery
-        json_data["items"] = [{"item": {"code": code}, "quantity": 2147483648}]
+        json_data = delivery.copy()
+        json_data["items"] = [{"item": {"code": code}, "quantity": 21474836480}]
         put_delivery_response = requests.post(url + "/deliveries/edit", json=json_data, cookies=cookies)
 
-        if put_delivery_response.status_code != 500:
+        if put_delivery_response.status_code != 400:
             raise Exception("THIS OPERATION SHOULD RESULT IN ERROR")
 
         # CHECK IF DELIVERY DATA WAS NOT CORRUPTED
@@ -75,12 +75,12 @@ def main():
         get_delivery_response = requests.get(url + "/deliveries/" + str(delivery_id), cookies=cookies)
 
         if get_delivery_response.status_code != 200:
-            print("DELIVERY DATA WAS DESTROYED")
+            raise Exception("DELIVERY DATA WAS DESTROYED")
 
         delivery_after = get_delivery_response.json()
 
         if delivery != delivery_after:
-            print("DELIVERY DATA WAS CORRUPTED")
+            raise Exception("DELIVERY DATA WAS CORRUPTED")
 
         print("TEST PASSED")
     except Exception as e:
