@@ -33,6 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private void initUser(String username, String password, Role role) {
         if (!userRepository.existsByUsername(username)) {
             Employee employee = new Employee();
+            employee.setName("Andrew");
+            employee.setName("Johnson");
             User user = new User();
             user.setEmployee(employee);
             user.setUsername(username);
