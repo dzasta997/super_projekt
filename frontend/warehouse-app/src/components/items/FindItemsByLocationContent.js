@@ -39,12 +39,14 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
     function onSearchAlleyChange(e) {
         let currentLocation = { ...searchedLocation };
         currentLocation.alley = parseInt(e.target.value, 10);
+        console.log(currentLocation);
         setSearchedLocation(currentLocation);
     }
 
     function onSearchRackChange(e) {
         let currentLocation = { ...searchedLocation };
         currentLocation.rack = parseInt(e.target.value, 10);
+        console.log(currentLocation);
         setSearchedLocation(currentLocation);
     }
 
@@ -118,7 +120,11 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       let newItems = [];
       data.items.forEach(locationItem => {
         if (locationItem.quantity > 0) {
-          newItems.push(locationItem);
+            let newLocationItem = {...locationItem};
+            newLocationItem.item = {
+                code: locationItem.item.code,
+            };
+            newItems.push(newLocationItem);
         }
       });
       data.items = newItems;
@@ -127,8 +133,8 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
       console.log(data);
   
       let requestBody = JSON.stringify(data);
-      let res = await fetch('http://localhost:8080/locations', { 
-        method: 'PUT',
+      let res = await fetch('http://localhost:8080/locations/edit', { 
+        method: 'POST',
         body: requestBody,
         headers: {
           'Content-Type': 'application/json'
@@ -154,10 +160,14 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
             || Number.isNaN(searchedLocation.alley)) {
             return;
         }
+        console.log(searchedLocation);
         let res = await fetch(`http://localhost:8080/locations/warehouse/${warehouseId}/rack/${searchedLocation.rack}/alley/${searchedLocation.alley}`, { 
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             credentials: 'include',
-            mode: 'no-cors',
+            mode: 'cors',
             referrerPolicy: 'no-referrer',
             origin: "http://localhost:3000/",
         });
@@ -169,6 +179,7 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
             setData(json);
         } else {
             console.log("Could not gather items.");
+            console.log("Status: " + res.status);
         }
     };
 
@@ -209,7 +220,6 @@ export default function FindItemsByLocationContent({warehouseId=1}) {
     }, [searchedLocation]);
 
     useEffect(() => {
-        onGetItemsByLocationClick();
         getItemsData();
     }, []);
 
