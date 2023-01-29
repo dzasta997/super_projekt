@@ -44,14 +44,14 @@ function AddressChooser({ warehouses, setWarehouseStreet, setWarehouseId }) {
 }
 
 
-export default function Dashboard({ user, warehouseStreet, setWarehouseStreet, setWarehouseId }) {
+export default function Dashboard({ user, warehouseStreet, warehouseId, setWarehouseStreet, setWarehouseId }) {
   const [warehouses, setWarehouses] = useState([]);
 
   const [recentDeliveries, setRecentDeliveries] = useState([]);
   const [recentShippings, setRecentShippings] = useState([]);
 
   const getRecentDeliveries = async () => {
-    let res = await fetch(`http://localhost:8080/deliveries`, {
+    let res = await fetch(`http://localhost:8080/deliveries/warehouse/${warehouseId}`, {
       method: "GET",
       credentials: "include",
       mode: "cors",
@@ -69,7 +69,7 @@ export default function Dashboard({ user, warehouseStreet, setWarehouseStreet, s
   };
 
   const getRecentShippings = async () => {
-    let res = await fetch(`http://localhost:8080/orders`, {
+    let res = await fetch(`http://localhost:8080/orders/warehouse/${warehouseId}`, {
       method: "GET",
       credentials: "include",
       mode: "cors",

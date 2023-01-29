@@ -48,7 +48,10 @@ export default function FindItemsByNameContent({warehouseId=1}) {
         newLocationItem.quantity = parseInt(e.target.value, 10);
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.code === code ? newLocationItem : locationItem
+          locationItem.item.code === code 
+          && locationItem.location.alley === alley
+          && locationItem.location.rack === rack
+          ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
@@ -64,7 +67,10 @@ export default function FindItemsByNameContent({warehouseId=1}) {
         newLocationItem.quantity = currentItem.quantity + 1;
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.code === code ? newLocationItem : locationItem
+          locationItem.item.code === code
+          && locationItem.location.alley === alley
+          && locationItem.location.rack === rack
+          ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
@@ -80,7 +86,10 @@ export default function FindItemsByNameContent({warehouseId=1}) {
         newLocationItem.quantity = currentItem.quantity - 1;
     
         const updatedObject = data.map((locationItem) =>
-          locationItem.item.code === code ? newLocationItem : locationItem
+          locationItem.item.code === code 
+          && locationItem.location.alley === alley
+          && locationItem.location.rack === rack
+          ? newLocationItem : locationItem
         );
     
         setData(updatedObject);
