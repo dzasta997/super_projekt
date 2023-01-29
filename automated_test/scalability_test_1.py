@@ -56,7 +56,7 @@ def main():
 
         items = [{"item": {"code": code}, "quantity": 100} for code in codes]
 
-        json_data = {"deliveryDate": "23/10/2023",
+        json_data = {"deliveryDate": "2023-10-26",
         "warehouse": {"id": warehouse_id},
         "employee": {"id": employee_id},
         "items": items
