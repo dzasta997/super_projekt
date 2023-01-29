@@ -11,7 +11,7 @@ function TextInputWithTitle({
   value, 
   width, 
   type, 
-  onValueChange
+  onValueChange,
 }) {
   return (
     <div className="flex flex-col">
@@ -26,7 +26,7 @@ function TextInputWithTitle({
   );
 };
   
-const EditInventory = () => {
+const EditInventory = ({warehouseStreet}) => {
 
   const [isSuccess, setIsSuccess] = useState({
     value: false,
@@ -124,7 +124,7 @@ const EditInventory = () => {
   };
 
   return (
-    <PageContainer title="Edit inventory" location="Świdnicka 24">
+    <PageContainer title="Edit inventory" location={warehouseStreet}>
       { isError.value ? <ErrorAlert title={isError.title} text={isError.message} onClose={onErrorReset} /> : null }
       { isSuccess.value ? <SuccessAlert title={isSuccess.title} text={isSuccess.message} onClose={onSuccessReset} /> : null}
       <div className='flex flex-col gap-4'>

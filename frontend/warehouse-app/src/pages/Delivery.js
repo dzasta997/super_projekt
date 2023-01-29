@@ -4,7 +4,7 @@ import ShippingDeliveryTextBox from '../components/ShippingDeliveryTextBox';
 import AddEditDeliveryDialog from '../components/deliveries/AddEditDeliveryDialog';
 import RemoveDeliveryDialog from '../components/deliveries/RemoveDeliveryDialog';
    
-export default function Delivery({user, warehouseId}) {
+export default function Delivery({user, warehouseId, warehouseStreet}) {
   console.log("opened delivery screen");
   const [deliveries, setDeliveries] = useState([]);
 
@@ -41,7 +41,7 @@ export default function Delivery({user, warehouseId}) {
 
 if (user==="ROLE_EMPLOYEE") {
   return (
-    <PageContainer title="Deliveries from" location="Świdnicka 24">
+    <PageContainer title="Deliveries from" location={warehouseStreet}>
       <div className='flex flex-col gap-4'>
         {deliveries.map( delivery =>
           <div>
@@ -61,7 +61,7 @@ if (user==="ROLE_EMPLOYEE") {
   );
 } else if (user==="ROLE_MANAGER") {
   return (
-    <PageContainer title="Deliveries from" location="Świdnicka 24">
+    <PageContainer title="Deliveries from" location={warehouseStreet}>
       <div className='flex flex-col gap-4'>
         <AddEditDeliveryDialog 
           warehouseId={warehouseId}

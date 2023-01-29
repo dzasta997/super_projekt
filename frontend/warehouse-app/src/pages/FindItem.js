@@ -15,14 +15,14 @@ function FindItemsScreenContent({
   };
 };
 
-export default function FindItem({warehouseId}) {
+export default function FindItem({warehouseId, warehouseStreet}) {
   /**
    * Type of serach, can be either "items" or "location".
    */
   const [searchType, setSearchType] = useState("items");
 
   return (
-    <PageContainer title="Search items" location="Świdnicka 24">
+    <PageContainer title="Search items" location={warehouseStreet}>
       <div className="flex flex-col gap-10">
         <Tabs
           chosenButtonId={searchType}
