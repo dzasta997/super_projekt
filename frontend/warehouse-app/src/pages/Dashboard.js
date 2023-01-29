@@ -5,7 +5,7 @@ import RecentActions from "../components/RecentActions";
 import WarehouseDialog from "../components/WarehouseDialog";
 
 function AddressChooser({ warehouses, setWarehouseStreet, setWarehouseId }) {
-  const [selectedWarehouse, setSelectedWarehouse] = useState();
+  const [selectedWarehouse, setSelectedWarehouse] = useState(1);
   const onOptionSelected = (e) => setSelectedWarehouse(e.target.value);
   const onConfirm = () => {
     if (selectedWarehouse != null) {
@@ -13,6 +13,7 @@ function AddressChooser({ warehouses, setWarehouseStreet, setWarehouseId }) {
       const warehouse = warehouses.find(warehouse => warehouse.id == warehouseId);
       setWarehouseId(warehouseId);
       setWarehouseStreet(`${warehouse.address.street} ${warehouse.address.number}`);
+      window.location.reload();
     }
   };
 
