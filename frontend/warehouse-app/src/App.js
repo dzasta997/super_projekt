@@ -53,7 +53,7 @@ function App() {
     <Routes>
        {/* Routes that require the user to be logged in */}
        <Route element={<ProtectedRoutes user={user} onLogout={onLogoutClick}/>}>
-       <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard user={user} setWarehouseStreet={setWarehouseStreet} warehouseStreet={warehouseStreet} setWarehouseId={setWarehouseId}/>} />
+       <Route exact path='/' element={isAdmin ? <AdminDashboard /> : <Dashboard user={user} setWarehouseStreet={setWarehouseStreet} warehouseStreet={warehouseStreet} warehouseId={warehouseId} setWarehouseId={setWarehouseId}/>} />
           <Route path='/inventory' element={isAdmin ? <Navigate to="/" replace/> : <Inventory warehouseId={warehouseId} warehouseStreet={warehouseStreet}/>} />
           <Route path='/edit-inventory' element={isAdmin ? <Navigate to="/" replace/> : <EditInventory warehouseStreet={warehouseStreet}/>} />
           <Route path='/find-item' element={isAdmin ? <Navigate to="/" replace/> : <FindItem warehouseId={warehouseId} warehouseStreet={warehouseStreet}/>} />

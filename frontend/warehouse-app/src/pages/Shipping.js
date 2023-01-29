@@ -9,7 +9,7 @@ export default function Shipping({user, warehouseId, warehouseStreet}) {
   const [shippings, setShippings] = useState([]);
 
   const getApiData = async () => {
-    let res = await fetch(`http://localhost:8080/orders`, { 
+    let res = await fetch(`http://localhost:8080/orders/warehouse/${warehouseId}`, { 
       method: 'GET',
       credentials: 'include',
       mode: 'cors',

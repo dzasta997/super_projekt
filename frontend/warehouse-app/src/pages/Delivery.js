@@ -10,7 +10,7 @@ export default function Delivery({user, warehouseId, warehouseStreet}) {
 
   const getApiData = async () => {
     console.log("getApiData");
-    let res = await fetch(`http://localhost:8080/deliveries`, { 
+    let res = await fetch(`http://localhost:8080/deliveries/warehouse/${warehouseId}`, { 
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
