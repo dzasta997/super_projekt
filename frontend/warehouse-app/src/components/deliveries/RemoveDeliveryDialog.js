@@ -17,7 +17,7 @@ export default function RemoveDeliveryDialog({
             origin: "http://localhost:3000/",
         })
         
-        if (res.status === 200) {
+        if (res.status === 204) {
             console.log("Successfully deleted delivery.");
             updateList();
         } else {

@@ -12,7 +12,7 @@ export default function PageContainer({
     children
 }) {
     return (
-        <div className="px-[270px] py-[30px] flex flex-col items-start">
+        <div className="px-[270px] py-[30px] w-full h-screen flex flex-col items-start">
             <div className="text-4xl flex flex-row pb-5">
                 {title} 
                 <div className="pl-3 font-thin">location: {location}</div>
