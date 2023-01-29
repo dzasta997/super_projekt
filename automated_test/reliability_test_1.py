@@ -47,7 +47,7 @@ def main():
 
         # CREATE DELIVERY WITH CORRECT DATA
 
-        json_data = {"deliveryDate": "23/10/2023",
+        json_data = {"deliveryDate": "2023-10-26",
         "warehouse": {"id": warehouse_id},
         "employee": {"id": employee_id},
         "items": [{"item": {"code": code}, "quantity": 2}]

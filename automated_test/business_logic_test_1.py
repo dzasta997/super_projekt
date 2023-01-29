@@ -53,7 +53,7 @@ def main():
 
         # CREATE DELIVERY
 
-        json_data = {"deliveryDate": "23/10/2023",
+        json_data = {"deliveryDate": "2023-10-26",
         "warehouse": {"id": warehouse_id},
         "employee": {"id": employee_id},
         "items": [{"item": {"code": code_1}, "quantity": 10}, {"item": {"code": code_2}, "quantity": 30}]
@@ -85,7 +85,7 @@ def main():
         if create_employee_response.status_code != 200:
             raise Exception("EMPLOYEE COULDN'T BE CREATED")
 
-        json_data = {"deliveryDate": "26/10/2023",
+        json_data = {"deliveryDate": "2023-10-26",
         "warehouse": {"id": warehouse_id},
         "employee": {"id": employee_id_2},
         "items": [{"item": {"code": code_1}, "quantity": 10}, {"item": {"code": code_2}, "quantity": 30}]

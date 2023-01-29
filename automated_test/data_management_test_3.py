@@ -64,7 +64,7 @@ def main():
 
         # CREATE SHIPPING
 
-        json_data = {"orderDate": "23/10/2023",
+        json_data = {"orderDate": "2023-10-26",
         "warehouse": {"id": warehouse_id},
         "employee": {"id": employee_id},
         "client": {"id": client_id},
